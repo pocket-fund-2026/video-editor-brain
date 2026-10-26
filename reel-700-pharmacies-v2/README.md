@@ -51,3 +51,9 @@ Captions run the whole reel in a teal box. Words are pale until spoken, then whi
 6. Composite order: footage → behind layer → Dev (footage plus matte) → front layer and captions, then the audio.
 
 Footage, the matte, the model and the rendered frames are kept on the server (`/root/reel5`), not in git.
+
+## Version 3 (decluttered, 26 Oct 2026)
+The user's feedback on v2: drop the "HELLO my name is" tag, use only the first reel's graphics, keep it minimal, keep Dev's reaction card, and put proper animation around and behind Dev.
+- **Source:** `source/v3/`. `gfx4.html` is the shell (palette, layers, beat groups, captions). `beats_a.js` holds headline, map and years; `beats_b.js` holds reaction, calendar, push and end. The two files were built in parallel by two agents.
+- **Beats:** "One operator. / 700 pharmacies." headline · Italy map whose crosses fill in step with a giant 700 behind Dev · Under 5 years blocks, year 1 circled, 100+ ACQUISITIONS · YEAR 1 · Dev reaction card + giant 100 behind Dev · one-year 100-dot calendar, EVERY 3 DAYS · staircase to ACHIEVE MORE · teal Kautilya end card.
+- **Build:** `build4.sh` renders both layers in parallel, then composites them to `/root/reel5/reel_v3.mp4`. The whole build takes about 3 minutes.

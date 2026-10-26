@@ -1,0 +1,62 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Mont";src:url("../fonts/Montserrat-VF.ttf");font-weight:100 900}
+/* Kautilya palette: brand teal #0D485D + white (from kautilya_original.svg), tints derived from it */
+:root{--deep:#08303E;--teal:#0D485D;--mid:#2F6F84;--pale:#9EC3CF;--mist:#E8F1F3;--white:#FFFFFF}
+html,body{margin:0;background:transparent;overflow:hidden}
+#stage{position:relative;width:1920px;height:1080px;font-family:"Mont",sans-serif;color:var(--teal);overflow:hidden}
+.abs{position:absolute}
+.card{position:absolute;background:var(--mist);border-radius:24px;box-shadow:0 28px 70px rgba(8,48,62,.45),0 4px 14px rgba(8,48,62,.25)}
+.tcard{position:absolute;background:var(--teal);color:var(--white);border-radius:24px;box-shadow:0 28px 70px rgba(8,48,62,.5),0 4px 14px rgba(8,48,62,.3)}
+.kick{font-size:17px;font-weight:600;letter-spacing:.22em;color:var(--mid)}
+.shadow{text-shadow:0 8px 40px rgba(8,48,62,.55),0 2px 8px rgba(8,48,62,.4)}
+svg{position:absolute;left:0;top:0;overflow:visible}
+body.back .fr{visibility:hidden!important}
+body.front .bk{visibility:hidden!important}
+</style></head>
+<body class="front"><div id="stage"></div>
+<script src="gsap.min.js"></script><script src="ITA.js"></script>
+<script>
+const W=1920,H=1080,NS="http://www.w3.org/2000/svg";
+const C={deep:"#08303E",teal:"#0D485D",mid:"#2F6F84",pale:"#9EC3CF",mist:"#E8F1F3",white:"#FFFFFF"};
+const st=document.getElementById("stage");let TL=null;let GRP=null;
+/* layer "fr" = in front of Dev, "bk" = behind Dev (composited under his matte) */
+function div(cls,css,html,layer){const d=document.createElement("div");d.className=cls+" "+(layer||"fr");if(css)Object.assign(d.style,css);if(html!=null)d.innerHTML=html;(GRP||st).appendChild(d);return d}
+function svgEl(parent,tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e}
+function svgLayer(layer){const s=document.createElementNS(NS,"svg");s.setAttribute("width",W);s.setAttribute("height",H);s.setAttribute("class",layer||"fr");(GRP||st).appendChild(s);return s}
+/* each beat lives in its own group that only exists between t0 and t1 */
+function group(tl,t0,t1){const g=document.createElement("div");g.style.cssText="position:absolute;left:0;top:0;width:1920px;height:1080px;display:none";st.appendChild(g);GRP=g;tl.set(g,{display:"block"},t0);if(t1!=null)tl.set(g,{display:"none"},t1);return g}
+function drawable(p){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return L}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function cardIn(tl,el,t,side){gsap.set(el,{opacity:0,x:side*60,y:30,rotation:side*1.5,scale:.96,transformOrigin:"50% 100%"});tl.to(el,{opacity:1,x:0,y:0,rotation:0,scale:1,duration:.45,ease:"power3.out"},t)}
+function out(tl,els,t){tl.to(els,{opacity:0,y:-16,duration:.25,ease:"power1.in"},t)}
+function count(tl,node,to,t0,dur,fmt){const o={v:0};tl.to(o,{v:to,duration:dur,ease:"power2.out",onUpdate(){node.textContent=fmt?fmt(Math.round(o.v)):Math.round(o.v)}},t0)}
+function check(parent,x,y,r){const g=document.createElementNS(NS,"g");parent.appendChild(g);
+  const c=svgEl(g,"circle",{cx:x,cy:y,r,fill:"none",stroke:C.pale,"stroke-width":3});
+  const f=svgEl(g,"circle",{cx:x,cy:y,r:0,fill:C.teal});
+  const k=svgEl(g,"path",{d:`M${x-r*.42},${y+r*.02} L${x-r*.1},${y+r*.34} L${x+r*.46},${y-r*.3}`,fill:"none",stroke:C.white,"stroke-width":4.5,"stroke-linecap":"round","stroke-linejoin":"round"});drawable(k);
+  return {c,f,k,r}}
+function tick(tl,ck,t){tl.to(ck.f,{attr:{r:ck.r},duration:.22,ease:"back.out(2)"},t).to(ck.k,{strokeDashoffset:0,duration:.25,ease:"power2.out"},t+.1)}
+
+/* ---------- v3: first-reel graphics, decluttered. Beats live in beats_a.js / beats_b.js as BEATS.<name>=(tl,w)=>{...} ---------- */
+window.BEATS={};
+const ORDER=[["headline",0,3.25],["map",3.2,8.95],["years",8.85,15.5],["reaction",15.4,19.85],["calendar",19.8,23.15],["push",23.1,28.45],["end",28.45,null]];
+function build(P){
+  const tl=gsap.timeline({paused:true});const w=P.w;
+  ORDER.forEach(([n,t0,t1])=>{if(!BEATS[n])return;group(tl,t0,t1);BEATS[n](tl,w,t0,t1)});
+  GRP=null;
+  P.chunks.forEach(c=>{
+    const wrap=div("abs",{left:"0",width:"1920px",top:"938px",display:"flex",justifyContent:"center",opacity:0});
+    const box=document.createElement("div");box.style.cssText=`background:rgba(13,72,93,.94);border-radius:14px;padding:12px 30px 16px;font-size:50px;font-weight:600;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;box-shadow:0 10px 30px rgba(8,48,62,.35)`;wrap.appendChild(box);
+    const sp=c.words.map((x,j)=>{const s=document.createElement("span");s.textContent=x.w;s.style.cssText=`display:inline-block;color:rgba(158,195,207,.55);background:linear-gradient(${C.pale},${C.pale}) 0 100%/0% 4px no-repeat`;box.appendChild(s);if(j<c.words.length-1)box.appendChild(document.createTextNode(" "));return s});
+    gsap.set(wrap,{y:12,scale:.94});tl.to(wrap,{opacity:1,y:0,scale:1,duration:.14,ease:"back.out(2)"},c.t0);
+    c.words.forEach((x,j)=>{tl.to(sp[j],{color:"#fff",duration:.08},x.t);if(x.hl)tl.to(sp[j],{backgroundSize:"100% 4px",duration:.2,ease:"power2.out"},x.t)});
+    tl.set(wrap,{opacity:0},c.t1)});
+  tl.set({},{},P.dur);return tl}
+window.init=async function(P){st.innerHTML="";await document.fonts.load('300 40px Mont');await document.fonts.load('800 40px Mont');await document.fonts.ready;TL=build(P);TL.seek(0)};
+window.seek=t=>{TL.seek(t,false)};
+window.layer=m=>{document.body.className=m};
+</script>
+<script src="beats_a.js"></script><script src="beats_b.js"></script>
+</body></html>
