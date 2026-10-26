@@ -1,0 +1,132 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Sans";src:url("../fonts/MontserratRMExtraBold.ttf");font-weight:800}
+@font-face{font-family:"Serif";src:url("../fonts/cormorant-garamond-latin-600-normal.woff2");font-weight:600}
+:root{--cream:#F6F1E7;--paper2:#EDE6D8;--ink:#14181B;--sub:#6B6F73;--red:#E4472F;--green:#1E9E5A;--sans:"Sans",sans-serif;--serif:"Serif",serif}
+html,body{margin:0;background:transparent;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;font-family:var(--sans);font-weight:800;color:var(--ink)}
+.abs{position:absolute}
+.card{position:absolute;background:var(--cream);border-radius:30px;box-shadow:0 30px 70px rgba(0,0,0,.38),0 4px 14px rgba(0,0,0,.25)}
+.serif{font-family:var(--serif);font-weight:600}
+.cap{font-size:15px;letter-spacing:.2em;color:var(--sub)}
+.tx{position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap}
+.shadow{text-shadow:0 6px 30px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.4)}
+svg{position:absolute;left:0;top:0;overflow:visible}
+</style></head>
+<body><div id="stage"></div>
+<script src="gsap.min.js"></script><script src="ITA.js"></script>
+<script>
+const W=1080,H=1920,INK="#14181B",RED="#E4472F",GREEN="#1E9E5A",SUB="#6B6F73";
+const st=document.getElementById("stage");let TL=null;const G={};
+const NS="http://www.w3.org/2000/svg";
+function div(cls,css,html){const d=document.createElement("div");d.className=cls;if(css)Object.assign(d.style,css);if(html!=null)d.innerHTML=html;st.appendChild(d);return d}
+function svgEl(parent,tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e}
+function clear(){st.innerHTML="";if(TL){TL.kill();TL=null}gsap.globalTimeline.clear()}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+/* card entrance like the reference: rises from below with a small tilt, 0.4s ease-out; exit = quick fade */
+function cardIn(tl,el,t,tilt){gsap.set(el,{opacity:0,y:70,rotation:tilt??-2.5,scale:.96,transformOrigin:"50% 100%"});tl.to(el,{opacity:1,y:0,rotation:0,scale:1,duration:.42,ease:"power3.out"},t)}
+function cardOut(tl,el,t){tl.to(el,{opacity:0,y:-18,duration:.22,ease:"power1.in"},t)}
+function count(tl,node,to,t0,dur,fmt){const o={v:0};tl.to(o,{v:to,duration:dur,ease:"power2.out",onUpdate(){node.textContent=fmt?fmt(Math.round(o.v)):Math.round(o.v)}},t0)}
+/* hand-drawn circle (wobbly ellipse) */
+function scribbleCircle(parent,cx,cy,rx,ry,color,w){const pts=[];const n=40;for(let i=0;i<=n+6;i++){const a=-1.9+i/n*(2*Math.PI)*1.0;const j=1+0.035*Math.sin(i*1.7)+ (i>n?0.06*(i-n)/6:0);pts.push([cx+Math.cos(a)*rx*j,cy+Math.sin(a)*ry*j])}
+ const p=svgEl(parent,"path",{d:"M"+pts.map(q=>q.join(",")).join("L"),fill:"none",stroke:color,"stroke-width":w,"stroke-linecap":"round","stroke-linejoin":"round"});const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p._L=L;return p}
+function pen(parent,x1,y1,x2,y2,color,w){const p=svgEl(parent,"path",{d:`M${x1},${y1} Q${(x1+x2)/2+6},${(y1+y2)/2-5} ${x2},${y2}`,fill:"none",stroke:color,"stroke-width":w,"stroke-linecap":"round"});const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p._L=L;return p}
+
+/* A. headline over the footage: ONE OPERATOR. / 700 PHARMACIES.  (dur 2.8) */
+G.headline=function(P){
+  const tl=gsap.timeline({paused:true});
+  const a=div("tx serif shadow",{top:"290px",fontSize:"128px",lineHeight:"1",color:"#fff"},"One operator.");
+  const b=div("tx serif shadow",{top:"430px",fontSize:"148px",lineHeight:"1",color:"#fff"},'<span style="color:#FF7A5C;font-style:italic">700</span> pharmacies.');
+  gsap.set([a,b],{opacity:0,y:36});
+  tl.to(a,{opacity:1,y:0,duration:.5,ease:"power3.out"},0).to(b,{opacity:1,y:0,duration:.55,ease:"power3.out"},.22);
+  const svg=svgEl(st,"svg",{width:W,height:H});
+  const u=pen(svg,250,600,830,596,"#FF7A5C",9);tl.to(u,{strokeDashoffset:0,duration:.45,ease:"power2.out"},.7);
+  tl.to([a,b,svg],{opacity:0,duration:.2,ease:"power1.in"},P.dur-.2);return tl};
+
+/* B. Italy map with pharmacy crosses  (dur 6.2) */
+G.map=function(P){
+  const tl=gsap.timeline({paused:true});
+  const card=div("card",{left:"110px",top:"230px",width:"860px",height:"700px"});
+  const kick=div("abs cap",{left:"150px",top:"262px"},"PHARMACIES BOUGHT");
+  const num=div("abs serif",{left:"146px",top:"278px",fontSize:"150px",lineHeight:"1.05"},'<span id="n">0</span>');
+  const g=document.createElement("div");g.className="abs";g.style.cssText="left:0;top:0;width:1080px;height:1920px";st.appendChild(g);
+  const svg=svgEl(g,"svg",{width:W,height:H});
+  const polys=[];window.ITA.features[0].geometry.coordinates.forEach(p=>{const r=p[0];let a=1e9,b=-1e9,c=1e9,d=-1e9;r.forEach(([x,y])=>{a=Math.min(a,x);b=Math.max(b,x);c=Math.min(c,y);d=Math.max(d,y)});if((b-a)*(d-c)>0.08)polys.push(r)});
+  let lo0=1e9,lo1=-1e9,la0=1e9,la1=-1e9;polys.forEach(r=>r.forEach(([x,y])=>{lo0=Math.min(lo0,x);lo1=Math.max(lo1,x);la0=Math.min(la0,y);la1=Math.max(la1,y)}));
+  const k=Math.cos(41.5*Math.PI/180),mh=530,sc=mh/(la1-la0),mw=(lo1-lo0)*k*sc,ox=540+70-mw/2,oy=372;
+  const pr=([x,y])=>[ox+(x-lo0)*k*sc,oy+(la1-y)*sc];
+  const paths=polys.map(r=>{const p=svgEl(svg,"path",{d:"M"+r.map(c=>pr(c).join(",")).join("L")+"Z",fill:"rgba(20,24,27,.05)",stroke:INK,"stroke-width":3,"stroke-linejoin":"round"});const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return p});
+  const inside=(x,y)=>polys.some(r=>{let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const[xi,yi]=r[i],[xj,yj]=r[j];if((yi>y)!=(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c});
+  const R=rng(11),pts=[];let guard=0;
+  while(pts.length<700&&guard++<500000){const x=lo0+R()*(lo1-lo0),y=la0+R()*(la1-la0);if(!inside(x,y))continue;const[px,py]=pr([x,y]);if(pts.some(q=>(q[0]-px)**2+(q[1]-py)**2<80))continue;pts.push([px,py])}
+  const crosses=pts.map(([x,y])=>{const c=svgEl(svg,"path",{d:`M${x-1.6},${y-5}h3.2v3.4h3.4v3.2h-3.4v3.4h-3.2v-3.4h-3.4v-3.2h3.4z`,fill:GREEN});return c});
+  gsap.set(crosses,{opacity:0});crosses.forEach((c,i)=>gsap.set(c,{svgOrigin:pts[i][0]+" "+pts[i][1],scale:0}));
+  cardIn(tl,card,0,-2);gsap.set([kick,num],{opacity:0});tl.to([kick,num],{opacity:1,duration:.3,ease:"power2.out"},.25);
+  tl.to(paths,{strokeDashoffset:0,duration:.7,ease:"power2.out"},.3);
+  tl.to(crosses,{opacity:1,scale:1,duration:.3,ease:"back.out(2.2)",stagger:{amount:P.fill,from:"random"}},P.c0);
+  count(tl,document.getElementById("n"),700,P.c0,P.fill+.1);
+  [card,kick,num,g].forEach(e=>cardOut(tl,e,P.dur-.22));return tl};
+
+/* C. five-year bar (dur 6.4) */
+G.years=function(P){
+  const tl=gsap.timeline({paused:true});
+  const card=div("card",{left:"110px",top:"300px",width:"860px",height:"470px"});
+  const head=div("abs serif",{left:"150px",top:"330px",fontSize:"64px",lineHeight:"1"},'Under 5 years');
+  const bar=div("abs",{left:"150px",top:"500px",width:"780px",height:"92px",display:"flex",gap:"8px"},"");
+  const blocks=[];for(let i=0;i<5;i++){const b=document.createElement("div");b.style.cssText="flex:1;height:100%;position:relative";b.innerHTML=`<div style="position:absolute;inset:0;border-radius:12px;background:#E3DCCB;overflow:hidden"><div class="fill" style="position:absolute;inset:0;background:#14181B;transform-origin:left center;transform:scaleX(0)"></div></div><div style="position:absolute;left:0;right:0;bottom:-36px;text-align:center;font-size:17px;letter-spacing:.14em;color:#6B6F73">YEAR ${i+1}</div>`;bar.appendChild(b);blocks.push(b)}
+  bar.style.overflow="visible";
+  const tot=div("abs serif",{right:"150px",top:"612px",fontSize:"74px",lineHeight:"1",textAlign:"right"},'<span id="t">0</span><span style="font-size:30px;font-family:var(--sans);letter-spacing:.12em;color:#6B6F73"> PHARMACIES</span>');
+  const tag=div("abs",{left:"150px",top:"418px",padding:"12px 22px",borderRadius:"999px",background:RED,color:"#fff",fontSize:"28px",letterSpacing:".08em",opacity:0},"100+ ACQUISITIONS");
+  const svg=svgEl(st,"svg",{width:W,height:H});const circ=scribbleCircle(svg,318,444,208,44,RED,5);
+  cardIn(tl,card,0,-2);gsap.set([head,bar,tot],{opacity:0});tl.to([head,bar,tot],{opacity:1,duration:.3},.25);
+  blocks.forEach((b,i)=>tl.to(b.querySelector(".fill"),{scaleX:1,duration:(P.y5-P.y0)/5+.05,ease:"power1.inOut"},P.y0+i*(P.y5-P.y0)/5));
+  count(tl,document.getElementById("t"),700,P.y0,P.y5-P.y0+.1);
+  tl.to(blocks[0].querySelector(".fill"),{backgroundColor:RED,duration:.25},P.first);
+  tl.fromTo(tag,{opacity:0,y:20,scale:.85},{opacity:1,y:0,scale:1,duration:.35,ease:"back.out(1.8)"},P.hundred).to(circ,{strokeDashoffset:0,duration:.45,ease:"power2.out"},P.hundred+.3);
+  [card,head,bar,tot,tag,svg].forEach(e=>cardOut(tl,e,P.dur-.22));return tl};
+
+/* D. year calendar with 100 dots (dur 8.0) */
+G.year=function(P){
+  const tl=gsap.timeline({paused:true});
+  const card=div("card",{left:"110px",top:"240px",width:"860px",height:"730px"});
+  const head=div("abs serif",{left:"150px",top:"280px",fontSize:"64px",lineHeight:"1"},'One year');
+  const cnt=div("abs serif",{right:"150px",top:"270px",fontSize:"96px",lineHeight:"1",textAlign:"right",color:RED},'<span id="c">0</span>');
+  const sub=div("abs cap",{right:"152px",top:"372px",textAlign:"right"},"COMPANIES BOUGHT");
+  const svg=svgEl(st,"svg",{width:W,height:H});
+  const months=[31,28,31,30,31,30,31,31,30,31,30,31],MN=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const pos=[];let day=0;
+  months.forEach((n,m)=>{const col=m%4,row=Math.floor(m/4);const bx=160+col*200,by=430+row*172;
+    const t=svgEl(svg,"text",{x:bx,y:by-8,"font-size":16,"letter-spacing":"2.5","font-family":"Sans","font-weight":800,fill:SUB});t.textContent=MN[m];
+    for(let d=0;d<n;d++){const cx=bx+(d%7)*24+6,cy=by+14+Math.floor(d/7)*24;const c=svgEl(svg,"circle",{cx,cy,r:6.2,fill:"#D7D0BF"});pos.push({cx,cy,c});day++}});
+  const hit=[];for(let i=0;i<100;i++)hit.push(Math.min(364,Math.floor(i*3.65)));
+  const hc=hit.map(d=>{const p=pos[d];const c=svgEl(svg,"circle",{cx:p.cx,cy:p.cy,r:0,fill:RED});return c});
+  const pill=div("abs",{left:"340px",top:"886px",width:"400px",textAlign:"center",padding:"14px 0",borderRadius:"999px",background:INK,color:"#F6F1E7",fontSize:"28px",letterSpacing:".14em",opacity:0},'<span style="color:#FF7A5C">&#9679;</span> EVERY 3 DAYS');
+  cardIn(tl,card,0,-2);gsap.set([head,cnt,sub,svg],{opacity:0});tl.to([head,cnt,sub,svg],{opacity:1,duration:.3},.25);
+  tl.to(hc,{attr:{r:7.4},duration:.2,ease:"back.out(2)",stagger:{each:P.fill/100}},P.c0);
+  count(tl,document.getElementById("c"),100,P.c0,P.fill+.05);
+  tl.fromTo(pill,{opacity:0,y:18,scale:.9},{opacity:1,y:0,scale:1,duration:.32,ease:"back.out(1.8)"},P.three).to([hc[0],hc[1],hc[2]],{attr:{r:11},duration:.16,ease:"power2.out",stagger:.12},P.three).to([hc[0],hc[1],hc[2]],{attr:{r:7.4},duration:.2},P.three+.5);
+  tl.to(hc,{attr:{r:9},duration:.14,ease:"power1.out",stagger:{each:.012}},P.pulse).to(hc,{attr:{r:7.4},duration:.2,ease:"power1.inOut",stagger:{each:.012}},P.pulse+.16);
+  [card,head,cnt,sub,svg,pill].forEach(e=>cardOut(tl,e,P.dur-.22));return tl};
+
+/* E. end card (dur 2.2) */
+G.end=function(P){
+  const tl=gsap.timeline({paused:true});
+  const dim=div("abs",{left:"0",top:"0",width:"1080px",height:"1920px",background:"rgba(0,0,0,.5)",opacity:0});tl.to(dim,{opacity:1,duration:.4},0);
+  const a=div("tx serif shadow",{top:"330px",fontSize:"128px",lineHeight:"1",color:"#fff"},'<span style="color:#FF7A5C;font-style:italic">700</span> pharmacies.');
+  const b=div("tx serif shadow",{top:"480px",fontSize:"112px",lineHeight:"1",color:"#fff"},"Under 5 years.");
+  gsap.set([a,b],{opacity:0,y:34});tl.to(a,{opacity:1,y:0,duration:.5,ease:"power3.out"},0).to(b,{opacity:1,y:0,duration:.5,ease:"power3.out"},.2);
+  const lg=div("tx",{top:"690px",display:"flex",flexDirection:"column",alignItems:"center",opacity:0},'<img src="../logos/kautilya_mark.svg" style="height:110px"><div style="margin-top:12px;font-size:28px;letter-spacing:.34em;color:#fff">KAUTILYA</div>');
+  tl.to(lg,{opacity:.95,duration:.5},.8);return tl};
+
+/* caption sample */
+G.caption=function(P){
+  const tl=gsap.timeline({paused:true});
+  const words=P.text.split(" ");const hl=P.hl||"";
+  const c=div("abs",{left:"0",width:"1080px",top:"1290px",display:"flex",justifyContent:"center"},`<div style="background:rgba(20,24,27,.9);border-radius:22px;padding:18px 34px;font-size:60px;line-height:1.1;color:#F6F1E7;letter-spacing:.005em">${words.map(w=>w.replace(/[^a-z0-9]/gi,"").toLowerCase()===hl?`<span style="color:#FF7A5C">${w}</span>`:w).join(" ")}</div>`);
+  gsap.set(c,{opacity:0,scale:.9});tl.to(c,{opacity:1,scale:1,duration:.12,ease:"power2.out"},0);return tl};
+
+window.init=async function(name,P){clear();await document.fonts.ready;await Promise.all([document.fonts.load('800 40px Sans'),document.fonts.load('600 40px Serif')]);
+  TL=G[name](P);await Promise.all([...document.images].map(i=>i.decode().catch(()=>0)));TL.time(0);return TL.duration()};
+window.seek=function(t){TL.time(t,false);return true};
+</script></body></html>

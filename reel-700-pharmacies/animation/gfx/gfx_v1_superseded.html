@@ -1,0 +1,168 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+/* ---- the one place to change the display font: drop Gotham files in /root/reel4/fonts and edit these two lines ---- */
+@font-face{font-family:"Display";src:url("../fonts/MontserratRMExtraBold.ttf");font-weight:800}
+@font-face{font-family:"Serif";src:url("../fonts/cormorant-garamond-latin-600-normal.woff2");font-weight:600}
+:root{--bg1:#041821;--bg2:#05222D;--text:#F6FBFD;--sub:#BFCDD5;--grey:#85959D;--mint:#10D880;--red:#FF5A5F;--font:"Display",sans-serif}
+html,body{margin:0;padding:0;background:transparent;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;background:transparent;font-family:var(--font);font-weight:800;color:var(--text)}
+.abs{position:absolute;left:0;width:1080px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.sh{text-shadow:0 4px 24px rgba(0,0,0,.45)}
+.line{white-space:nowrap;line-height:1.02;letter-spacing:.01em}
+.pill{display:inline-flex;align-items:center;gap:18px;padding:20px 44px;border:2px solid rgba(191,205,213,.75);border-radius:999px;background:rgba(5,34,45,.62);font-size:36px;letter-spacing:.14em;color:var(--text);white-space:nowrap}
+.kicker{font-size:34px;letter-spacing:.22em;color:var(--sub)}
+.mint{color:var(--mint)} .grey{color:var(--grey)} .red{color:var(--red)}
+.num{font-size:250px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.label{font-size:44px;letter-spacing:.12em;color:var(--text)}
+.serif{font-family:"Serif",serif;font-weight:600}
+.uline{height:8px;background:var(--mint);border-radius:4px;transform-origin:left center}
+svg{position:absolute;left:0;top:0;overflow:visible}
+</style></head>
+<body><div id="stage"></div>
+<script src="gsap.min.js"></script><script src="ITA.js"></script>
+<script>
+const W=1080,H=1920,MINT="#10D880",SUB="#BFCDD5",GREY="#85959D",RED="#FF5A5F";
+const st=document.getElementById("stage");
+let TL=null;
+function el(html,css){const d=document.createElement("div");d.className="abs";if(css)Object.assign(d.style,css);d.innerHTML=html;st.appendChild(d);return d}
+function clear(){st.innerHTML="";if(TL){TL.kill();TL=null}gsap.globalTimeline.clear()}
+function exitAt(tl,targets,t){tl.to(targets,{opacity:0,duration:.2,ease:"power1.in"},t)}
+function counter(tl,node,to,t0,dur,suffix){const o={v:0};tl.to(o,{v:to,duration:dur,ease:"power2.out",onUpdate(){node.textContent=Math.round(o.v)+(suffix||"")}},t0)}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+const G={};
+
+/* 1 title card: HE BOUGHT / 700 PHARMACIES / IN ITALY  (dur 3.0) */
+G.title=function(P){
+  const tl=gsap.timeline({paused:true});
+  const box=el(`<div class="line sh" id="a1" style="font-size:84px">HE BOUGHT</div>
+    <div class="line sh mint" id="a2" style="font-size:96px;margin-top:14px">700 PHARMACIES</div>
+    <div class="uline" id="ul" style="width:700px;margin-top:10px"></div>
+    <div class="line sh" id="a3" style="font-size:84px;margin-top:18px">IN ITALY</div>`,{top:"430px"});
+  gsap.set(["#a1","#a2","#a3"],{opacity:0,y:40});gsap.set("#ul",{scaleX:0});
+  tl.to("#a1",{opacity:1,y:0,duration:.45,ease:"power3.out"},0)
+    .to("#a2",{opacity:1,y:0,duration:.5,ease:"back.out(1.4)"},.12)
+    .to("#ul",{scaleX:1,duration:.4,ease:"power3.out"},.45)
+    .to("#a3",{opacity:1,y:0,duration:.45,ease:"power3.out"},.24);
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* 2 Italy map with 700 dots (dur 4.0) */
+G.map=function(P){
+  const tl=gsap.timeline({paused:true});
+  const box=el(`<div class="kicker" style="margin-top:2px">PHARMACIES BOUGHT</div><div class="num sh mint" id="n700" style="font-size:190px;margin-top:6px">0</div>`,{top:"262px"});
+  const geo=P.geo;const polys=[];
+  geo.features[0].geometry.coordinates.forEach(p=>{const r=p[0];let a=1e9,b=-1e9,c=1e9,d=-1e9;r.forEach(([x,y])=>{a=Math.min(a,x);b=Math.max(b,x);c=Math.min(c,y);d=Math.max(d,y)});if((b-a)*(d-c)>0.08)polys.push(r)});
+  let lo0=1e9,lo1=-1e9,la0=1e9,la1=-1e9;polys.forEach(r=>r.forEach(([x,y])=>{lo0=Math.min(lo0,x);lo1=Math.max(lo1,x);la0=Math.min(la0,y);la1=Math.max(la1,y)}));
+  const k=Math.cos(41.5*Math.PI/180),mh=590,sc=mh/(la1-la0),mw=(lo1-lo0)*k*sc,ox=(W-mw)/2,oy=500;
+  const pr=([x,y])=>[ox+(x-lo0)*k*sc,oy+(la1-y)*sc];
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("width",W);svg.setAttribute("height",H);st.appendChild(svg);
+  const paths=polys.map(r=>{const p=document.createElementNS(svg.namespaceURI,"path");p.setAttribute("d","M"+r.map(c=>pr(c).join(",")).join("L")+"Z");p.setAttribute("fill","rgba(16,216,128,.07)");p.setAttribute("stroke",SUB);p.setAttribute("stroke-width","3.5");p.setAttribute("stroke-linejoin","round");svg.appendChild(p);return p});
+  paths.forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.style.fillOpacity=0});
+  const inside=(x,y)=>polys.some(r=>{let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const[xi,yi]=r[i],[xj,yj]=r[j];if((yi>y)!=(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c});
+  const R=rng(7),pts=[];let guard=0;
+  while(pts.length<700&&guard++<400000){const x=lo0+R()*(lo1-lo0),y=la0+R()*(la1-la0);if(!inside(x,y))continue;const[px,py]=pr([x,y]);if(pts.some(q=>(q[0]-px)**2+(q[1]-py)**2<86))continue;pts.push([px,py])}
+  const dots=pts.map(([x,y])=>{const c=document.createElementNS(svg.namespaceURI,"circle");c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",4.3);c.setAttribute("fill",MINT);svg.appendChild(c);return c});
+  gsap.set(dots,{opacity:0,attr:{r:0}});
+  tl.to(paths,{strokeDashoffset:0,duration:.6,ease:"power2.out"},0)
+    .to(paths,{fillOpacity:1,duration:.4,ease:"power1.out"},.3)
+    .to(dots,{opacity:1,attr:{r:4.3},duration:.28,ease:"back.out(2)",stagger:{amount:1.4,from:"random"}},.7);
+  counter(tl,document.getElementById("n700"),700,.7,1.65);
+  exitAt(tl,[box,svg],P.dur-.2);return tl};
+
+/* 3 / 10 pill tag  (dur 2.0) */
+G.tag=function(P){
+  const tl=gsap.timeline({paused:true});
+  const icon=P.icon==="pin"?`<svg id="pin" width="34" height="46" viewBox="0 0 34 46" style="position:static;overflow:visible"><path d="M17 2C8 2 2 8.5 2 17c0 11 15 27 15 27s15-16 15-27C32 8.5 26 2 17 2z" fill="none" stroke="#10D880" stroke-width="4"/><circle cx="17" cy="17" r="5.5" fill="#10D880"/></svg>`:"";
+  const box=el(`<div class="pill sh" id="pl">${icon}<span>${P.text}</span></div>`,{top:P.top||"330px"});
+  gsap.set("#pl",{opacity:0,scale:.8});
+  tl.to("#pl",{opacity:1,scale:1,duration:P.icon==="pin"?.35:.3,ease:"back.out(1.7)"},0);
+  if(P.icon==="pin")tl.fromTo("#pin",{y:-30},{y:0,duration:.4,ease:"bounce.out"},0);
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* 4 / 7 counter with kicker and label (dur 5.0) */
+G.stat=function(P){
+  const tl=gsap.timeline({paused:true});
+  const box=el(`${P.logo?`<img id="lg" src="${P.logo}" style="height:150px;margin-bottom:30px;opacity:0">`:""}<div class="kicker" id="k" style="opacity:0">${P.kicker}</div>
+    <div class="num sh mint" style="margin-top:16px"><span id="cn">0</span><span id="plus" style="display:inline-block">${P.suffix||""}</span></div>
+    <div class="label sh" id="lb" style="margin-top:6px;opacity:0">${P.label}</div>`,{top:P.top||"430px"});
+  gsap.set("#plus",{opacity:0,scale:.4});
+  if(P.logo)tl.to("#lg",{opacity:1,y:0,duration:.4,ease:"power3.out"},0).from("#lg",{y:24,duration:.4,ease:"power3.out"},0);
+  tl.to("#k",{opacity:1,duration:.3,ease:"power2.out"},0);
+  counter(tl,document.getElementById("cn"),P.to,P.c0,P.cd,"");
+  tl.to("#plus",{opacity:1,scale:1.15,duration:.15,ease:"power2.out"},P.c0+P.cd)
+    .to("#plus",{scale:1,duration:.12,ease:"power1.inOut"},P.c0+P.cd+.15)
+    .to("#lb",{opacity:1,duration:.35,ease:"power2.out"},P.c0+P.cd*.6);
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* 5 calendar: every third day lights up (dur 3.0) */
+G.calendar=function(P){
+  const tl=gsap.timeline({paused:true});
+  const cells=Array.from({length:35},(_,i)=>`<div class="cell" data-i="${i}" style="width:118px;height:104px;border:2px solid rgba(191,205,213,.4);border-radius:18px;background:rgba(5,34,45,.55);display:flex;align-items:center;justify-content:center;font-size:36px;color:#BFCDD5">${i+1<=31?i+1:""}</div>`).join("");
+  const box=el(`<div class="kicker" style="margin-bottom:26px">A COMPANY EVERY</div><div class="num sh mint" style="font-size:150px;margin-bottom:34px">3 DAYS</div>
+    <div style="display:grid;grid-template-columns:repeat(7,118px);gap:12px">${cells}</div>`,{top:"290px"});
+  const lit=Array.from(document.querySelectorAll(".cell")).filter((c,i)=>i%3===2&&i<31);
+  gsap.set(box.querySelector(".num"),{opacity:0,scale:.9});
+  tl.to(box.querySelector(".num"),{opacity:1,scale:1,duration:.4,ease:"back.out(1.5)"},0);
+  lit.forEach((c,i)=>tl.to(c,{backgroundColor:"rgba(16,216,128,.95)",color:"#04141c",borderColor:"#10D880",scale:1.06,duration:.18,ease:"power1.out"},.3+i*.13).to(c,{scale:1,duration:.12,ease:"power1.inOut"},.48+i*.13));
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* 8 ring (dur 7.0) */
+G.ring=function(P){
+  const tl=gsap.timeline({paused:true});
+  const box=el(`<div class="kicker" style="margin-bottom:10px">DEAL SOURCING</div>`,{top:"290px"});
+  const r=230,cx=540,cy=700,C=2*Math.PI*r;
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("width",W);svg.setAttribute("height",H);st.appendChild(svg);
+  svg.innerHTML=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(5,34,45,.45)" stroke="rgba(133,149,157,.45)" stroke-width="22"/>
+    <circle id="arc" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#10D880" stroke-width="22" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 ${cx} ${cy})"/>`;
+  const num=el(`<div class="num sh" style="font-size:170px"><span id="rn">0</span><span style="font-size:90px">%</span></div>`,{top:(cy-95)+"px"});
+  const lab=el(`<div class="label sh" style="font-size:42px;line-height:1.25">BETTER THAN <span class="mint">90%</span><br>OF THE ROOM</div>`,{top:(cy+r+60)+"px"});
+  gsap.set([svg,num,lab],{opacity:0});
+  tl.to([box,svg,num],{opacity:1,duration:.4,ease:"power2.out"},Math.max(0,P.c0-.5)).to(lab,{opacity:1,duration:.4},P.land-.3);
+  tl.to("#arc",{strokeDashoffset:C*(1-.9),duration:P.land-P.c0,ease:"power3.out"},P.c0);
+  counter(tl,document.getElementById("rn"),90,P.c0,P.land-P.c0,"");
+  exitAt(tl,[box,svg,num,lab],P.dur-.2);return tl};
+
+/* 9 bars: deals sourced (dur 7.0) */
+G.bars=function(P){
+  const tl=gsap.timeline({paused:true});
+  const row=(id,name,right,color)=>`<div id="${id}" style="width:900px;opacity:0;margin-bottom:46px"><div style="display:flex;justify-content:space-between;font-size:42px;margin-bottom:14px"><span class="sh">${name}</span><span class="sh" style="color:${color}">${right}</span></div><div style="height:58px;border-radius:29px;background:rgba(133,149,157,.22);overflow:hidden"><div class="bar" style="height:100%;width:100%;border-radius:29px;background:${color};transform-origin:left center;transform:scaleX(0)"></div></div></div>`;
+  const box=el(`<div class="kicker" id="bt" style="margin-bottom:46px;opacity:0">DEALS SOURCED</div>${row("r1","US","1 YEAR",MINT)}${row("r2","PE CAREER","10 YEARS",GREY)}`,{top:"380px"});
+  tl.to("#bt",{opacity:1,duration:.3},0)
+    .to("#r1",{opacity:1,duration:.25},P.t1).to("#r1 .bar",{scaleX:1,duration:.7,ease:"power3.out"},P.t1)
+    .to("#r2",{opacity:1,duration:.25},P.t2).to("#r2 .bar",{scaleX:.82,duration:.7,ease:"power3.out"},P.t2);
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* 11 checklist (dur 5.0) */
+G.checklist=function(P){
+  const tl=gsap.timeline({paused:true});
+  const row=(id,a,b,bad)=>`<div id="${id}" style="width:900px;height:132px;border-radius:26px;border:2px solid ${bad?"rgba(255,90,95,.8)":"rgba(191,205,213,.5)"};background:rgba(5,34,45,.62);display:flex;align-items:center;justify-content:space-between;padding:0 38px;margin-bottom:26px;box-sizing:border-box;opacity:0"><div style="text-align:left"><div class="kicker" style="font-size:28px">${a}</div><div class="${bad?"red":"mint"} sh" style="font-size:44px;margin-top:6px">${b}</div></div>
+    <svg width="64" height="64" viewBox="0 0 64 64" style="position:static;overflow:visible"><circle cx="32" cy="32" r="28" fill="none" stroke="${bad?RED:MINT}" stroke-width="5"/><path class="mk" d="${bad?"M22 22L42 42M42 22L22 42":"M18 33L28 43L46 22"}" fill="none" stroke="${bad?RED:MINT}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+  const box=el(`${row("c1","CAPITAL","ABUNDANT",0)}${row("c2","TALENT","CAN BE FOUND",0)}${row("c3","DEAL FLOW","VERY DIFFICULT",1)}`,{top:"400px"});
+  [["#c1",P.t1],["#c2",P.t2],["#c3",P.t3]].forEach(([id,t],i)=>{
+    const mk=document.querySelector(id+" .mk");const L=mk.getTotalLength();gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});gsap.set(id,{x:-60});
+    tl.to(id,{opacity:1,x:0,duration:.35,ease:"power3.out"},t).to(mk,{strokeDashoffset:0,duration:.25,ease:"power2.out"},t+.2)});
+  tl.to("#c3",{x:6,duration:.03},P.t3+.4).to("#c3",{x:-6,duration:.06},P.t3+.43).to("#c3",{x:6,duration:.06},P.t3+.49).to("#c3",{x:-6,duration:.06},P.t3+.55).to("#c3",{x:0,duration:.04},P.t3+.61);
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* 12 end card (dur 6.0) */
+G.end=function(P){
+  const tl=gsap.timeline({paused:true});
+  const box=el(`<div class="line sh" id="e1" style="font-size:70px">CAPITAL IS ABUNDANT.</div>
+    <div class="line sh mint" id="e2" style="font-size:92px;margin-top:20px">DEAL FLOW ISN'T.</div>
+    <div class="uline" id="eu" style="width:640px;margin-top:10px"></div>
+    <div id="kl" style="margin-top:110px;display:flex;flex-direction:column;align-items:center;opacity:0"><img src="../logos/kautilya_mark.svg" style="height:120px"><div style="margin-top:14px;font-size:30px;letter-spacing:.34em;color:#F6FBFD">KAUTILYA</div></div>`,{top:"470px"});
+  gsap.set("#e1",{opacity:0});gsap.set("#e2",{opacity:0,y:40});gsap.set("#eu",{scaleX:0});
+  tl.to("#e1",{opacity:1,duration:.45,ease:"power3.out"},0).to("#e2",{opacity:1,y:0,duration:.5,ease:"back.out(1.4)"},.35).to("#eu",{scaleX:1,duration:.4,ease:"power3.out"},.7).to("#kl",{opacity:.95,duration:.5,ease:"power2.out"},1.3);
+  exitAt(tl,box,P.dur-.2);return tl};
+
+/* scrim: teal fade the graphics sit on (static) */
+G.scrim=function(P){
+  el("",{top:"0px",height:"1250px",background:"linear-gradient(180deg,#041821 0%,#041821 18%,rgba(5,34,45,.92) 52%,rgba(5,34,45,.55) 76%,rgba(5,34,45,0) 100%)"});
+  return gsap.timeline({paused:true})};
+
+window.init=async function(name,P){clear();await document.fonts.ready;await Promise.all([document.fonts.load('800 40px Display'),document.fonts.load('600 40px Serif')]);
+  if(name==="map"&&!P.geo){P.geo=window.ITA}
+  TL=G[name](P);await Promise.all([...document.images].map(i=>i.decode().catch(()=>0)));TL.time(0);return TL.duration()};
+window.seek=function(t){TL.time(t,false);return true};
+</script></body></html>
