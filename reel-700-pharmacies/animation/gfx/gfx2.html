@@ -123,7 +123,7 @@ G.end=function(P){
 G.caption=function(P){
   const tl=gsap.timeline({paused:true});
   const words=P.text.split(" ");const hl=P.hl||"";
-  const c=div("abs",{left:"0",width:"1080px",top:"1290px",display:"flex",justifyContent:"center"},`<div style="background:rgba(20,24,27,.9);border-radius:22px;padding:18px 34px;font-size:60px;line-height:1.1;color:#F6F1E7;letter-spacing:.005em">${words.map(w=>w.replace(/[^a-z0-9]/gi,"").toLowerCase()===hl?`<span style="color:#FF7A5C">${w}</span>`:w).join(" ")}</div>`);
+  const c=div("abs",{left:"0",width:"1080px",top:"1648px",display:"flex",justifyContent:"center"},`<div style="background:rgba(20,24,27,.9);border-radius:22px;padding:18px 34px;font-size:60px;line-height:1.1;color:#F6F1E7;letter-spacing:.005em">${words.map(w=>w.replace(/[^a-z0-9]/gi,"").toLowerCase()===hl?`<span style="color:#FF7A5C">${w}</span>`:w).join(" ")}</div>`);
   gsap.set(c,{opacity:0,scale:.9});tl.to(c,{opacity:1,scale:1,duration:.12,ease:"power2.out"},0);return tl};
 
 window.init=async function(name,P){clear();await document.fonts.ready;await Promise.all([document.fonts.load('800 40px Sans'),document.fonts.load('600 40px Serif')]);

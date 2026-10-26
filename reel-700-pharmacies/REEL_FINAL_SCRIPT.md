@@ -23,7 +23,7 @@ Removed on purpose: the stumble "who had" before "who has", "the span of like", 
 
 ## 2. Captions (2 to 4 word phrases, key word in bold)
 
-Captions sit just under his chin (about y 1290 of 1920), white on a dark rounded box, key word in coral. They never cover his face.
+Captions sit in the clear space below the footage (about y 1650 of 1920), white on a dark rounded box, key word in coral, so they can never cover him.
 
 | Reel time | Caption |
 | --- | --- |
@@ -60,7 +60,7 @@ Captions sit just under his chin (about y 1290 of 1920), white on a dark rounded
 
 ## 3. Production script: what is on screen and when
 
-Look follows the reference reels: cream paper cards that rise into place with a slight tilt and a soft shadow, floating over the footage in the top third; Dev full-frame in the lower half (the 4K clip cropped to a 1215 x 2160 strip, scaled to 1080 x 1920 and moved down 450 px, with the top filled by a blurred copy); no box, no names on screen. Colours: cream #F6F1E7, ink #14181B, red #E4472F, pharmacy green #1E9E5A, coral #FF7A5C on dark. Fonts: Cormorant Garamond for headings, Montserrat ExtraBold for labels and captions (stand-in for Gotham until the Gotham files are supplied).
+Look follows the reference reels: cream paper cards that rise into place with a slight tilt and a soft shadow, floating over the footage in the top third; The footage is NOT cropped: the whole 16:9 frame sits full-width in a band at y 1000-1608 of the 1080 x 1920 screen, over a blurred, darkened copy of itself, with no zoom or push-in; the cards float in the clear space above (y 230-970); no box, no names on screen. Colours: cream #F6F1E7, ink #14181B, red #E4472F, pharmacy green #1E9E5A, coral #FF7A5C on dark. Fonts: Cormorant Garamond for headings, Montserrat ExtraBold for labels and captions (stand-in for Gotham until the Gotham files are supplied).
 
 | Reel time | Dev says | On screen | What it is tied to |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ Look follows the reference reels: cream paper cards that rise into place with a 
 | 8.85-15.62 | "he did this in less than five years, and I believe in his first year, he made over a hundred acquisitions" | Card rises in at 8.85, "Under 5 years". Five blocks YEAR 1 to YEAR 5 fill left to right on "less than five years" (9.80-10.75) with a 700 PHARMACIES counter. YEAR 1 turns red on "first" (12.22). A red "100+ ACQUISITIONS" pill appears with a hand-drawn circle on "hundred" (14.31). | Shows time being squeezed, then how much of it was year one. |
 | 15.62-16.88 | "I didn't even know that was possible, dude." | Dev alone, no graphic. | His reaction. The reference reels return to the face for reactions. |
 | 16.88-23.23 | "How can you buy a hundred companies in one year? You're buying a company every three days. Like, that is ridiculous." | Card "One year" with a 12-month dot calendar (365 dots). 100 red dots land one by one and the counter reaches **100** on "hundred" (18.16). A pill **EVERY 3 DAYS** pops on "every" (20.79) while the first three red dots enlarge. The whole year pulses on "ridiculous" (22.44). | The question made visible: 100 companies inside 365 days, then the arithmetic. |
-| 23.13-28.27 | "And it really inspires me and pushes me to do more and just achieve more." | Dev alone, slow push-in, captions pick out INSPIRES and MORE. | The emotional line belongs to his face. |
+| 23.13-28.27 | "And it really inspires me and pushes me to do more and just achieve more." | Dev alone, no zoom, captions pick out INSPIRES and MORE. | The emotional line belongs to his face. |
 | 28.47-30.67 | (no speech, music swell) | Footage dims 50%. End card: **700 pharmacies. Under 5 years.** with the Kautilya logo. Facts only, his numbers. | Closes on the two numbers he gave. |
 
 Sound (to add at edit time): quiet beat under the voice, ducked while he speaks; a tick for each batch of crosses and each dot, a low thump when 700 lands, a pop on "100+", a whoosh at each card change.
