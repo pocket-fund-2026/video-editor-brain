@@ -1,0 +1,192 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Mont";src:url("../fonts/Montserrat-VF.ttf");font-weight:100 900}
+/* Kautilya palette: brand teal #0D485D + white (from kautilya_original.svg), tints derived from it */
+:root{--deep:#08303E;--teal:#0D485D;--mid:#2F6F84;--pale:#9EC3CF;--mist:#E8F1F3;--white:#FFFFFF}
+html,body{margin:0;background:transparent;overflow:hidden}
+#stage{position:relative;width:1920px;height:1080px;font-family:"Mont",sans-serif;color:var(--teal);overflow:hidden}
+.abs{position:absolute}
+.card{position:absolute;background:var(--mist);border-radius:24px;box-shadow:0 28px 70px rgba(8,48,62,.45),0 4px 14px rgba(8,48,62,.25)}
+.tcard{position:absolute;background:var(--teal);color:var(--white);border-radius:24px;box-shadow:0 28px 70px rgba(8,48,62,.5),0 4px 14px rgba(8,48,62,.3)}
+.kick{font-size:17px;font-weight:600;letter-spacing:.22em;color:var(--mid)}
+.shadow{text-shadow:0 8px 40px rgba(8,48,62,.55),0 2px 8px rgba(8,48,62,.4)}
+svg{position:absolute;left:0;top:0;overflow:visible}
+body.back .fr{visibility:hidden!important}
+body.front .bk{visibility:hidden!important}
+</style></head>
+<body class="front"><div id="stage"></div>
+<script src="gsap.min.js"></script><script src="ITA.js"></script>
+<script>
+const W=1920,H=1080,NS="http://www.w3.org/2000/svg";
+const C={deep:"#08303E",teal:"#0D485D",mid:"#2F6F84",pale:"#9EC3CF",mist:"#E8F1F3",white:"#FFFFFF"};
+const st=document.getElementById("stage");let TL=null;
+/* layer "fr" = in front of Dev, "bk" = behind Dev (composited under his matte) */
+function div(cls,css,html,layer){const d=document.createElement("div");d.className=cls+" "+(layer||"fr");if(css)Object.assign(d.style,css);if(html!=null)d.innerHTML=html;st.appendChild(d);return d}
+function svgEl(parent,tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e}
+function svgLayer(layer){const s=document.createElementNS(NS,"svg");s.setAttribute("width",W);s.setAttribute("height",H);s.setAttribute("class",layer||"fr");st.appendChild(s);return s}
+function drawable(p){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return L}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function cardIn(tl,el,t,side){gsap.set(el,{opacity:0,x:side*60,y:30,rotation:side*1.5,scale:.96,transformOrigin:"50% 100%"});tl.to(el,{opacity:1,x:0,y:0,rotation:0,scale:1,duration:.45,ease:"power3.out"},t)}
+function out(tl,els,t){tl.to(els,{opacity:0,y:-16,duration:.25,ease:"power1.in"},t)}
+function count(tl,node,to,t0,dur,fmt){const o={v:0};tl.to(o,{v:to,duration:dur,ease:"power2.out",onUpdate(){node.textContent=fmt?fmt(Math.round(o.v)):Math.round(o.v)}},t0)}
+function check(parent,x,y,r){const g=document.createElementNS(NS,"g");parent.appendChild(g);
+  const c=svgEl(g,"circle",{cx:x,cy:y,r,fill:"none",stroke:C.pale,"stroke-width":3});
+  const f=svgEl(g,"circle",{cx:x,cy:y,r:0,fill:C.teal});
+  const k=svgEl(g,"path",{d:`M${x-r*.42},${y+r*.02} L${x-r*.1},${y+r*.34} L${x+r*.46},${y-r*.3}`,fill:"none",stroke:C.white,"stroke-width":4.5,"stroke-linecap":"round","stroke-linejoin":"round"});drawable(k);
+  return {c,f,k,r}}
+function tick(tl,ck,t){tl.to(ck.f,{attr:{r:ck.r},duration:.22,ease:"back.out(2)"},t).to(ck.k,{strokeDashoffset:0,duration:.25,ease:"power2.out"},t+.1)}
+
+/* ---------- the whole reel on one timeline; times are reel seconds (Whisper word times) ---------- */
+function build(P){
+  const tl=gsap.timeline({paused:true});const w=P.w;
+
+  /* A. 0.0-8.6  name tag: "...an operator" */
+  {const tag=div("card",{left:"90px",top:"140px",width:"520px",height:"318px",overflow:"hidden"});
+   tag.innerHTML=`<div style="background:${C.teal};color:#fff;text-align:center;padding:22px 0 16px"><div style="font-size:66px;font-weight:800;letter-spacing:-.02em;line-height:1">HELLO</div><div style="font-size:20px;font-weight:500;letter-spacing:.08em;margin-top:6px">my name is</div></div>
+     <div style="height:150px;display:flex;align-items:center;justify-content:center"><div id="op" style="font-size:66px;font-weight:600;letter-spacing:-.03em;color:${C.teal};clip-path:inset(0 100% 0 0)">The Operator</div></div>
+     <div style="position:absolute;left:0;right:0;bottom:0;height:26px;background:${C.teal}"></div>`;
+   cardIn(tl,tag,w.coolest-.1,-1);
+   tl.to("#op",{clipPath:"inset(0 0% 0 0)",duration:.55,ease:"power2.inOut"},w.operator);
+   out(tl,tag,8.55);}
+
+  /* B. 3.2-8.85  700 pharmacies across Italy: map card right + giant counter behind Dev */
+  {const card=div("card",{left:"1290px",top:"100px",width:"560px",height:"640px"});
+   const kick=div("abs kick",{left:"1330px",top:"130px"},"PHARMACIES &middot; ITALY");
+   const num=div("abs",{left:"1326px",top:"160px",fontSize:"92px",fontWeight:"700",letterSpacing:"-.04em",lineHeight:"1.1"},'<span id="bn">0</span>');
+   const s=svgLayer();
+   const polys=[];window.ITA.features[0].geometry.coordinates.forEach(p=>{const r=p[0];let a=1e9,b=-1e9,c=1e9,d=-1e9;r.forEach(([x,y])=>{a=Math.min(a,x);b=Math.max(b,x);c=Math.min(c,y);d=Math.max(d,y)});if((b-a)*(d-c)>0.08)polys.push(r)});
+   let lo0=1e9,lo1=-1e9,la0=1e9,la1=-1e9;polys.forEach(r=>r.forEach(([x,y])=>{lo0=Math.min(lo0,x);lo1=Math.max(lo1,x);la0=Math.min(la0,y);la1=Math.max(la1,y)}));
+   const k=Math.cos(41.5*Math.PI/180),mh=470,sc=mh/(la1-la0),mw=(lo1-lo0)*k*sc,ox=1570+60-mw/2,oy=250;
+   const pr=([x,y])=>[ox+(x-lo0)*k*sc,oy+(la1-y)*sc];
+   const paths=polys.map(r=>{const p=svgEl(s,"path",{d:"M"+r.map(c=>pr(c).join(",")).join("L")+"Z",fill:"rgba(13,72,93,.06)",stroke:C.teal,"stroke-width":2.6,"stroke-linejoin":"round"});drawable(p);return p});
+   const inside=(x,y)=>polys.some(r=>{let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const[xi,yi]=r[i],[xj,yj]=r[j];if((yi>y)!=(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c});
+   const R=rng(7),pts=[];let g=0;while(pts.length<700&&g++<600000){const x=lo0+R()*(lo1-lo0),y=la0+R()*(la1-la0);if(!inside(x,y))continue;const[px,py]=pr([x,y]);if(pts.some(c=>(c[0]-px)**2+(c[1]-py)**2<52))continue;pts.push([px,py])}
+   const crosses=pts.map(([x,y])=>svgEl(s,"path",{d:`M${x-1.3},${y-4.2}h2.6v2.9h2.9v2.6h-2.9v2.9h-2.6v-2.9h-2.9v-2.6h2.9z`,fill:C.teal}));
+   crosses.forEach((c,i)=>gsap.set(c,{svgOrigin:pts[i][0]+" "+pts[i][1],scale:0}));
+   cardIn(tl,card,3.25,1);gsap.set([kick,num],{opacity:0});tl.to([kick,num],{opacity:1,duration:.3},3.5);
+   tl.to(paths,{strokeDashoffset:0,duration:.8,ease:"power2.out"},3.55);
+   tl.to(crosses,{scale:1,duration:.25,ease:"back.out(2.4)",stagger:{amount:w.italy-w.n700+.1,from:"random"}},w.n700-.1);
+   count(tl,document.getElementById("bn"),700,w.n700-.1,w.italy-w.n700+.3);
+   /* giant number behind Dev's head (bk layer) */
+   const big=div("abs shadow",{left:"0",width:"1920px",top:"-40px",textAlign:"center",fontSize:"430px",fontWeight:"300",letterSpacing:"-.05em",color:C.white,lineHeight:"1"},'<span id="b7">0</span>',"bk");
+   gsap.set(big,{opacity:0,y:40});tl.to(big,{opacity:.95,y:0,duration:.5,ease:"power3.out"},w.over1-.05);
+   count(tl,document.getElementById("b7"),700,w.over1,w.n700-w.over1+.5);
+   out(tl,[card,kick,num,s,big],8.62);}
+
+  /* C. 8.85-15.42  under 5 years, 100+ in year one: motion graph left + line items right */
+  {const card=div("card",{left:"70px",top:"110px",width:"620px",height:"560px"});
+   const kick=div("abs kick",{left:"110px",top:"140px"},"PHARMACIES ACQUIRED");
+   const head=div("abs",{left:"108px",top:"166px",fontSize:"48px",fontWeight:"700",letterSpacing:"-.03em"},"Under 5 years");
+   const s=svgLayer();const x0=140,x1=640,yb=600,yt=280,xs=i=>x0+(x1-x0)*i/5,ys=v=>yb-(yb-yt)*v/700;
+   for(let i=0;i<=5;i++){const t=svgEl(s,"text",{x:xs(i),y:yb+34,"text-anchor":"middle","font-size":17,"font-family":"Mont","font-weight":600,"letter-spacing":"2",fill:C.mid});t.textContent=i?("YR "+i):""}
+   const grid=[0,350,700].map(v=>svgEl(s,"line",{x1:x0,x2:x1,y1:ys(v),y2:ys(v),stroke:C.pale,"stroke-width":1.5,"stroke-dasharray":"4 6"}));
+   const band=svgEl(s,"rect",{x:xs(0),y:yt-20,width:xs(1)-xs(0),height:yb-yt+20,fill:C.teal,opacity:0,rx:10});
+   const ln=svgEl(s,"path",{d:`M${xs(0)},${ys(0)} C${xs(.5)},${ys(60)} ${xs(.8)},${ys(95)} ${xs(1)},${ys(110)} S${xs(3.4)},${ys(420)} ${xs(5)},${ys(700)}`,fill:"none",stroke:C.teal,"stroke-width":7,"stroke-linecap":"round"});drawable(ln);
+   const d1=svgEl(s,"circle",{cx:xs(1),cy:ys(110),r:0,fill:C.teal,stroke:C.mist,"stroke-width":4});
+   const d5=svgEl(s,"circle",{cx:xs(5),cy:ys(700),r:0,fill:C.teal,stroke:C.mist,"stroke-width":4});
+   const l5=div("abs",{left:"560px",top:"222px",fontSize:"30px",fontWeight:"700",letterSpacing:"-.02em",opacity:0},"700");
+   const l1=div("abs",{left:"170px",top:"430px",padding:"10px 18px",borderRadius:"999px",background:C.teal,color:"#fff",fontSize:"24px",fontWeight:"700",letterSpacing:".04em",opacity:0},"100+ IN YEAR 1");
+   cardIn(tl,card,8.9,-1);gsap.set([kick,head,s],{opacity:0});tl.to([kick,head,s],{opacity:1,duration:.3},9.1);
+   tl.to(ln,{strokeDashoffset:0,duration:w.years-w.less+.25,ease:"power1.inOut"},w.less);
+   tl.to(d5,{attr:{r:11},duration:.25,ease:"back.out(2)"},w.years+.1).to(l5,{opacity:1,duration:.25},w.years+.15);
+   tl.to(band,{opacity:.12,duration:.3},w.first).to(d1,{attr:{r:12},duration:.25,ease:"back.out(2)"},w.first);
+   tl.fromTo(l1,{opacity:0,y:12,scale:.9},{opacity:1,y:0,scale:1,duration:.3,ease:"back.out(1.8)"},w.hundred1);
+   /* line items, right */
+   const list=div("card",{left:"1290px",top:"170px",width:"560px",height:"400px"});
+   const lk=div("abs kick",{left:"1330px",top:"200px"},"THE TIMELINE");
+   const rows=[["Less than 5 years",w.years],["Year one",w.year1],["100+ acquisitions",w.acq]];
+   const ls=svgLayer();const cks=[],txt=[];
+   rows.forEach(([t,at],i)=>{const y=262+i*96;cks.push(check(ls,1356,y+22,22));txt.push(div("abs",{left:"1400px",top:y+"px",fontSize:"38px",fontWeight:i==2?"700":"500",letterSpacing:"-.02em",color:C.pale},t))});
+   if(true){const sep=[0,1].map(i=>div("abs",{left:"1330px",top:(334+i*96)+"px",width:"480px",height:"2px",background:"#D3E3E8"}))}
+   cardIn(tl,list,9.0,1);gsap.set([lk,ls],{opacity:0});tl.to([lk,ls],{opacity:1,duration:.3},9.25);
+   rows.forEach(([t,at],i)=>{tick(tl,cks[i],at);tl.to(txt[i],{color:C.teal,duration:.2},at)});
+   out(tl,[card,kick,head,s,l5,l1,list,lk,ls,...txt,...st.querySelectorAll(".abs[style*='D3E3E8']")],15.25);}
+
+  /* D. 15.42-19.81  "I didn't even know that was possible ... 100 companies in one year?" */
+  {const q=div("card",{left:"90px",top:"170px",width:"560px",height:"230px"});
+   q.innerHTML=`<div style="position:absolute;left:30px;top:30px;width:56px;height:56px;border-radius:50%;background:${C.teal};color:#fff;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center">D</div>
+     <div style="position:absolute;left:102px;top:34px;font-size:22px;font-weight:700;color:${C.teal}">Dev <span style="font-weight:500;color:${C.mid}">&middot; just now</span></div>
+     <div style="position:absolute;left:102px;top:62px;font-size:16px;font-weight:600;letter-spacing:.16em;color:${C.mid}">REACTION</div>
+     <div id="qt" style="position:absolute;left:32px;top:110px;right:32px;font-size:40px;font-weight:600;line-height:1.15;letter-spacing:-.02em;color:${C.teal}">I didn&rsquo;t even know that was possible.</div>`;
+   cardIn(tl,q,15.45,-1);gsap.set("#qt",{clipPath:"inset(0 100% 0 0)"});tl.to("#qt",{clipPath:"inset(0 0% 0 0)",duration:.9,ease:"none"},15.6);
+   const eq=div("tcard",{left:"1300px",top:"200px",width:"540px",height:"360px"});
+   const e1=div("abs",{left:"1340px",top:"236px",color:"#fff"},`<div style="font-size:120px;font-weight:300;letter-spacing:-.05em;line-height:1">100</div><div style="font-size:22px;font-weight:600;letter-spacing:.2em;color:${C.pale};margin-top:6px">COMPANIES</div>`);
+   const bar=div("abs",{left:"1340px",top:"410px",width:"460px",height:"3px",background:C.pale});
+   const e2=div("abs",{left:"1340px",top:"432px",color:"#fff",fontSize:"64px",fontWeight:"700",letterSpacing:"-.03em"},`1 YEAR<span style="color:${C.pale}">?</span>`);
+   cardIn(tl,eq,w.how-.05,1);gsap.set([e1,e2],{opacity:0,y:14});gsap.set(bar,{scaleX:0,transformOrigin:"0 50%"});
+   tl.to(e1,{opacity:1,y:0,duration:.3},w.hundred2).to(bar,{scaleX:1,duration:.35,ease:"power2.out"},w.hundred2+.3).to(e2,{opacity:1,y:0,duration:.3,ease:"back.out(1.8)"},w.one);
+   const big=div("abs shadow",{left:"0",width:"1920px",top:"-40px",textAlign:"center",fontSize:"430px",fontWeight:"300",letterSpacing:"-.05em",color:C.white,lineHeight:"1"},'<span id="b1">0</span>',"bk");
+   gsap.set(big,{opacity:0,y:40});tl.to(big,{opacity:.95,y:0,duration:.45,ease:"power3.out"},w.hundred2-.25);
+   count(tl,document.getElementById("b1"),100,w.hundred2-.2,.7);
+   out(tl,[q,eq,e1,bar,e2,big],19.72);}
+
+  /* E. 19.81-23.13  "a company every three days ... ridiculous" */
+  {const card=div("card",{left:"1260px",top:"90px",width:"600px",height:"640px"});
+   const kick=div("abs kick",{left:"1300px",top:"122px"},"ONE MONTH OF DEALS");
+   const s=svgLayer();const cells=[],hits=[];const DN=["M","T","W","T","F","S","S"];
+   DN.forEach((d,i)=>{const t=svgEl(s,"text",{x:1318+i*76+30,y:186,"text-anchor":"middle","font-size":16,"font-family":"Mont","font-weight":700,fill:C.mid});t.textContent=d});
+   for(let d=0;d<30;d++){const col=(d+2)%7,row=Math.floor((d+2)/7),x=1318+col*76,y=204+row*76;
+     const r=svgEl(s,"rect",{x,y,width:62,height:62,rx:12,fill:"#fff",stroke:"#D3E3E8","stroke-width":2});
+     const t=svgEl(s,"text",{x:x+31,y:y+39,"text-anchor":"middle","font-size":20,"font-family":"Mont","font-weight":600,fill:C.mid});t.textContent=d+1;
+     cells.push({r,t});if(d%3==2)hits.push(d)}
+   const pill=div("abs",{left:"1300px",top:"640px",width:"520px",textAlign:"center",padding:"16px 0",borderRadius:"999px",background:C.teal,color:"#fff",fontSize:"26px",fontWeight:"700",letterSpacing:".1em",opacity:0},"1 COMPANY EVERY 3 DAYS");
+   cardIn(tl,card,19.85,1);gsap.set([kick,s],{opacity:0});tl.to([kick,s],{opacity:1,duration:.3},20.05);
+   hits.forEach((d,i)=>{const t=w.company+i*((w.days-w.company)/hits.length);tl.to(cells[d].r,{attr:{fill:C.teal,stroke:C.teal},duration:.15},t).to(cells[d].t,{attr:{fill:"#fff"},duration:.15},t)});
+   tl.fromTo(pill,{opacity:0,y:14,scale:.9},{opacity:1,y:0,scale:1,duration:.3,ease:"back.out(1.8)"},w.three);
+   const stat=div("abs shadow",{left:"110px",top:"150px",color:"#fff"},`<div style="font-size:250px;font-weight:300;letter-spacing:-.06em;line-height:.9">3</div><div style="font-size:30px;font-weight:700;letter-spacing:.18em;margin-top:8px">DAYS PER DEAL</div>`);
+   gsap.set(stat,{opacity:0,x:-30});tl.to(stat,{opacity:1,x:0,duration:.4,ease:"power3.out"},w.three-.05);
+   const stamp=div("tcard",{left:"110px",top:"520px",padding:"18px 30px",fontSize:"54px",fontWeight:"800",letterSpacing:"-.02em",borderRadius:"16px"},"RIDICULOUS.");
+   gsap.set(stamp,{opacity:0,scale:1.5,rotation:-6});tl.to(stamp,{opacity:1,scale:1,rotation:-4,duration:.28,ease:"back.out(1.6)"},w.ridic);
+   out(tl,[card,kick,s,pill,stat,stamp],23.02);}
+
+  /* F. 23.13-28.40  "inspires me and pushes me to do more and just achieve more" */
+  {const list=div("tcard",{left:"90px",top:"150px",width:"540px",height:"470px"});
+   const lk=div("abs kick",{left:"130px",top:"184px",color:C.pale},"WHAT IT DOES TO ME");
+   const rows=[["Inspires me",w.inspires],["Pushes me",w.pushes],["Do more",w.domore],["Achieve more",w.achieve]];
+   const s=svgLayer();const cks=[],txt=[];
+   rows.forEach(([t,at],i)=>{const y=236+i*92;const ck=check(s,154,y+24,24);ck.c.setAttribute("stroke",C.mid);ck.f.setAttribute("fill",C.white);ck.k.setAttribute("stroke",C.teal);cks.push(ck);
+     txt.push(div("abs",{left:"200px",top:y+"px",fontSize:i==3?"46px":"42px",fontWeight:i==3?"800":"500",letterSpacing:"-.02em",color:"rgba(158,195,207,.45)"},t))});
+   cardIn(tl,list,23.18,-1);gsap.set([lk,s],{opacity:0});tl.to([lk,s],{opacity:1,duration:.3},23.4);
+   rows.forEach(([t,at],i)=>{tick(tl,cks[i],at);tl.to(txt[i],{color:"#fff",duration:.2},at)});
+   tl.to(txt[3],{scale:1.08,duration:.14,yoyo:true,repeat:1,transformOrigin:"0 50%"},w.more2);
+   const g=div("card",{left:"1290px",top:"150px",width:"560px",height:"470px"});
+   const gk=div("abs kick",{left:"1330px",top:"184px"},"OUTPUT");
+   const gs=svgLayer();const gx0=1340,gx1=1790,gy0=570,gy1=250;
+   [0,1,2,3].forEach(i=>svgEl(gs,"line",{x1:gx0,x2:gx1,y1:gy0-i*(gy0-gy1)/3,y2:gy0-i*(gy0-gy1)/3,stroke:"#D3E3E8","stroke-width":1.5}));
+   const pts=[];for(let i=0;i<=40;i++){const u=i/40;pts.push([gx0+(gx1-gx0)*u,gy0-(gy0-gy1)*Math.pow(u,2.3)])}
+   const area=svgEl(gs,"path",{d:"M"+pts.map(p=>p.join(",")).join("L")+`L${gx1},${gy0}L${gx0},${gy0}Z`,fill:C.teal,opacity:0});
+   const cv=svgEl(gs,"path",{d:"M"+pts.map(p=>p.join(",")).join("L"),fill:"none",stroke:C.teal,"stroke-width":7,"stroke-linecap":"round"});const L=drawable(cv);
+   const dot=svgEl(gs,"circle",{cx:gx0,cy:gy0,r:0,fill:C.teal,stroke:C.mist,"stroke-width":4});
+   const lab=div("abs",{left:"1640px",top:"190px",padding:"10px 20px",borderRadius:"999px",background:C.teal,color:"#fff",fontSize:"26px",fontWeight:"800",letterSpacing:".1em",opacity:0},"MORE &uarr;");
+   cardIn(tl,g,23.3,1);gsap.set([gk,gs],{opacity:0});tl.to([gk,gs],{opacity:1,duration:.3},23.5);
+   const o={l:0};const upd=()=>{cv.style.strokeDashoffset=L-o.l;const p=cv.getPointAtLength(o.l);dot.setAttribute("cx",p.x);dot.setAttribute("cy",p.y)};
+   tl.to(dot,{attr:{r:12},duration:.2},w.pushes);
+   tl.to(o,{l:L,duration:w.achieve-w.pushes+.3,ease:"power1.in",onUpdate:upd},w.pushes);
+   tl.to(area,{opacity:.1,duration:.4},w.achieve);
+   tl.fromTo(lab,{opacity:0,y:12,scale:.9},{opacity:1,y:0,scale:1,duration:.3,ease:"back.out(2)"},w.achieve);
+   tl.to(lab,{scale:1.12,duration:.12,yoyo:true,repeat:1},w.more2);
+   out(tl,[list,lk,s,...txt,g,gk,gs,lab],28.3);}
+
+  /* G. 28.47-end  full-screen Kautilya title card */
+  {const bg=div("abs",{left:"0",top:"0",width:"1920px",height:"1080px",background:`linear-gradient(135deg,${C.teal} 0%,${C.deep} 100%)`,clipPath:"inset(0 100% 0 0)"});
+   const a=div("abs",{left:"0",width:"1920px",top:"300px",textAlign:"center",color:"#fff",fontSize:"128px",fontWeight:"700",letterSpacing:"-.04em",lineHeight:"1"},"700 pharmacies.");
+   const b=div("abs",{left:"0",width:"1920px",top:"448px",textAlign:"center",color:C.pale,fontSize:"128px",fontWeight:"300",letterSpacing:"-.04em",lineHeight:"1"},"Under 5 years.");
+   const lg=div("abs",{left:"0",width:"1920px",top:"660px",display:"flex",flexDirection:"column",alignItems:"center"},`<img src="kautilya_mark.svg" style="height:96px"><div style="margin-top:14px;font-size:30px;font-weight:400;letter-spacing:.34em;color:#fff;padding-left:.34em">KAUTILYA</div>`);
+   tl.to(bg,{clipPath:"inset(0 0% 0 0)",duration:.45,ease:"power3.inOut"},28.47);
+   gsap.set([a,b,lg],{opacity:0,y:30});tl.to(a,{opacity:1,y:0,duration:.5,ease:"power3.out"},28.75).to(b,{opacity:1,y:0,duration:.5,ease:"power3.out"},28.95).to(lg,{opacity:1,y:0,duration:.6,ease:"power2.out"},29.3);}
+
+  /* captions: teal box, words pale until spoken, then white; key words get a pale underline */
+  P.chunks.forEach(c=>{
+    const wrap=div("abs",{left:"0",width:"1920px",top:"938px",display:"flex",justifyContent:"center",opacity:0});
+    const box=document.createElement("div");box.style.cssText=`background:rgba(13,72,93,.94);border-radius:14px;padding:12px 30px 16px;font-size:50px;font-weight:600;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;box-shadow:0 10px 30px rgba(8,48,62,.35)`;wrap.appendChild(box);
+    const sp=c.words.map((x,j)=>{const s=document.createElement("span");s.textContent=x.w;s.style.cssText=`display:inline-block;color:rgba(158,195,207,.55);background:linear-gradient(${C.pale},${C.pale}) 0 100%/0% 4px no-repeat`;box.appendChild(s);if(j<c.words.length-1)box.appendChild(document.createTextNode(" "));return s});
+    gsap.set(wrap,{y:12,scale:.94});tl.to(wrap,{opacity:1,y:0,scale:1,duration:.14,ease:"back.out(2)"},c.t0);
+    c.words.forEach((x,j)=>{tl.to(sp[j],{color:"#fff",duration:.08},x.t);if(x.hl)tl.to(sp[j],{backgroundSize:"100% 4px",duration:.2,ease:"power2.out"},x.t)});
+    tl.set(wrap,{opacity:0},c.t1)});
+  tl.set({},{},P.dur);return tl}
+
+window.init=async function(P){st.innerHTML="";await document.fonts.load('300 40px Mont');await document.fonts.load('800 40px Mont');await document.fonts.ready;TL=build(P);TL.seek(0)};
+window.seek=t=>TL.seek(t,false);
+window.layer=m=>{document.body.className=m};
+</script></body></html>
