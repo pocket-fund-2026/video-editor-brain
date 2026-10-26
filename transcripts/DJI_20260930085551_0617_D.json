@@ -1,0 +1,42 @@
+{
+  "language_code": "en",
+  "text": "Uh check check mic check",
+  "words": [
+    {
+      "text": "Uh",
+      "start": 0.04,
+      "end": 0.24,
+      "type": "word",
+      "speaker_id": "speaker_0"
+    },
+    {
+      "text": "check",
+      "start": 0.38,
+      "end": 0.72,
+      "type": "word",
+      "speaker_id": "speaker_0"
+    },
+    {
+      "text": "check",
+      "start": 0.88,
+      "end": 1.24,
+      "type": "word",
+      "speaker_id": "speaker_0"
+    },
+    {
+      "text": "mic",
+      "start": 1.52,
+      "end": 1.8,
+      "type": "word",
+      "speaker_id": "speaker_0"
+    },
+    {
+      "text": "check",
+      "start": 1.8,
+      "end": 2.22,
+      "type": "word",
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_engine": "gemini"
+}
