@@ -20,11 +20,13 @@ body.front .bk{visibility:hidden!important}
 <script>
 const W=1920,H=1080,NS="http://www.w3.org/2000/svg";
 const C={deep:"#08303E",teal:"#0D485D",mid:"#2F6F84",pale:"#9EC3CF",mist:"#E8F1F3",white:"#FFFFFF"};
-const st=document.getElementById("stage");let TL=null;
+const st=document.getElementById("stage");let TL=null;let GRP=null;
 /* layer "fr" = in front of Dev, "bk" = behind Dev (composited under his matte) */
-function div(cls,css,html,layer){const d=document.createElement("div");d.className=cls+" "+(layer||"fr");if(css)Object.assign(d.style,css);if(html!=null)d.innerHTML=html;st.appendChild(d);return d}
+function div(cls,css,html,layer){const d=document.createElement("div");d.className=cls+" "+(layer||"fr");if(css)Object.assign(d.style,css);if(html!=null)d.innerHTML=html;(GRP||st).appendChild(d);return d}
 function svgEl(parent,tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e}
-function svgLayer(layer){const s=document.createElementNS(NS,"svg");s.setAttribute("width",W);s.setAttribute("height",H);s.setAttribute("class",layer||"fr");st.appendChild(s);return s}
+function svgLayer(layer){const s=document.createElementNS(NS,"svg");s.setAttribute("width",W);s.setAttribute("height",H);s.setAttribute("class",layer||"fr");(GRP||st).appendChild(s);return s}
+/* each beat lives in its own group that only exists between t0 and t1 */
+function group(tl,t0,t1){const g=document.createElement("div");g.style.cssText="position:absolute;left:0;top:0;width:1920px;height:1080px;display:none";st.appendChild(g);GRP=g;tl.set(g,{display:"block"},t0);if(t1!=null)tl.set(g,{display:"none"},t1);return g}
 function drawable(p){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return L}
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function cardIn(tl,el,t,side){gsap.set(el,{opacity:0,x:side*60,y:30,rotation:side*1.5,scale:.96,transformOrigin:"50% 100%"});tl.to(el,{opacity:1,x:0,y:0,rotation:0,scale:1,duration:.45,ease:"power3.out"},t)}
@@ -42,6 +44,7 @@ function build(P){
   const tl=gsap.timeline({paused:true});const w=P.w;
 
   /* A. 0.0-8.6  name tag: "...an operator" */
+  group(tl,0,8.9);
   {const tag=div("card",{left:"90px",top:"140px",width:"520px",height:"318px",overflow:"hidden"});
    tag.innerHTML=`<div style="background:${C.teal};color:#fff;text-align:center;padding:22px 0 16px"><div style="font-size:66px;font-weight:800;letter-spacing:-.02em;line-height:1">HELLO</div><div style="font-size:20px;font-weight:500;letter-spacing:.08em;margin-top:6px">my name is</div></div>
      <div style="height:150px;display:flex;align-items:center;justify-content:center"><div id="op" style="font-size:66px;font-weight:600;letter-spacing:-.03em;color:${C.teal};clip-path:inset(0 100% 0 0)">The Operator</div></div>
@@ -51,6 +54,7 @@ function build(P){
    out(tl,tag,8.55);}
 
   /* B. 3.2-8.85  700 pharmacies across Italy: map card right + giant counter behind Dev */
+  group(tl,3.2,8.95);
   {const card=div("card",{left:"1290px",top:"100px",width:"560px",height:"640px"});
    const kick=div("abs kick",{left:"1330px",top:"130px"},"PHARMACIES &middot; ITALY");
    const num=div("abs",{left:"1326px",top:"160px",fontSize:"92px",fontWeight:"700",letterSpacing:"-.04em",lineHeight:"1.1"},'<span id="bn">0</span>');
@@ -64,17 +68,18 @@ function build(P){
    const R=rng(7),pts=[];let g=0;while(pts.length<700&&g++<600000){const x=lo0+R()*(lo1-lo0),y=la0+R()*(la1-la0);if(!inside(x,y))continue;const[px,py]=pr([x,y]);if(pts.some(c=>(c[0]-px)**2+(c[1]-py)**2<52))continue;pts.push([px,py])}
    const crosses=pts.map(([x,y])=>svgEl(s,"path",{d:`M${x-1.3},${y-4.2}h2.6v2.9h2.9v2.6h-2.9v2.9h-2.6v-2.9h-2.9v-2.6h2.9z`,fill:C.teal}));
    crosses.forEach((c,i)=>gsap.set(c,{svgOrigin:pts[i][0]+" "+pts[i][1],scale:0}));
-   cardIn(tl,card,3.25,1);gsap.set([kick,num],{opacity:0});tl.to([kick,num],{opacity:1,duration:.3},3.5);
+   cardIn(tl,card,3.25,1);gsap.set(kick,{opacity:0});tl.to(kick,{opacity:1,duration:.3},3.5);
    tl.to(paths,{strokeDashoffset:0,duration:.8,ease:"power2.out"},3.55);
    tl.to(crosses,{scale:1,duration:.25,ease:"back.out(2.4)",stagger:{amount:w.italy-w.n700+.1,from:"random"}},w.n700-.1);
-   count(tl,document.getElementById("bn"),700,w.n700-.1,w.italy-w.n700+.3);
+   document.getElementById("bn").textContent="700";gsap.set(num,{opacity:0});tl.fromTo(num,{opacity:0,scale:.85,transformOrigin:"0 50%"},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},w.n700);
    /* giant number behind Dev's head (bk layer) */
-   const big=div("abs shadow",{left:"0",width:"1920px",top:"-40px",textAlign:"center",fontSize:"430px",fontWeight:"300",letterSpacing:"-.05em",color:C.white,lineHeight:"1"},'<span id="b7">0</span>',"bk");
+   const big=div("abs shadow",{left:"0",width:"1920px",top:"0px",textAlign:"center",fontSize:"400px",fontWeight:"300",letterSpacing:"-.05em",color:C.white,lineHeight:"1"},'<span id="b7">0</span>',"bk");
    gsap.set(big,{opacity:0,y:40});tl.to(big,{opacity:.95,y:0,duration:.5,ease:"power3.out"},w.over1-.05);
    count(tl,document.getElementById("b7"),700,w.over1,w.n700-w.over1+.5);
    out(tl,[card,kick,num,s,big],8.62);}
 
   /* C. 8.85-15.42  under 5 years, 100+ in year one: motion graph left + line items right */
+  group(tl,8.85,15.55);
   {const card=div("card",{left:"70px",top:"110px",width:"620px",height:"560px"});
    const kick=div("abs kick",{left:"110px",top:"140px"},"PHARMACIES ACQUIRED");
    const head=div("abs",{left:"108px",top:"166px",fontSize:"48px",fontWeight:"700",letterSpacing:"-.03em"},"Under 5 years");
@@ -104,6 +109,7 @@ function build(P){
    out(tl,[card,kick,head,s,l5,l1,list,lk,ls,...txt,...st.querySelectorAll(".abs[style*='D3E3E8']")],15.25);}
 
   /* D. 15.42-19.81  "I didn't even know that was possible ... 100 companies in one year?" */
+  group(tl,15.4,19.85);
   {const q=div("card",{left:"90px",top:"170px",width:"560px",height:"230px"});
    q.innerHTML=`<div style="position:absolute;left:30px;top:30px;width:56px;height:56px;border-radius:50%;background:${C.teal};color:#fff;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center">D</div>
      <div style="position:absolute;left:102px;top:34px;font-size:22px;font-weight:700;color:${C.teal}">Dev <span style="font-weight:500;color:${C.mid}">&middot; just now</span></div>
@@ -116,12 +122,13 @@ function build(P){
    const e2=div("abs",{left:"1340px",top:"432px",color:"#fff",fontSize:"64px",fontWeight:"700",letterSpacing:"-.03em"},`1 YEAR<span style="color:${C.pale}">?</span>`);
    cardIn(tl,eq,w.how-.05,1);gsap.set([e1,e2],{opacity:0,y:14});gsap.set(bar,{scaleX:0,transformOrigin:"0 50%"});
    tl.to(e1,{opacity:1,y:0,duration:.3},w.hundred2).to(bar,{scaleX:1,duration:.35,ease:"power2.out"},w.hundred2+.3).to(e2,{opacity:1,y:0,duration:.3,ease:"back.out(1.8)"},w.one);
-   const big=div("abs shadow",{left:"0",width:"1920px",top:"-40px",textAlign:"center",fontSize:"430px",fontWeight:"300",letterSpacing:"-.05em",color:C.white,lineHeight:"1"},'<span id="b1">0</span>',"bk");
+   const big=div("abs shadow",{left:"0",width:"1920px",top:"0px",textAlign:"center",fontSize:"400px",fontWeight:"300",letterSpacing:"-.05em",color:C.white,lineHeight:"1"},'<span id="b1">0</span>',"bk");
    gsap.set(big,{opacity:0,y:40});tl.to(big,{opacity:.95,y:0,duration:.45,ease:"power3.out"},w.hundred2-.25);
    count(tl,document.getElementById("b1"),100,w.hundred2-.2,.7);
    out(tl,[q,eq,e1,bar,e2,big],19.72);}
 
   /* E. 19.81-23.13  "a company every three days ... ridiculous" */
+  group(tl,19.8,23.15);
   {const card=div("card",{left:"1260px",top:"90px",width:"600px",height:"640px"});
    const kick=div("abs kick",{left:"1300px",top:"122px"},"ONE MONTH OF DEALS");
    const s=svgLayer();const cells=[],hits=[];const DN=["M","T","W","T","F","S","S"];
@@ -141,6 +148,7 @@ function build(P){
    out(tl,[card,kick,s,pill,stat,stamp],23.02);}
 
   /* F. 23.13-28.40  "inspires me and pushes me to do more and just achieve more" */
+  group(tl,23.1,28.45);
   {const list=div("tcard",{left:"90px",top:"150px",width:"540px",height:"470px"});
    const lk=div("abs kick",{left:"130px",top:"184px",color:C.pale},"WHAT IT DOES TO ME");
    const rows=[["Inspires me",w.inspires],["Pushes me",w.pushes],["Do more",w.domore],["Achieve more",w.achieve]];
@@ -169,6 +177,7 @@ function build(P){
    out(tl,[list,lk,s,...txt,g,gk,gs,lab],28.3);}
 
   /* G. 28.47-end  full-screen Kautilya title card */
+  group(tl,28.45,null);
   {const bg=div("abs",{left:"0",top:"0",width:"1920px",height:"1080px",background:`linear-gradient(135deg,${C.teal} 0%,${C.deep} 100%)`,clipPath:"inset(0 100% 0 0)"});
    const a=div("abs",{left:"0",width:"1920px",top:"300px",textAlign:"center",color:"#fff",fontSize:"128px",fontWeight:"700",letterSpacing:"-.04em",lineHeight:"1"},"700 pharmacies.");
    const b=div("abs",{left:"0",width:"1920px",top:"448px",textAlign:"center",color:C.pale,fontSize:"128px",fontWeight:"300",letterSpacing:"-.04em",lineHeight:"1"},"Under 5 years.");
@@ -177,6 +186,7 @@ function build(P){
    gsap.set([a,b,lg],{opacity:0,y:30});tl.to(a,{opacity:1,y:0,duration:.5,ease:"power3.out"},28.75).to(b,{opacity:1,y:0,duration:.5,ease:"power3.out"},28.95).to(lg,{opacity:1,y:0,duration:.6,ease:"power2.out"},29.3);}
 
   /* captions: teal box, words pale until spoken, then white; key words get a pale underline */
+  GRP=null;
   P.chunks.forEach(c=>{
     const wrap=div("abs",{left:"0",width:"1920px",top:"938px",display:"flex",justifyContent:"center",opacity:0});
     const box=document.createElement("div");box.style.cssText=`background:rgba(13,72,93,.94);border-radius:14px;padding:12px 30px 16px;font-size:50px;font-weight:600;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;box-shadow:0 10px 30px rgba(8,48,62,.35)`;wrap.appendChild(box);
@@ -187,6 +197,6 @@ function build(P){
   tl.set({},{},P.dur);return tl}
 
 window.init=async function(P){st.innerHTML="";await document.fonts.load('300 40px Mont');await document.fonts.load('800 40px Mont');await document.fonts.ready;TL=build(P);TL.seek(0)};
-window.seek=t=>TL.seek(t,false);
+window.seek=t=>{TL.seek(t,false)};
 window.layer=m=>{document.body.className=m};
 </script></body></html>

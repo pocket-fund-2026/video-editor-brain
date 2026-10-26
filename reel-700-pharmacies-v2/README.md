@@ -2,7 +2,7 @@
 
 A completely new edit of the same 30.7 s story. Version 1 (`../reel-700-pharmacies`) is final and stays as it is.
 
-**Status (26 Oct 2026):** footage cut and graded, Dev's matte done, graphics written. Rendering and first preview next.
+**Status (26 Oct 2026):** first full cut rendered (`/root/reel5/reel_v2.mp4`, 30.7 s, 1920×1080). `build.sh` composites it.
 
 ## Brief
 - **Format:** horizontal 1920×1080, 30 fps. Dev stays full frame, and the graphics sit **around** him, in the left and right thirds and in the sky behind his head.
