@@ -1,0 +1,20 @@
+{
+  "sources": {
+    "style_reels_shots": 110,
+    "shipped_reel_pairs": 5
+  },
+  "rules": {
+    "avg_shot_s": 1.58,
+    "shot_range_s": [
+      0.53,
+      5.12
+    ],
+    "reveal_before_word_s": 0.05,
+    "graphic_lead_in_s": 2.21,
+    "graphic_len_s": [
+      2.2,
+      6.8
+    ],
+    "avg_cut_len_s": 4.44
+  }
+}
