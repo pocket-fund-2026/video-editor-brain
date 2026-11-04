@@ -12,6 +12,7 @@ Sources
 | Upstairs from a fashion store, in Kala Ghoda | CAFE: "within the flagship space in Kala Ghoda"; address "Level 2"; HB: ground floor ready-to-wear, upper level holds the café | Verified |
 | Opened November 2025 | HB: "early November 2025" | Verified (one source) |
 | Calls itself a cultural living room | CAFE: "Conceived as a cultural living room" | Verified, primary |
+| Eat upstairs, then shop downstairs (clothes, textiles, ceramics) | HB: ground floor sells ready-to-wear, handcrafted textiles, ceramics, glassware, wellness; upper level holds the café; the article presents dining as part of the shopping experience | Verified (one source) |
 | Downstairs: clothes and ceramics | HB: ground floor sells ready-to-wear, handcrafted textiles, ceramics, glassware, wellness | Verified (one source) |
 | Giant embroidered artwork, hidden hands honour the makers | HB: a large textile artwork by the Chorus Collective using embroidery techniques; hidden hand motifs honour the makers | Verified (one source) |
 | Everything is vegetarian | MENU: "All dishes are vegetarian, with vegan adaptations available on request" | Verified, primary |

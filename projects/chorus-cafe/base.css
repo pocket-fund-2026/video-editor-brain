@@ -1,0 +1,5 @@
+#stage { --ground:#141A3C; --main:#E0506F; --second:#F2F5FA; --accent:#8ED8C4; color:var(--second); font-family:var(--serif, Georgia, serif) }
+.ground { position:absolute; inset:0; background:var(--ground) }
+.mapc { position:absolute; left:0; top:0; width:1080px; height:1920px }
+.mono { font-family:var(--mono, ui-monospace, monospace); font-size:22px; letter-spacing:.14em; text-transform:uppercase; color:color-mix(in srgb, var(--second) 78%, var(--ground)) }
+.cap { position:absolute; left:70px; right:70px; top:1300px; font-size:54px; line-height:1.18; font-weight:500; text-wrap:balance }

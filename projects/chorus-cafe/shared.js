@@ -1,0 +1,163 @@
+// Stitch: an embroidery renderer. Everything is a pure function of time and position (seeded by hash, never Math.random).
+window.Stitch = (function () {
+  const PAL = { ground: '#141A3C', weaveHi: '#1B2252', weaveLo: '#0F1432', rose: '#E0506F', roseSh: '#7C2640', roseHi: '#F59AAE',
+    chalk: '#F2F5FA', chalkSh: '#5C6490', chalkHi: '#FFFFFF', mint: '#8ED8C4', mintSh: '#3F7A6C', mintHi: '#D2F5EA', tone: '#262F6A', tone2: '#1E2658' };
+  const h2 = (a, b) => { const n = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return n - Math.floor(n); };
+  const c01 = (x) => Math.max(0, Math.min(1, x));
+  let DATA = null, cloth = null;
+
+  function load(kit) {
+    if (DATA) return DATA;
+    const raw = kit.json('kalaghoda.json');
+    const un = (p) => { const a = []; for (let i = 0; i < p.length; i += 2) a.push([p[i], p[i + 1]]); return a; };
+    DATA = { roads: raw.roads.map((r) => ({ pts: un(r.p), hw: r.hw, name: r.name })), blds: raw.buildings.map((b) => ({ pts: un(b.p), name: b.name })),
+      green: raw.green.map((g) => ({ pts: un(g.p), name: g.name })), water: raw.water.map((g) => ({ pts: un(g.p) })), rail: raw.rail.map((g) => ({ pts: un(g.p) })),
+      lm: raw.landmarks, route: un(raw.route), logo: kit.json('chorus_logo_stitches.json') };
+    DATA.hl = [];
+    const inside = (P, x, y) => { let ins = false; for (let j = 0, k = P.length - 1; j < P.length; k = j++) { if (((P[j][1] > y) !== (P[k][1] > y)) && (x < (P[k][0] - P[j][0]) * (y - P[j][1]) / (P[k][1] - P[j][1]) + P[j][0])) ins = !ins; } return ins; };
+    const WANT = ['Jehangir Art Gallery', 'Chhatrapati Shivaji Maharaj Vastu Sangra', 'Max Mueller Bahvan', 'Sir David Sassoon Library', 'Mumbai University - Fort Campus'];
+    DATA.lm.forEach((l) => { if (!WANT.some((w) => l.name.indexOf(w) === 0)) return; const b = DATA.blds.find((bd) => inside(bd.pts, l.x, l.y)); if (b) DATA.hl.push({ pts: b.pts.concat([b.pts[0]]), name: l.name, x: l.x, y: l.y, d: Math.hypot(l.x, l.y) }); });
+    DATA.roads.forEach((r) => { r.d = Math.min.apply(null, r.pts.map((q) => Math.hypot(q[0], q[1]))); });
+    DATA.blds.forEach((b) => { b.d = Math.hypot(b.pts[0][0], b.pts[0][1]); });
+    return DATA;
+  }
+
+  // woven cloth, drawn once into an offscreen canvas
+  function makeCloth(W, H) {
+    if (cloth && cloth.width === W && cloth.height === H) return cloth;
+    cloth = document.createElement('canvas'); cloth.width = W; cloth.height = H; const c = cloth.getContext('2d');
+    c.fillStyle = PAL.ground; c.fillRect(0, 0, W, H);
+    for (let x = 0; x < W; x += 3) { c.fillStyle = h2(x, 1) > 0.5 ? PAL.weaveHi : PAL.weaveLo; c.globalAlpha = 0.18 + 0.22 * h2(x, 9); c.fillRect(x, 0, 1.2, H); }
+    for (let y = 0; y < H; y += 3) { c.fillStyle = h2(2, y) > 0.5 ? PAL.weaveHi : PAL.weaveLo; c.globalAlpha = 0.14 + 0.2 * h2(7, y); c.fillRect(0, y, W, 1.2); }
+    for (let i = 0; i < 2600; i++) { const x = h2(i, 3) * W, y = h2(i, 5) * H, l = 4 + 10 * h2(i, 8); c.globalAlpha = 0.1 + 0.14 * h2(i, 2); c.fillStyle = h2(i, 6) > 0.5 ? PAL.weaveHi : PAL.weaveLo; c.fillRect(x, y, h2(i, 4) > 0.5 ? l : 1.4, h2(i, 4) > 0.5 ? 1.4 : l); }
+    c.globalAlpha = 1; return cloth;
+  }
+
+  function cum(pts) { const c = [0]; for (let i = 1; i < pts.length; i++) c.push(c[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); return c; }
+  function at(pts, c, d) {
+    let lo = 0, hi = c.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (c[m] <= d) lo = m; else hi = m; }
+    const t = (d - c[lo]) / Math.max(1e-6, c[hi] - c[lo]); return [pts[lo][0] + (pts[hi][0] - pts[lo][0]) * t, pts[lo][1] + (pts[hi][1] - pts[lo][1]) * t];
+  }
+  // collect stitches along a polyline (screen px), revealed up to fraction p. Returns the segments and the last stitch.
+  function stitches(pts, o, out) {
+    const c = cum(pts), L = c[c.length - 1]; if (L < 2) return null;
+    const lim = L * c01(o.p == null ? 1 : o.p), seed = Math.round(pts[0][0] * 7 + pts[0][1] * 13 + o.seed); let d = 0, k = 0, last = null;
+    while (d < lim) {
+      const ln = o.len * (0.78 + 0.5 * h2(seed, k)), gp = o.gap * (0.7 + 0.7 * h2(seed + 5, k)), e = Math.min(d + ln, lim);
+      const a = at(pts, c, d), b = at(pts, c, e), j = (h2(seed + 9, k) - 0.5) * o.jit;
+      const nx = -(b[1] - a[1]), ny = b[0] - a[0], nl = Math.hypot(nx, ny) || 1;
+      const seg = [a[0] + nx / nl * j, a[1] + ny / nl * j, b[0] + nx / nl * j, b[1] + ny / nl * j]; out.push(seg); last = seg; d += ln + gp; k++;
+    }
+    return last;
+  }
+  // draw a batch of stitches in one colour set (shadow, thread, highlight): three paths, no blur
+  function draw(ctx, segs, col, w, o) {
+    if (!segs.length) return; ctx.lineCap = 'round'; o = o || {};
+    if (o.holes !== false) { ctx.fillStyle = 'rgba(6,8,22,0.85)'; ctx.beginPath(); segs.forEach((s) => { ctx.moveTo(s[0] + 1.1, s[1]); ctx.arc(s[0], s[1], 1.1, 0, 6.283); ctx.moveTo(s[2] + 1.1, s[3]); ctx.arc(s[2], s[3], 1.1, 0, 6.283); }); ctx.fill(); }
+    ctx.strokeStyle = col.sh; ctx.lineWidth = w; ctx.beginPath(); segs.forEach((s) => { ctx.moveTo(s[0] + 0.9, s[1] + 1.3); ctx.lineTo(s[2] + 0.9, s[3] + 1.3); }); ctx.stroke();
+    ctx.strokeStyle = col.c; ctx.lineWidth = w; ctx.beginPath(); segs.forEach((s) => { ctx.moveTo(s[0], s[1]); ctx.lineTo(s[2], s[3]); }); ctx.stroke();
+    ctx.strokeStyle = col.hi; ctx.lineWidth = Math.max(0.6, w * 0.3); ctx.beginPath(); segs.forEach((s) => { ctx.moveTo(s[0] - 0.3, s[1] - 0.5); ctx.lineTo(s[2] - 0.3, s[3] - 0.5); }); ctx.stroke();
+    if (w >= 2.2) {   // twist of the thread: short diagonal ticks across each stitch
+      ctx.strokeStyle = col.sh; ctx.globalAlpha = 0.55; ctx.lineWidth = 0.9; ctx.beginPath();
+      segs.forEach((s) => { const dx = s[2] - s[0], dy = s[3] - s[1], L = Math.hypot(dx, dy); if (L < 4) return; const ux = dx / L, uy = dy / L, nx = -uy, ny = ux, n = Math.floor(L / (w * 0.9)), a = w * 0.42;
+        for (let i = 1; i < n; i++) { const px = s[0] + ux * i * w * 0.9, py = s[1] + uy * i * w * 0.9; ctx.moveTo(px - nx * a - ux * a * 0.5, py - ny * a - uy * a * 0.5); ctx.lineTo(px + nx * a + ux * a * 0.5, py + ny * a + uy * a * 0.5); } });
+      ctx.stroke(); ctx.globalAlpha = 1; }
+  }
+  const COL = { rose: { c: PAL.rose, sh: PAL.roseSh, hi: PAL.roseHi }, chalk: { c: PAL.chalk, sh: PAL.chalkSh, hi: PAL.chalkHi }, mint: { c: PAL.mint, sh: PAL.mintSh, hi: PAL.mintHi } };
+
+  // hatch fill of a polygon (screen px): short straight stitches across the shape, like a satin fill
+  function hatch(pts, d, th, out) {
+    const ca = Math.cos(th), sa = Math.sin(th), r = pts.map((q) => [q[0] * ca + q[1] * sa, -q[0] * sa + q[1] * ca]);
+    let y0 = Infinity, y1 = -Infinity; r.forEach((q) => { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); });
+    for (let y = Math.ceil(y0 / d) * d; y < y1; y += d) {
+      const xs = []; for (let i = 0; i < r.length; i++) { const a = r[i], b = r[(i + 1) % r.length]; if ((a[1] <= y && b[1] > y) || (b[1] <= y && a[1] > y)) xs.push(a[0] + (y - a[1]) / (b[1] - a[1]) * (b[0] - a[0])); }
+      xs.sort((p, q) => p - q);
+      for (let i = 0; i + 1 < xs.length; i += 2) { if (xs[i + 1] - xs[i] < 1.5) continue; out.push([xs[i] * ca - y * sa, xs[i] * sa + y * ca, xs[i + 1] * ca - y * sa, xs[i + 1] * sa + y * ca]); }
+    }
+  }
+
+  function project(cam, x, y) { return [cam.W / 2 + (x - cam.cx) * cam.s, cam.H / 2 + (y - cam.cy) * cam.s]; }
+  const onScreen = (pts, W, H, pad) => { let a = 1e9, b = -1e9, c2 = 1e9, d2 = -1e9; for (let i = 0; i < pts.length; i++) { a = Math.min(a, pts[i][0]); b = Math.max(b, pts[i][0]); c2 = Math.min(c2, pts[i][1]); d2 = Math.max(d2, pts[i][1]); } return b > -pad && a < W + pad && d2 > -pad && c2 < H + pad; };
+
+  // The whole stitched map. st = {reveal: metres of radius stitched so far, route: 0..1 progress of the lead thread, tone: 0..1 of building tone}
+  function drawMap(ctx, cam, st) {
+    const W = cam.W, H = cam.H, s = cam.s; ctx.clearRect(0, 0, W, H); ctx.drawImage(makeCloth(W, H), 0, 0);
+    const R = st.reveal, fade = (d) => c01((R - d) / 90);
+    // parks: seed stitches (short, scattered, seeded by position)
+    const seeds = [];
+    DATA.green.forEach((g) => { const P = g.pts.map((q) => project(cam, q[0], q[1])); if (!onScreen(P, W, H, 40)) return; const cx = g.pts[0][0], cy = g.pts[0][1], dd = Math.hypot(cx, cy); const f = fade(dd); if (f <= 0) return;
+      let a = 1e9, b = -1e9, c2 = 1e9, d2 = -1e9; P.forEach((q) => { a = Math.min(a, q[0]); b = Math.max(b, q[0]); c2 = Math.min(c2, q[1]); d2 = Math.max(d2, q[1]); });
+      const area = (b - a) * (d2 - c2), n = Math.min(900, area / 230) * f;
+      for (let i = 0; i < n; i++) { const x = a + h2(i, cx) * (b - a), y = c2 + h2(cy, i) * (d2 - c2); let ins = false; for (let j = 0, k = P.length - 1; j < P.length; k = j++) { if (((P[j][1] > y) !== (P[k][1] > y)) && (x < (P[k][0] - P[j][0]) * (y - P[j][1]) / (P[k][1] - P[j][1]) + P[j][0])) ins = !ins; }
+        if (ins) { const an = h2(i, 77 + cx) * 6.283, l = 3 + 3 * h2(i, 5); seeds.push([x, y, x + Math.cos(an) * l, y + Math.sin(an) * l]); } } });
+    ctx.globalAlpha = 0.8; draw(ctx, seeds, COL.mint, 1.5); ctx.globalAlpha = 1;
+    // buildings: tone-on-tone satin hatch, nearest first
+    const hat = [], hat2 = [];
+    DATA.blds.forEach((bd) => { const f = fade(bd.d); if (f <= 0) return; const P = bd.pts.map((q) => project(cam, q[0], q[1])); if (!onScreen(P, W, H, 30)) return; hatch(P, Math.max(3.2, 3.6 * s / 0.9), 0.78, bd.d % 2 > 1 ? hat : hat2); });
+    ctx.lineCap = 'butt'; ctx.lineWidth = 1.4; ctx.strokeStyle = PAL.tone; ctx.beginPath(); hat.forEach((q) => { ctx.moveTo(q[0], q[1]); ctx.lineTo(q[2], q[3]); }); ctx.stroke();
+    ctx.strokeStyle = PAL.tone2; ctx.beginPath(); hat2.forEach((q) => { ctx.moveTo(q[0], q[1]); ctx.lineTo(q[2], q[3]); }); ctx.stroke();
+    // streets: thread by importance, revealed outward from the cafe
+    const minor = [], mid = [], major = [], foot = [];
+    DATA.roads.forEach((r, i) => { const p = c01((R - r.d) / 160); if (p <= 0) return; const P = r.pts.map((q) => project(cam, q[0], q[1])); if (!onScreen(P, W, H, 20)) return;
+      const big = r.hw === 'primary' || r.hw === 'secondary' || r.hw.endsWith('_link'), md = r.hw === 'tertiary';
+      if (r.hw === 'footway') stitches(P, { p, len: 2.4, gap: 5, jit: 0.6, seed: i }, foot);
+      else if (big) stitches(P, { p, len: 11 * s / 0.9, gap: 4.5, jit: 1.4, seed: i }, major);
+      else if (md) stitches(P, { p, len: 9 * s / 0.9, gap: 4.2, jit: 1.2, seed: i }, mid);
+      else stitches(P, { p, len: 8 * s / 0.9, gap: 3.4, jit: 1.1, seed: i }, minor); });
+    ctx.globalAlpha = 0.62; draw(ctx, minor, COL.chalk, Math.max(1.8, 2.1 * s / 0.9), { holes: false }); ctx.globalAlpha = 1; draw(ctx, mid, COL.chalk, Math.max(2.6, 2.9 * s / 0.9)); draw(ctx, foot, COL.mint, 1.4, { holes: false }); draw(ctx, major, COL.chalk, Math.max(3.6, 4.0 * s / 0.9));
+    // landmark buildings: a mint running-stitch outline
+    const lmS = []; DATA.hl.forEach((h, i) => { const p = c01((R - h.d) / 120); if (p > 0) stitches(h.pts.map((q) => project(cam, q[0], q[1])), { p, len: 7, gap: 3, jit: 0.8, seed: 40 + i }, lmS); }); draw(ctx, lmS, COL.mint, 2.6);
+    // railway: ties
+    const tie = []; DATA.rail.forEach((r) => { const P = r.pts.map((q) => project(cam, q[0], q[1])); if (onScreen(P, W, H, 20) && fade(Math.hypot(r.pts[0][0], r.pts[0][1])) > 0) stitches(P, { p: 1, len: 1.6, gap: 6, jit: 5, seed: 3 }, tie); });
+    draw(ctx, tie, COL.mint, 1.6);
+    // lead thread: the route, in rose, with the needle at its tip
+    let tip = null; const RP = DATA.route.map((q) => project(cam, q[0], q[1])); RP.push(project(cam, 0, 0)); const segs = [];
+    const last = stitches(RP, { p: st.route, len: 20 * s / 0.9, gap: 5.5 * s / 0.9, jit: 1.2, seed: 11 }, segs); draw(ctx, segs, COL.rose, Math.max(5.4, 6 * s / 0.9)); tip = last;
+    if (st.route > 0) { const k = RP[0]; ctx.fillStyle = PAL.rose; ctx.beginPath(); ctx.arc(k[0], k[1], 7 * s / 0.9 + 2, 0, 6.283); ctx.fill(); ctx.strokeStyle = PAL.roseSh; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(k[0], k[1], 4 * s / 0.9 + 1, 0, 6.283); ctx.stroke(); }  // the knot where the thread starts
+    return { tip: tip, route: RP };
+  }
+
+  function needle(ctx, tip, s) {
+    if (!tip) return; const dx = tip[2] - tip[0], dy = tip[3] - tip[1], an = Math.atan2(dy, dx), ex = tip[2], ey = tip[3], L = 46 * s / 0.9 + 18;
+    ctx.save(); ctx.translate(ex, ey); ctx.rotate(an); ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(11,14,35,0.55)'; ctx.lineWidth = 2.6; ctx.beginPath(); ctx.moveTo(2, 3); ctx.lineTo(L, 3); ctx.stroke();
+    ctx.strokeStyle = PAL.chalk; ctx.lineWidth = 2.2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(L, 0); ctx.stroke();
+    ctx.strokeStyle = PAL.chalkHi; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.moveTo(0, -0.6); ctx.lineTo(L, -0.6); ctx.stroke();
+    ctx.fillStyle = PAL.ground; ctx.strokeStyle = PAL.chalk; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.ellipse(L - 7, 0, 5.5, 1.5, 0, 0, 6.283); ctx.fill(); ctx.stroke(); ctx.restore();
+    ctx.strokeStyle = PAL.rose; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(ex, ey); ctx.quadraticCurveTo(ex + Math.cos(an) * L * 0.5, ey + Math.sin(an) * L * 0.5 + 9, ex + Math.cos(an) * (L - 7), ey + Math.sin(an) * (L - 7)); ctx.stroke();
+  }
+
+  // a sew-on button at the cafe: pearl-white disc, four holes, a rose cross-stitch; settles with a small wobble (p 0..1)
+  function button(ctx, x, y, r, p, t) {
+    if (p <= 0) return; const sc = 0.85 + 0.15 * c01(p * 2), wob = Math.sin(t * 9) * (1 - c01(p)) * 0.12;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(wob); ctx.scale(sc, sc);
+    ctx.fillStyle = 'rgba(8,10,26,0.6)'; ctx.beginPath(); ctx.arc(2.6, 3.4, r, 0, 6.283); ctx.fill();
+    ctx.fillStyle = PAL.chalk; ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = PAL.chalkSh; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(0, 0, r * 0.74, 0, 6.283); ctx.stroke();
+    const o = r * 0.3; ctx.fillStyle = PAL.ground; [[-o, -o], [o, -o], [-o, o], [o, o]].forEach((q) => { ctx.beginPath(); ctx.arc(q[0], q[1], r * 0.12, 0, 6.283); ctx.fill(); });
+    const k = c01((p - 0.35) / 0.65); ctx.strokeStyle = PAL.rose; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-o, -o); ctx.lineTo(-o + 2 * o * k, -o + 2 * o * k); ctx.stroke(); ctx.beginPath(); ctx.moveTo(o, -o); ctx.lineTo(o - 2 * o * k, -o + 2 * o * k); ctx.stroke(); ctx.restore();
+  }
+
+  // the Chorus wordmark as a satin-stitch fill: rows of thread, serpentine, needle at the head. p 0..1
+  function logo(ctx, x, y, w, p, col) {
+    const L = DATA.logo, sc = w / L.w; let total = 0; L.rows.forEach((r) => r[1].forEach((q) => { total += q[1] - q[0]; }));
+    const lim = total * c01(p); let acc = 0, segs = [], lastS = null; const rows = L.rows;
+    for (let i = 0; i < rows.length && acc < lim; i++) { const y0 = rows[i][0], runs = i % 2 ? rows[i][1].slice().reverse() : rows[i][1];
+      for (let j = 0; j < runs.length && acc < lim; j++) { const a = runs[j][0], b = runs[j][1], ln = b - a, use = Math.min(ln, lim - acc), fw = i % 2 === 0;
+        const x0 = fw ? a : b, x1 = fw ? a + use : b - use, yy = y0 + (h2(i, j) - 0.5) * 0.9; segs.push([x + x0 * sc, y + yy * sc, x + x1 * sc, y + (yy + (h2(j, i) - 0.5) * 0.8) * sc]); acc += use; lastS = segs[segs.length - 1]; } }
+    draw(ctx, segs, col || COL.chalk, Math.max(2.4, L.step * sc * 1.15)); return p < 1 ? lastS : null;
+  }
+
+  // an appliqued patch: dark fabric, slightly turned, blanket-stitched in rose. p 0..1 draws the border
+  function patch(ctx, x, y, w, h, p, rot) {
+    ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.rotate(rot || 0); const hw = w / 2, hh = h / 2;
+    ctx.fillStyle = 'rgba(4,6,18,0.55)'; ctx.fillRect(-hw + 5, -hh + 7, w, h); ctx.fillStyle = '#0D1130'; ctx.fillRect(-hw, -hh, w, h);
+    for (let yy = -hh + 3; yy < hh; yy += 4) { ctx.fillStyle = h2(yy, 5) > 0.5 ? '#141A3C' : '#0A0D26'; ctx.globalAlpha = 0.5; ctx.fillRect(-hw, yy, w, 1.2); } ctx.globalAlpha = 1;
+    const segs = [], per = 2 * (w + h), n = Math.floor(per / 13), lim = Math.floor(n * c01(p));
+    for (let i = 0; i < lim; i++) { let d = (i / n) * per, ax, ay, nx, ny; if (d < w) { ax = -hw + d; ay = -hh; nx = 0; ny = 1; } else if (d < w + h) { ax = hw; ay = -hh + (d - w); nx = -1; ny = 0; } else if (d < 2 * w + h) { ax = hw - (d - w - h); ay = hh; nx = 0; ny = -1; } else { ax = -hw; ay = hh - (d - 2 * w - h); nx = 1; ny = 0; }
+      const l = 8 + 2 * h2(i, 3); segs.push([ax, ay, ax + nx * l, ay + ny * l]); }
+    draw(ctx, segs, COL.rose, 3.2); ctx.strokeStyle = PAL.rose; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-hw + 4, -hh + 1.5); ctx.lineTo(-hw + 4 + (w - 8) * c01(p), -hh + 1.5); ctx.stroke(); ctx.restore();
+  }
+
+  return { PAL, COL, patch, load, drawMap, needle, button, logo, project, h2, c01, get data() { return DATA; } };
+})();

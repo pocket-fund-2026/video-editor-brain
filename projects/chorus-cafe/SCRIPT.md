@@ -4,7 +4,7 @@ Account: @bombaycafemap. Format: vertical Reel, about 50 seconds with a warm, un
 Voice: confident, a little amused, never salesy. Lowercase casual captions, no em dashes, no "we tried it" (nobody on the team has visited yet).
 Every number and claim below is in `FACTS.md` with its source. Nothing here is guessed.
 
-## Narration (112 words, about 52 s)
+## Narration (about 125 words, about 58 s)
 
 **1. Hook** (0:00)
 Upstairs from a fashion store in Kala Ghoda, there's a cafe where even the pasta wears stripes.
@@ -13,7 +13,7 @@ Upstairs from a fashion store in Kala Ghoda, there's a cafe where even the pasta
 Chorus Café opened in November 2025, and calls itself a cultural living room.
 
 **3. The space** (0:12)
-Downstairs, clothes and ceramics. Upstairs, a giant embroidered artwork, with hidden hands worked into it to honour the makers.
+Grab something to eat, then shop too, all at the same place. Clothes, textiles and ceramics downstairs. Upstairs, a giant embroidered artwork, with hidden hands worked into it to honour the makers.
 
 **4. The food** (0:21)
 Everything's vegetarian. The Chorus Quilt is five house made dips with warm bread. The fazzoletti is pasta shaped like a handkerchief.
@@ -35,8 +35,8 @@ Which dish would you order first? Comment below.
 - **Question:** "What happens when a fashion label opens a kitchen? In Kala Ghoda, you can taste it."
 - **Contrast:** "Downstairs, you shop. Upstairs, you eat the same craft."
 
-## Thirty-second cut (for a faster Reel, about 66 words)
-Upstairs from a fashion store in Kala Ghoda, there's a cafe where even the pasta wears stripes. Chorus Café calls itself a cultural living room. Everything's vegetarian: five house made dips in the Chorus Quilt, handkerchief pasta in stripes. Afternoon tea for two is three thousand six hundred rupees. A cappuccino is four fifty. Open daily, eleven to eight, on Mittal Avenue. Which dish first?
+## Thirty-second cut (for a faster Reel, about 70 words)
+Upstairs from a fashion store in Kala Ghoda, there's a cafe where even the pasta wears stripes. Chorus Café calls itself a cultural living room: eat upstairs, then shop downstairs. Everything's vegetarian: five house made dips in the Chorus Quilt, handkerchief pasta in stripes. Afternoon tea for two is three thousand six hundred rupees. A cappuccino is four fifty. Open daily, eleven to eight, on Mittal Avenue. Which dish first?
 
 ## On-screen text beats (for the animation discussion, no design decided yet)
 1. "Kala Ghoda" + "Level 2, Mittal Avenue"
