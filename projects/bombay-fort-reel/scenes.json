@@ -1,0 +1,68 @@
+{
+ "v": 1,
+ "stage": "final",
+ "look": "Brand night map: warm charcoal ground, copper and gold lines, cream type, the Bombay Cafe Map cup logo, a spinning real-geography Mumbai map with rising 3D buildings, ticket card, stamps and word-by-word captions in the style of the user's reference reel",
+ "palettes": [
+  [
+   "#0B1013",
+   "#E8B04A",
+   "#EEF3F4",
+   "#5FD0DB"
+  ]
+ ],
+ "theirs": 1,
+ "width": 1080,
+ "height": 1920,
+ "fps": 30,
+ "background": "#0B1013",
+ "fonts": {
+  "display": "inter-display",
+  "sans": "plus-jakarta-sans",
+  "mono": "dm-mono",
+  "serif": "fraunces"
+ },
+ "scenes": [
+  {
+   "id": "hook",
+   "name": "The hook",
+   "dur": 7,
+   "desc": "The shape of Mumbai, a glowing highlight on Fort, then a zoom into Ballard Estate where the real buildings rise."
+  },
+  {
+   "id": "story",
+   "name": "1923 to now",
+   "dur": 9,
+   "desc": "A timeline draws across the map: founded, handed down, still open."
+  },
+  {
+   "id": "dish",
+   "name": "The dish",
+   "dur": 10,
+   "desc": "The berry pulao: three ingredient lines draw in and a dotted route runs from Iran to the pin."
+  },
+  {
+   "id": "verdict",
+   "name": "The verdict",
+   "dur": 11,
+   "desc": "A stamp lands, the rating meter fills to 4.2 and the line reads worth the trip, yes definitely."
+  },
+  {
+   "id": "visit",
+   "name": "Visit card",
+   "dur": 6,
+   "desc": "A swaying ticket with the cafe logo and four icon rows: address, lunch only, closed Sundays, bring cash."
+  },
+  {
+   "id": "nearby",
+   "name": "Next stop",
+   "dur": 5,
+   "desc": "A glowing walker runs the dotted path and a pin drops onto Bombay Coffee House."
+  },
+  {
+   "id": "end",
+   "name": "Your turn",
+   "dur": 4,
+   "desc": "The map spins back out to the shape of Mumbai while the Bombay Cafe Map logo pops in with a poll card."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "_note": "Approximate lookalikes of Claude/Anthropic brand colors (terracotta orange, warm cream). Not official values. Add to this list when feedback names another lookalike.",
+ "claude-terracotta": [
+  "#D97757",
+  "#CC785C",
+  "#C15F3C",
+  "#DA7756",
+  "#E07B53"
+ ],
+ "_cream_rule": {
+  "L_min": 82,
+  "b_min": 5,
+  "b_max": 28
+ }
+}

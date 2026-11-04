@@ -1,0 +1,16 @@
+#stage { --ground:#0B1013; --main:#E8B04A; --second:#EEF3F4; --accent:#5FD0DB; color:var(--second); font-family:var(--sans, system-ui, sans-serif) }
+.ground { position:absolute; inset:0; background:radial-gradient(95% 60% at 50% 42%, color-mix(in srgb, var(--main) 9%, var(--ground)), var(--ground)) }
+.words { position:absolute; margin:0; display:flex; flex-direction:column; gap:28px } .words > * { margin:0 }
+.line { font-family:var(--display, var(--sans, system-ui, sans-serif)); font-size:92px; line-height:1.03; font-weight:800; letter-spacing:-.02em } .sub { font-size:40px; color:color-mix(in srgb, var(--second) 70%, var(--ground)) }
+.gold { color:var(--main) } .cy { color:var(--accent) }
+.mapc { position:absolute; left:0; top:0; width:1080px; height:1920px }
+.hdr { position:absolute; left:56px; right:56px; top:272px; display:flex; justify-content:space-between; font-family:var(--mono, ui-monospace, monospace); font-size:24px; letter-spacing:.2em; text-transform:uppercase; color:color-mix(in srgb, var(--second) 62%, var(--ground)) } .hdr b { color:var(--main); font-weight:500 }
+.prog { position:absolute; left:56px; right:56px; top:250px; height:3px; background:color-mix(in srgb, var(--second) 14%, transparent) } .prog i { display:block; height:100%; width:100%; background:var(--main); transform-origin:0 50% }
+.cap { position:absolute; left:70px; right:70px; top:1300px; text-align:center; font-size:54px; line-height:1.18; font-weight:700; text-wrap:balance }
+.tag { position:absolute; padding:12px 22px; border-radius:999px; background:color-mix(in srgb, var(--ground) 86%, var(--second)); border:2px solid color-mix(in srgb, var(--second) 28%, transparent); font-size:30px; font-weight:700; white-space:nowrap }
+.tag small { font-family:var(--mono, ui-monospace, monospace); font-size:20px; letter-spacing:.14em; margin-left:10px; color:var(--main) }
+.mono { font-family:var(--mono, ui-monospace, monospace); font-size:24px; letter-spacing:.16em; text-transform:uppercase; color:color-mix(in srgb, var(--second) 62%, var(--ground)) }
+.card { position:absolute; background:color-mix(in srgb, var(--ground) 91%, var(--second)); border:2px solid color-mix(in srgb, var(--second) 16%, transparent); border-radius:30px; padding:38px 44px }
+.stamp { position:absolute; display:inline-block; border:7px solid var(--main); color:var(--main); border-radius:14px; padding:10px 30px; font-family:var(--display, var(--sans, system-ui, sans-serif)); font-weight:900; font-size:74px; letter-spacing:.03em; text-transform:uppercase; white-space:nowrap }
+.wm { font-family:var(--serif, Georgia, serif); font-weight:400; letter-spacing:-.01em }
+.card { box-sizing:border-box }
