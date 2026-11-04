@@ -9,13 +9,43 @@
   "transition": "match cut on shape: button becomes the plate, stitch line becomes the table edge",
   "camera": "flat top-down on cloth with slow drift and thread-length parallax",
   "layout": "hang-tag facts, asymmetric, left-weighted headlines",
-  "motion_device": ["hang-tag swing", "running-stitch draw", "satin-stitch fill count", "appliqué patches"],
+  "motion_device": [
+   "hang-tag swing",
+   "running-stitch draw",
+   "satin-stitch fill count",
+   "appliqué patches",
+   "3D raised-stitch buildings"
+  ],
   "texture": "embroidered thread on woven cloth",
   "sound": "cloth and ceramic foley with Sana narration, no music",
   "ending": "thread ties off in a knot and the scissors snip"
  },
- "moves": ["route-line draw", "match cut on shape", "hang-tag facts", "embroidered thread map", "cloth and ceramic foley", "handwritten marks", "satin-stitch count-up"],
- "experiment": {"move": "embroidered thread map", "hypothesis": "Drawing real streets as running stitches makes the map feel crafted and ties the film to Chorus's textile identity without using any photos"},
- "palette": {"ground": "#141A3C", "main": "#E0506F", "second": "#F2F5FA", "accent": "#8ED8C4"},
- "pin": {"lat": 18.9290605, "lon": 72.8323474, "source": "official store page map link (chorusworld.com/pages/store)", "label": "Level 2, Mittal Avenue, Fort"}
+ "moves": [
+  "route-line draw",
+  "match cut on shape",
+  "hang-tag facts",
+  "embroidered thread map",
+  "cloth and ceramic foley",
+  "handwritten marks",
+  "satin-stitch count-up",
+  "raised stumpwork 3D buildings",
+  "logo-first opening",
+  "monogram thread sign-off"
+ ],
+ "experiment": {
+  "move": "embroidered thread map",
+  "hypothesis": "Drawing real streets as running stitches makes the map feel crafted and ties the film to Chorus's textile identity without using any photos"
+ },
+ "palette": {
+  "ground": "#141A3C",
+  "main": "#E0506F",
+  "second": "#F2F5FA",
+  "accent": "#8ED8C4"
+ },
+ "pin": {
+  "lat": 18.9290605,
+  "lon": 72.8323474,
+  "source": "official store page map link (chorusworld.com/pages/store)",
+  "label": "Level 2, Mittal Avenue, Fort"
+ }
 }

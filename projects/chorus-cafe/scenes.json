@@ -1,1 +1,72 @@
-{"v":1,"stage":"rough","look":"The Stitched Map: Kala Ghoda embroidered on woven cloth, real streets as thread, a needle leads the route to the cafe's button","palettes":[["#141A3C","#E0506F","#F2F5FA","#8ED8C4"]],"theirs":0,"width":1080,"height":1920,"fps":30,"background":"#141A3C","fonts":{"serif":"fraunces","mono":"dm-mono"},"scenes":[{"id":"hook","name":"The thread","dur":7,"desc":"A needle stitches the real streets of Kala Ghoda and ties a button at the cafe, then the Chorus logo is satin-stitched."}]}
+{
+ "v": 1,
+ "stage": "rough",
+ "look": "The Stitched Map: Kala Ghoda embroidered on woven cloth, real streets as thread, a needle leads the route to the cafe's button",
+ "palettes": [
+  [
+   "#141A3C",
+   "#E0506F",
+   "#F2F5FA",
+   "#8ED8C4"
+  ]
+ ],
+ "theirs": 0,
+ "width": 1080,
+ "height": 1920,
+ "fps": 30,
+ "background": "#141A3C",
+ "fonts": {
+  "serif": "fraunces",
+  "mono": "dm-mono"
+ },
+ "scenes": [
+  {
+   "id": "hook",
+   "name": "The thread",
+   "dur": 8.6,
+   "desc": "The thread"
+  },
+  {
+   "id": "living",
+   "name": "Living room",
+   "dur": 6.2,
+   "desc": "Living room"
+  },
+  {
+   "id": "space",
+   "name": "The space",
+   "dur": 11,
+   "desc": "The space"
+  },
+  {
+   "id": "food",
+   "name": "The food",
+   "dur": 11,
+   "desc": "The food"
+  },
+  {
+   "id": "tea",
+   "name": "Tea for two",
+   "dur": 8.5,
+   "desc": "Tea for two"
+  },
+  {
+   "id": "cup",
+   "name": "A cappuccino",
+   "dur": 4.6,
+   "desc": "A cappuccino"
+  },
+  {
+   "id": "go",
+   "name": "Go",
+   "dur": 8.5,
+   "desc": "Go"
+  },
+  {
+   "id": "close",
+   "name": "Your turn",
+   "dur": 7.6,
+   "desc": "Your turn"
+  }
+ ]
+}
