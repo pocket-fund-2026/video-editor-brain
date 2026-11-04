@@ -9,6 +9,8 @@
 6. Render frames and run `tools/qa/run_evals.py` before saying a film is ready. (L006)
 7. Ask about narration at the start; the Motion artifact cannot carry a voiceover. (L007)
 8. Reuse the map engine; maps are central to this user's videos. (L009)
+9. Always innovate: change at least 3 unlocked design dimensions versus the last 3 films and test one new move; run the designer first. (L012)
+10. The loop runs through hooks: feedback is captured verbatim and must be recorded as a lesson before finishing. (L012)
 
 ## Log (newest last; written by tools/qa/record_lesson.py)
 
@@ -88,3 +90,10 @@
 - Cause: Did not check plan limits for library voices before promising to generate with the chosen voice
 - Rule: Before offering a specific ElevenLabs library voice, test one short generation first; on a free plan use the web app and match clips to scenes by transcript with tools/voice/build_timing.py
 - Guarded by: process
+
+### L012 · 2026-11-04 · bombay-fort-reel · process-skipped-verification
+- Feedback (verbatim): create a proper self learning loop and always innovate with new designs and yes merge the hooks
+- Symptom: The loop depended on remembering to run it, and every film risked repeating the same look
+- Cause: Nothing automatic captured feedback or forced variety
+- Rule: Run the loop through hooks (SessionStart, UserPromptSubmit, Stop) and gate every new film on a design variety check: change at least 3 unlocked dimensions versus the last 3 films and test one new move; log every film and experiment
+- Guarded by: novelty_check

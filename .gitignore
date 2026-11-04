@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 frames/
+memory/inbox.jsonl
+memory/.evals_stamp.json
