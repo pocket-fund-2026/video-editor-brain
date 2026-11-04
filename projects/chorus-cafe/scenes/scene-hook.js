@@ -13,8 +13,8 @@ kit.scene('hook', {
     const pin = Stitch.project(cam, 0, 0);
     if (route < 1) Stitch.needle(ctx, r.tip, cam.s);
     Stitch.button(ctx, pin[0], pin[1], 26 * cam.s / 0.9 + 6, seg(t, 3.3, 4.3), t);
-    Stitch.patch(ctx, 110, 300, 860, 230, seg(t, 3.8, 5.0), -0.012);
-    const lg = Stitch.logo(ctx, 190, 346, 700, seg(t, 4.6, 6.7));
+    Stitch.patch(ctx, 110, 290, 860, 300, seg(t, 3.8, 5.0), -0.012);
+    const lg = Stitch.logo(ctx, 220, 325, 640, seg(t, 4.6, 6.8), null, 'lockup');
     if (lg) Stitch.needle(ctx, lg, 0.9);
   },
 });

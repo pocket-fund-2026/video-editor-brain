@@ -31,6 +31,7 @@ JS = r"""
     if (!g._gid) g._gid = Math.random().toString(36).slice(2);
     out.push({ t: n.textContent.trim().slice(0, 38), x0: b.left - sr.left, y0: b.top - sr.top, x1: b.right - sr.left, y1: b.bottom - sr.top, g: g._gid });
   }
+  if (window.Stitch && window.Stitch.boxes) window.Stitch.boxes().forEach((b) => out.push({ t: b.t, x0: b.x0, y0: b.y0, x1: b.x1, y1: b.y1, g: 'c:' + b.g }));
   return out;
 }
 """

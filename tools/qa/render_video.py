@@ -36,7 +36,7 @@ def main():
     with sync_playwright() as pw:
         b = pw.chromium.launch(); pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
         errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
-        pg.goto("file://" + path); pg.evaluate("document.fonts.ready")
+        pg.goto("file://" + path); pg.evaluate("Promise.all([document.fonts.load('700 40px Fraunces'), document.fonts.load('500 40px Fraunces'), document.fonts.load('400 22px \"DM Mono\"'), document.fonts.load('400 40px Inter')]).then(() => document.fonts.ready)")
         first = sc["scenes"][0]["id"]; pg.evaluate(BEGIN, [first]); pg.evaluate(STEP, 0.0); pg.wait_for_timeout(1500); pg.evaluate("document.fonts.ready")
         for s in sc["scenes"]:
             pg.evaluate(BEGIN, [s["id"]])

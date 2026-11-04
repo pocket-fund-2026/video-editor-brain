@@ -1,5 +1,6 @@
 // Stitch: an embroidery renderer. Everything is a pure function of time and position (seeded by hash, never Math.random).
 window.Stitch = (function () {
+  'use strict';
   const PAL = { ground: '#141A3C', weaveHi: '#1B2252', weaveLo: '#0F1432', rose: '#E0506F', roseSh: '#7C2640', roseHi: '#F59AAE',
     chalk: '#F2F5FA', chalkSh: '#5C6490', chalkHi: '#FFFFFF', mint: '#8ED8C4', mintSh: '#3F7A6C', mintHi: '#D2F5EA', tone: '#262F6A', tone2: '#1E2658' };
   const h2 = (a, b) => { const n = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return n - Math.floor(n); };
@@ -12,7 +13,7 @@ window.Stitch = (function () {
     const un = (p) => { const a = []; for (let i = 0; i < p.length; i += 2) a.push([p[i], p[i + 1]]); return a; };
     DATA = { roads: raw.roads.map((r) => ({ pts: un(r.p), hw: r.hw, name: r.name })), blds: raw.buildings.map((b) => ({ pts: un(b.p), name: b.name })),
       green: raw.green.map((g) => ({ pts: un(g.p), name: g.name })), water: raw.water.map((g) => ({ pts: un(g.p) })), rail: raw.rail.map((g) => ({ pts: un(g.p) })),
-      lm: raw.landmarks, route: un(raw.route), logo: kit.json('chorus_logo_stitches.json') };
+      lm: raw.landmarks, route: un(raw.route), logo: kit.json('chorus_logo_stitches.json'), lockup: kit.json('chorus_cafe_lockup.json'), mono: kit.json('chorus_monogram.json') };
     DATA.hl = [];
     const inside = (P, x, y) => { let ins = false; for (let j = 0, k = P.length - 1; j < P.length; k = j++) { if (((P[j][1] > y) !== (P[k][1] > y)) && (x < (P[k][0] - P[j][0]) * (y - P[j][1]) / (P[k][1] - P[j][1]) + P[j][0])) ins = !ins; } return ins; };
     const WANT = ['Jehangir Art Gallery', 'Chhatrapati Shivaji Maharaj Vastu Sangra', 'Max Mueller Bahvan', 'Sir David Sassoon Library', 'Mumbai University - Fort Campus'];
@@ -139,8 +140,8 @@ window.Stitch = (function () {
   }
 
   // the Chorus wordmark as a satin-stitch fill: rows of thread, serpentine, needle at the head. p 0..1
-  function logo(ctx, x, y, w, p, col) {
-    const L = DATA.logo, sc = w / L.w; let total = 0; L.rows.forEach((r) => r[1].forEach((q) => { total += q[1] - q[0]; }));
+  function logo(ctx, x, y, w, p, col, which) {
+    const L = which ? DATA[which] : DATA.logo, sc = w / L.w; let total = 0; L.rows.forEach((r) => r[1].forEach((q) => { total += q[1] - q[0]; }));
     const lim = total * c01(p); let acc = 0, segs = [], lastS = null; const rows = L.rows;
     for (let i = 0; i < rows.length && acc < lim; i++) { const y0 = rows[i][0], runs = i % 2 ? rows[i][1].slice().reverse() : rows[i][1];
       for (let j = 0; j < runs.length && acc < lim; j++) { const a = runs[j][0], b = runs[j][1], ln = b - a, use = Math.min(ln, lim - acc), fw = i % 2 === 0;
@@ -159,5 +160,54 @@ window.Stitch = (function () {
     draw(ctx, segs, COL.rose, 3.2); ctx.strokeStyle = PAL.rose; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-hw + 4, -hh + 1.5); ctx.lineTo(-hw + 4 + (w - 8) * c01(p), -hh + 1.5); ctx.stroke(); ctx.restore();
   }
 
-  return { PAL, COL, patch, load, drawMap, needle, button, logo, project, h2, c01, get data() { return DATA; } };
+
+  // ---------- v2 primitives: text, shapes, tags, captions ----------
+  const BOX = [];
+  const reg = (t, x0, y0, x1, y1, g) => BOX.push({ t: String(t).slice(0, 38), x0: x0, y0: y0, x1: x1, y1: y1, g: g || String(t) });
+  const TC = {};
+  function rowsOf(str, font, step) {
+    const key = font + '|' + str + '|' + step; if (TC[key]) return TC[key];
+    const c = document.createElement('canvas'), x = c.getContext('2d'); x.font = font; const size = parseInt(font.match(/(\d+)px/)[1]), pad = 6, w = Math.ceil(x.measureText(str).width) + pad * 2, h = Math.ceil(size * 1.45) + pad * 2;
+    c.width = w; c.height = h; x.font = font; x.fillStyle = '#fff'; x.fillText(str, pad, pad + size * 1.05); const a = x.getImageData(0, 0, w, h).data, rows = [];
+    for (let y = 1; y < h; y += step) { const runs = []; let on = false, s = 0; for (let xx = 0; xx < w; xx++) { const v = a[(y * w + xx) * 4 + 3] > 110; if (v && !on) { on = true; s = xx; } if ((!v || xx === w - 1) && on) { const e = v ? xx + 1 : xx; if (e - s >= 2) runs.push([s, e]); on = false; } } if (runs.length) rows.push([y, runs]); }
+    return (TC[key] = { w: w, h: h, rows: rows, pad: pad, size: size, step: step });
+  }
+  // satin-stitched text. o: {font, x, y (top-left), p 0..1, col, step}. Returns {w, h, tip}
+  function text(ctx, str, o) {
+    const R = rowsOf(str, o.font, o.step || 3); let total = 0; R.rows.forEach((r) => r[1].forEach((q) => { total += q[1] - q[0]; }));
+    const lim = total * c01(o.p == null ? 1 : o.p); let acc = 0, segs = [], lastS = null;
+    for (let i = 0; i < R.rows.length && acc < lim; i++) { const runs = i % 2 ? R.rows[i][1].slice().reverse() : R.rows[i][1];
+      for (let j = 0; j < runs.length && acc < lim; j++) { const a = runs[j][0], b = runs[j][1], use = Math.min(b - a, lim - acc), fw = i % 2 === 0, yy = R.rows[i][0] + (h2(i, j) - 0.5) * 0.7;
+        segs.push([o.x + (fw ? a : b) - R.pad, o.y + yy - R.pad, o.x + (fw ? a + use : b - use) - R.pad, o.y + yy - R.pad + (h2(j, i) - 0.5) * 0.7]); acc += use; lastS = segs[segs.length - 1]; } }
+    draw(ctx, segs, o.col || COL.chalk, Math.max(2.1, R.step * 0.95), { holes: false }); reg(str, o.x, o.y, o.x + R.w - R.pad * 2, o.y + R.size * 1.2, o.g);
+    return { w: R.w - R.pad * 2, h: R.size * 1.2, tip: (o.p != null && o.p < 1) ? lastS : null };
+  }
+  function label(ctx, str, x, y, o) {   // small woven-label text: plain mono capitals
+    o = o || {}; ctx.save(); ctx.font = (o.font || "400 22px 'DM Mono', monospace"); ctx.letterSpacing = (o.ls || 3) + 'px'; ctx.textBaseline = 'top'; ctx.fillStyle = o.color || PAL.chalk; ctx.globalAlpha = o.a == null ? 0.9 : o.a;
+    const w = ctx.measureText(str).width; ctx.fillText(str, x, y); ctx.restore(); reg(str, x, y, x + w, y + 26, o.g); return w;
+  }
+  function caption(ctx, str, t, t0, o) {   // word-by-word, left aligned, wraps at 940 px, drawn in Fraunces
+    o = o || {}; ctx.save(); const f = o.font || "500 54px Fraunces, Georgia, serif"; ctx.font = f; ctx.textBaseline = 'top'; const words = str.split(' '), maxW = o.w || 940, lh = o.lh || 66; let x = 0, y = 0, lines = [[]];
+    words.forEach((wd) => { const w = ctx.measureText(wd + ' ').width; if (x + w > maxW && lines[lines.length - 1].length) { lines.push([]); x = 0; } lines[lines.length - 1].push([wd, x, lines.length - 1]); x += w; });
+    let k = 0; const per = o.per || 0.16;
+    lines.forEach((ln, li) => { ln.forEach((w) => { const a = c01((t - t0 - k * per) / 0.35); k++; ctx.globalAlpha = a; ctx.fillStyle = PAL.chalk; ctx.fillText(w[0], (o.x || 70) + w[1] + (1 - a) * 18, (o.y || 1300) + li * lh); }); });
+    ctx.restore(); const wmax = Math.max.apply(null, lines.map((l) => l.length ? l[l.length - 1][1] + ctx.measureText(l[l.length - 1][0]).width : 0).concat([1]));
+    reg(str, o.x || 70, o.y || 1300, (o.x || 70) + wmax, (o.y || 1300) + lines.length * lh, 'cap');
+  }
+  // stitched polyline / polygon outline (screen px). col: COL.*, p: reveal 0..1
+  function line(ctx, pts, col, w, p, o) { o = o || {}; const segs = []; stitches(pts, { p: p == null ? 1 : p, len: o.len || 12, gap: o.gap || 4.5, jit: o.jit == null ? 1.1 : o.jit, seed: o.seed || 1 }, segs); draw(ctx, segs, col, w, o); return segs.length ? segs[segs.length - 1] : null; }
+  function fillPoly(ctx, pts, col, w, p, th, d) { const segs = []; hatch(pts, d || 3.4, th == null ? 0.7 : th, segs); segs.sort((a, b) => a[1] - b[1]); draw(ctx, segs.slice(0, Math.floor(segs.length * c01(p == null ? 1 : p))), col, w || 2.6, { holes: false }); }
+  const circ = (cx, cy, r, n) => { const a = []; for (let i = 0; i <= (n || 40); i++) { const th = i / (n || 40) * 6.2832; a.push([cx + Math.cos(th) * r, cy + Math.sin(th) * r]); } return a; };
+  const swing = (t, t0, A, k, w) => t < t0 ? A * 1.0 : A * Math.exp(-(t - t0) * (k || 1.5)) * Math.cos((t - t0) * (w || 6.5));
+  // hang-tag: a patch swinging from a thread. cb(ctx) draws the tag's contents in tag coordinates (origin = top-centre of the tag)
+  function tag(ctx, ax, ay, len, w, h, ang, p, cb) {
+    ctx.save(); ctx.translate(ax, ay); ctx.rotate(ang);
+    const strg = []; stitches([[0, 0], [0, len]], { p: 1, len: 40, gap: 0.1, jit: 0, seed: 5 }, strg); draw(ctx, strg, COL.chalk, 2.2, { holes: false });
+    ctx.translate(0, len); patch(ctx, -w / 2, 0, w, h, p, 0); ctx.fillStyle = PAL.ground; ctx.beginPath(); ctx.arc(0, 14, 7, 0, 6.283); ctx.fill(); ctx.strokeStyle = PAL.chalk; ctx.lineWidth = 2; ctx.stroke();
+    if (cb) cb(ctx); ctx.restore();
+  }
+  function cloth2(ctx, W, H) { ctx.clearRect(0, 0, W, H); ctx.drawImage(makeCloth(W, H), 0, 0); BOX.length = 0; }
+  const HAND = [[0, 10], [-9, 2], [-10, -10], [-7, -22], [-4, -12], [-4, -30], [0, -33], [3, -30], [3, -14], [6, -32], [10, -30], [9, -12], [12, -26], [16, -23], [12, -4], [14, 2], [8, 12]];
+
+  return { PAL, COL, patch, text, label, caption, line, fillPoly, circ, swing, tag, cloth2, HAND, boxes: () => BOX.slice(), load, drawMap, needle, button, logo, project, h2, c01, get data() { return DATA; } };
 })();
