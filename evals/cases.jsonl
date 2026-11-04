@@ -1,0 +1,6 @@
+{"id": "C001", "lesson": "L001", "title": "Palette must not look like Claude branding", "check": "palette_check"}
+{"id": "C002", "lesson": "L002", "title": "No overlapping or duplicated text on the end card", "check": "overlap_check"}
+{"id": "C003", "lesson": "L003", "title": "Text stays out of the platform UI zones", "check": "overlap_check"}
+{"id": "C004", "lesson": "L004", "title": "No unverified prices or hours on screen", "check": "facts_check"}
+{"id": "C005", "lesson": "L005", "title": "OpenStreetMap credit on screen", "check": "facts_check"}
+{"id": "C006", "lesson": "L008", "title": "Nothing runs outside the frame", "check": "overlap_check"}

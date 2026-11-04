@@ -1,0 +1,9 @@
+{
+ "hook": {"chunks": ["You've definitely heard of this cafe.", "Britannia and Company, Ballard Estate.", "Serving lunch since nineteen twenty three."], "marks": {"brit": "britannia"}},
+ "story": {"chunks": ["An Iranian immigrant, Rashid Kohinoor, opened it.", "His son Boman took over at twenty,", "and kept it going until he died at ninety seven."], "marks": {"n1": "rashid", "n2": "boman", "n3": "died"}},
+ "dish": {"chunks": ["And there's one reason people still make the trip.", "The berry pulao.", "Saffron rice, chicken or mutton,", "and tart barberries, still brought in from Iran."], "marks": {"r0": "saffron", "r1": "chicken", "r2": "barberries", "arc": "brought"}},
+ "verdict": {"chunks": ["So, worth the trip? Yes. Definitely.", "Order the berry pulao, take your time,", "and sit inside a hundred years of old Bombay.", "Public rating, four point two."], "marks": {"def": "definitely", "pub": "public"}},
+ "visit": {"chunks": ["Lunch only, closed by four on weekdays,", "shut on Sundays. Bring cash, and go hungry."], "marks": {"r1": "lunch", "r2": "sundays", "r3": "cash", "hungry": "hungry"}},
+ "nearby": {"chunks": ["Then it's a short walk to Bombay Coffee House,", "for your next stop."], "marks": {"walk": "short", "house": "coffee"}},
+ "end": {"chunks": ["Which Mumbai institution should we visit next?", "Comment below."], "marks": {"poll": "institution"}}
+}

@@ -1,0 +1,10 @@
+{
+ "reason": "Bombay Cafe Map logo artwork (the cup, coffee band and tile). The client's logo keeps its own colors; only the film's own palette is checked.",
+ "allowed": [
+  "#B5651D",
+  "#FFFAF0",
+  "#EFE0C8",
+  "#3A2216",
+  "#22120B"
+ ]
+}
