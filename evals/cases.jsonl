@@ -5,3 +5,4 @@
 {"id": "C005", "lesson": "L005", "title": "OpenStreetMap credit on screen", "check": "facts_check"}
 {"id": "C006", "lesson": "L008", "title": "Nothing runs outside the frame", "check": "overlap_check"}
 {"id": "C007", "lesson": "L012", "title": "A new film must change at least 3 unlocked design dimensions and try one new move", "check": "novelty_check"}
+{"id": "C008", "lesson": "L013", "title": "New films avoid AI-slop defaults (gradients, glow, blur, emoji, uniform cards)", "check": "slop_check"}

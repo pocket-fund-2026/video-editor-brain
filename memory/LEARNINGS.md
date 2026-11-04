@@ -97,3 +97,10 @@
 - Cause: Nothing automatic captured feedback or forced variety
 - Rule: Run the loop through hooks (SessionStart, UserPromptSubmit, Stop) and gate every new film on a design variety check: change at least 3 unlocked dimensions versus the last 3 films and test one new move; log every film and experiment
 - Guarded by: novelty_check
+
+### L013 · 2026-11-04 · chorus-cafe · brand-fit
+- Feedback (verbatim): dont make it ai slop
+- Symptom: Risk that the new film reads as generic AI output: stock gradients, glows, emoji, identical rounded cards, centered symmetry, floaty bouncing motion, perfect vector smoothness
+- Cause: Defaults of generated design: gradients, blur glows, uniform cards, templated motion, no point of view
+- Rule: Anti-slop: no gradients or glow or blur, no emoji, no uniform card grids; one idea per scene; use real specifics (real menu words, real streets, real prices); asymmetric composition; hand-made imperfection seeded from data (uneven stitch spacing, slight wobble); restraint in motion with a physical reason for every move; typography with a point of view
+- Guarded by: slop_check

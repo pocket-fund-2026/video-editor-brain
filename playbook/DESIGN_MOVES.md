@@ -48,6 +48,11 @@ Rule: every film changes at least 3 unlocked design dimensions against the last 
 - [sound] foley only: no music, only real-world sounds timed to the picture
 - [sound] tabla and bansuri bed: Indian percussion and flute under the voice
 - [sound] lo-fi cafe ambience: cups, murmur and a street bed
+- [texture] embroidered thread map: streets drawn as running stitches on cloth, a needle leads the thread
+- [layout] hang-tag facts: facts on tags that swing from strings
+- [motion_device] tape-measure timeline: a measuring tape runs across the frame as the timeline
+- [transition] napkin-fold morph: a folded napkin becomes the next object
+- [sound] cloth and ceramic foley: fabric, scissors and cup sounds timed to the picture
 - [ending] logo steam pop: the cup logo pops in with curling steam
 - [ending] poll card: a question with option pills
 - [ending] map pull-out: the camera pulls back to the whole city
@@ -57,5 +62,6 @@ Rule: every film changes at least 3 unlocked design dimensions against the last 
 ## Proven (kept in 2+ films)
 
 ## Avoid (the user disliked these)
+- AVOID generic AI-slop defaults: gradients, glow, blur, emoji, identical rounded cards, floaty bounce
 - AVOID flying chips: ingredient chips flying around the map looked cheap and template-like
 - AVOID orange-and-cream palette: reads as Claude branding

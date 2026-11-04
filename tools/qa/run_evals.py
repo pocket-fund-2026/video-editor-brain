@@ -6,7 +6,7 @@ Usage: python3 tools/qa/run_evals.py PROJECT        (needs playwright for the ov
 import json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
-CHECKS = [("palette_check", "palette_check.py"), ("facts_check", "facts_check.py"), ("novelty_check", "../loop/novelty_check.py"), ("overlap_check", "overlap_check.py")]
+CHECKS = [("palette_check", "palette_check.py"), ("facts_check", "facts_check.py"), ("novelty_check", "../loop/novelty_check.py"), ("slop_check", "slop_check.py"), ("overlap_check", "overlap_check.py")]
 
 def main():
     project = sys.argv[1]; results = {}

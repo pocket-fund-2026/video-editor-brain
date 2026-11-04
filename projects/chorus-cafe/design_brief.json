@@ -1,0 +1,21 @@
+{
+ "concept": "The Stitched Map: Kala Ghoda drawn as embroidery on woven cloth. A needle leads the thread along the real streets, the cafe is a button, facts hang from strings on tags, prices are embroidered numerals. No music, Sana's voice over cloth, scissors and ceramic foley.",
+ "anti_slop": true,
+ "locked": [],
+ "dimensions": {
+  "palette": "deep indigo ground, chalk cool white, madder rose thread, mint accent",
+  "fonts": "Fraunces serif headlines (editorial, italic accents) + DM Mono tiny labels, two faces only",
+  "opening": "route-line draw: one thread stitched along the real streets, a needle leading it",
+  "transition": "match cut on shape: button becomes the plate, stitch line becomes the table edge",
+  "camera": "flat top-down on cloth with slow drift and thread-length parallax",
+  "layout": "hang-tag facts, asymmetric, left-weighted headlines",
+  "motion_device": ["hang-tag swing", "running-stitch draw", "satin-stitch fill count", "appliqué patches"],
+  "texture": "embroidered thread on woven cloth",
+  "sound": "cloth and ceramic foley with Sana narration, no music",
+  "ending": "thread ties off in a knot and the scissors snip"
+ },
+ "moves": ["route-line draw", "match cut on shape", "hang-tag facts", "embroidered thread map", "cloth and ceramic foley", "handwritten marks", "satin-stitch count-up"],
+ "experiment": {"move": "embroidered thread map", "hypothesis": "Drawing real streets as running stitches makes the map feel crafted and ties the film to Chorus's textile identity without using any photos"},
+ "palette": {"ground": "#141A3C", "main": "#E0506F", "second": "#F2F5FA", "accent": "#8ED8C4"},
+ "pin": {"lat": 18.9290605, "lon": 72.8323474, "source": "official store page map link (chorusworld.com/pages/store)", "label": "Level 2, Mittal Avenue, Fort"}
+}

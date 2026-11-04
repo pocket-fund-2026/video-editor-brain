@@ -33,3 +33,11 @@
 
 ## Process
 - One scene per build step; preview early; render frames; run run_evals.py; critic review; then show.
+
+## Anti-slop (lesson L013: the user said "dont make it ai slop")
+- No gradients, glows, blur or emoji; flat colour and real texture only.
+- One idea per scene; asymmetric composition; no grid of identical rounded cards.
+- Use real specifics: real menu words, real prices, real streets, real materials.
+- Make imperfection from data, not random shimmer: uneven stitch spacing, slight wobble, seeded by position.
+- Every motion has a physical reason (a needle pulls thread, a tag swings from a string); no floaty bounce for its own sake.
+- Typography with a point of view: two faces at most, real hierarchy, no default centred headline stack.
