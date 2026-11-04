@@ -3,6 +3,7 @@ const c01 = (x) => Math.max(0, Math.min(1, x));
 const STAR = '32,4 40,24 62,24 44,38 51,60 32,46 13,60 20,38 2,24 24,24';
 kit.scene('verdict', {
   init(kit) {
+    { const T = (kit.json('timing.json') || {})['verdict'] || {}; this.M = T.marks || {}; this.W = T.win; }
     FortMap.load(kit);
     let stars = '', ghost = '';
     for (let i = 0; i < 5; i++) {
@@ -35,26 +36,27 @@ kit.scene('verdict', {
     this.c = [1, 2, 3, 4].map((i) => q('.verdict-c' + i));
   },
   render(t, kit) {
+    const M = this.M, D = M.def ?? 2.5, P = M.pub ?? 8.6;
     const u = eio(seg(t, 0, 11));
     const cam = { W: 1080, H: 1500, fx: 0, fy: lerp(6, 0, u), rot: lerp(0.85, 1.3, u), s: lerp(3.2, 2.3, u), k: 0.56, hk: 0.95 };
     this.ctx.clearRect(0, 0, 1080, 1920);
     FortMap.draw(this.ctx, cam, { rise: 1, pins: [{ x: 0, y: 0, t: t, a: 1 }] });
-    this.dim.opacity = 0.78 * eo(seg(t, 0.2, 1.4));
+    this.dim.opacity = 0.45 * eo(seg(t, 0.2, 1.4));
     this.bar.transform = 'scaleX(' + c01((kit.start + t) / 50) + ')';
-    const hp = seg(t, 2.3, 2.9);
+    const hp = seg(t, D - 0.2, D + 0.4);
     this.h.textContent = hp < 0.5 ? 'So, worth the trip?' : 'Yes. Definitely.';
     this.h.style.color = hp < 0.5 ? '' : 'var(--main)';
-    this.h.style.opacity = t < 2.3 ? 1 : Math.abs(hp - 0.5) * 2;
-    const sp = seg(t, 1.8, 2.15), sh = Math.max(0, 1 - seg(t, 2.1, 2.6));
-    this.st.opacity = seg(t, 1.8, 1.95);
+    this.h.style.opacity = t < D - 0.2 ? 1 : Math.abs(hp - 0.5) * 2;
+    const sp = seg(t, D - 0.4, D - 0.05), sh = Math.max(0, 1 - seg(t, D - 0.1, D + 0.4));
+    this.st.opacity = seg(t, D - 0.4, D - 0.25);
     this.st.transform = 'rotate(-6deg) scale(' + (1.7 - 0.7 * eo(sp)) + ') translate(' + Math.sin(t * 90) * 7 * sh + 'px,' + Math.cos(t * 83) * 5 * sh + 'px)';
-    this.s1.opacity = seg(t, 2.3, 2.7); this.s2.opacity = seg(t, 2.8, 3.2);
-    const cp = seg(t, 7.6, 8.4); this.card.opacity = cp; this.card.transform = 'translateY(' + (1 - eo(cp)) * 40 + 'px)';
-    const fill = eob(seg(t, 8.5, 10.2), 1.5), val = 4.2 * fill;
+    this.s1.opacity = seg(t, D + 0.1, D + 0.5); this.s2.opacity = seg(t, D + 0.6, D + 1.0);
+    const cp = seg(t, P - 0.6, P + 0.2); this.card.opacity = cp; this.card.transform = 'translateY(' + (1 - eo(cp)) * 40 + 'px)';
+    const fill = eob(seg(t, P + 0.1, P + 1.8), 1.5), val = 4.2 * fill;
     this.n.textContent = (Math.round(val * 10) / 10).toFixed(1);
     this.cr.setAttribute('width', String(Math.max(0, Math.min(360, val / 5 * 360 + 4))));
     this.f.transform = 'scaleX(' + Math.min(1.04, fill) + ')';
-    const w = [[0.2, 3.0], [3.2, 5.8], [6.0, 8.4], [8.6, 11.2]];
+    const w = this.W || [[0.2, 3.0], [3.2, 5.8], [6.0, 8.4], [8.6, 11.2]];
     for (let i = 0; i < 4; i++) {
       TextFx.fadeFromRight(this.c[i], t, w[i][0], { stagger: 0.14 });
       this.c[i].style.visibility = t >= w[i][0] - 0.05 && t < w[i][1] ? 'visible' : 'hidden';

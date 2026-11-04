@@ -9,6 +9,7 @@ const IC = {
 const ROWS = [['pin', 'Address', 'Wakefield House, 11 Sprott Road', 0.9], ['eat', 'Serves', 'Lunch only', 1.6], ['cal', 'Closed', 'Sundays', 3.1], ['cash', 'Pay', 'Bring cash', 4.1]];
 kit.scene('visit', {
   init(kit) {
+    { const T = (kit.json('timing.json') || {})['visit'] || {}; this.M = T.marks || {}; this.W = T.win; }
     FortMap.load(kit);
     let rows = '';
     ROWS.forEach((r, i) => {
@@ -20,7 +21,7 @@ kit.scene('visit', {
     });
     kit.stage.append(kit.h('<div class="ground">' +
       '<canvas class="mapc" width="1080" height="1920"></canvas>' +
-      '<div style="position:absolute;inset:0;background:var(--ground);opacity:.78"></div>' +
+      '<div style="position:absolute;inset:0;background:var(--ground);opacity:.45"></div>' +
       '<div class="prog"><i></i></div>' +
       '<div class="hdr"><span>Visit card</span><b>Britannia &amp; Co</b></div>' +
       '<div class="visit-tk" style="position:absolute;left:90px;top:500px;width:900px;height:740px;border-radius:40px;background:color-mix(in srgb, var(--ground) 86%, var(--second));border:2px solid color-mix(in srgb, var(--second) 22%, transparent);opacity:0">' +
@@ -39,6 +40,7 @@ kit.scene('visit', {
     this.c = [q('.visit-c1'), q('.visit-c2')];
   },
   render(t, kit) {
+    const M = this.M, H = M.hungry ?? 4.1;
     const u = eio(seg(t, 0, 6));
     const cam = { W: 1080, H: 1500, fx: 0, fy: 0, rot: lerp(1.6, 1.9, u), s: lerp(1.9, 1.6, u), k: 0.56, hk: 0.95 };
     this.ctx.clearRect(0, 0, 1080, 1920);
@@ -49,7 +51,7 @@ kit.scene('visit', {
     this.tk.transform = 'translateY(' + (1 - ep) * 520 + 'px) rotate(' + (Math.sin(t * 1.7) * 1.1 + (1 - ep) * -6) + 'deg)';
     Logo.steam(this.root, 'vl', t);
     ROWS.forEach((r, i) => {
-      const a = r[3], p = eob(seg(t, a, a + 0.5), 1.9);
+      const a = M['r' + i] ?? r[3], p = eob(seg(t, a, a + 0.5), 1.9);
       this.r[i].opacity = seg(t, a, a + 0.15);
       this.r[i].transform = 'translateX(' + (1 - p) * -70 + 'px) scale(' + (0.9 + 0.1 * p) + ')';
       const n = Math.floor(Math.max(0, t - a - 0.2) * 32);
@@ -57,10 +59,10 @@ kit.scene('visit', {
       const b = seg(t, a + 0.1, a + 0.6);
       this.k[i].style.opacity = b > 0 && b < 1 ? 1 - b : 0; this.k[i].style.transform = 'scale(' + (0.4 + 0.9 * eo(b)) + ')';
     });
-    const gp = seg(t, 5.0, 5.3);
-    this.gh.opacity = seg(t, 5.0, 5.1);
+    const gp = seg(t, H, H + 0.3);
+    this.gh.opacity = seg(t, H, H + 0.1);
     this.gh.transform = 'rotate(-7deg) scale(' + (1.8 - 0.8 * eo(gp)) + ')';
-    const win = [[0.2, 3.1], [3.2, 6.2]];
+    const win = this.W || [[0.2, 3.1], [3.2, 6.2]];
     for (let i = 0; i < 2; i++) {
       TextFx.fadeFromRight(this.c[i], t, win[i][0], { stagger: 0.14 });
       this.c[i].style.visibility = t >= win[i][0] - 0.05 && t < win[i][1] ? 'visible' : 'hidden';

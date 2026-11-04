@@ -4,6 +4,7 @@ const sm = (x) => x * x * (3 - 2 * x);
 const S0 = 0.021, S1 = 2.1, CX = 292, CY = -12645;
 kit.scene('hook', {
   init(kit) {
+    { const T = (kit.json('timing.json') || {})['hook'] || {}; this.M = T.marks || {}; this.W = T.win; }
     FortMap.load(kit); FortMap.loadCity(kit);
     kit.stage.append(kit.h('<div class="ground">' +
       '<canvas class="mapc hook-cv" width="1080" height="1920"></canvas>' +
@@ -21,6 +22,7 @@ kit.scene('hook', {
     this.line = q('.line'); this.c = [1, 2, 3].map((i) => q('.hook-c' + i));
   },
   render(t, kit) {
+    const M = this.M;
     const z = seg(t, 1.9, 5.4), zz = eio(z);
     const s = S0 * Math.pow(S1 / S0, zz), w = (S0 / s) * (1 - zz);
     const cam = { W: 1080, H: 1920, fx: CX * w, fy: CY * w, rot: -0.2 * zz + 0.1 * (1 - zz), s: s,
@@ -42,7 +44,7 @@ kit.scene('hook', {
     this.l.style.opacity = t < 4.3 ? 1 : Math.abs(hp - 0.5) * 2;
     this.yr.textContent = t < 4.6 ? 'India' : String(Math.round(lerp(1900, 1923, eio(seg(t, 4.8, 6.6)))));
     this.bar.transform = 'scaleX(' + c01((kit.start + t) / 52) + ')';
-    const win = [[0.2, 2.7], [2.9, 5.3], [5.5, 7.4]];
+    const win = this.W || [[0.2, 2.7], [2.9, 5.3], [5.5, 7.4]];
     for (let i = 0; i < 3; i++) {
       TextFx.fadeFromRight(this.c[i], t, win[i][0], { stagger: 0.14 });
       this.c[i].style.visibility = t >= win[i][0] - 0.05 && t < win[i][1] ? 'visible' : 'hidden';

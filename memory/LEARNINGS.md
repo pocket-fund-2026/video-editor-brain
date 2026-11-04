@@ -74,3 +74,10 @@
 - Cause: The user's videos rely on real-geography maps.
 - Rule: Reuse the FortMap engine in projects/bombay-fort-reel/shared.js. Fetch new regions with tools/maps/fetch_region.py. Open on the city shape, zoom into the neighbourhood, show OSM credit.
 - Guarded by: process
+
+### L010 · 2026-11-04 · bombay-fort-reel · timing-sync
+- Feedback (verbatim): what the fuck is that voiceover whatt the fuck there is a delay first of all and there is no backgrount image
+- Symptom: Narration started about 0.4 s after each scene (0.27 s of dead air in every clip plus a fixed offset), captions and key moments ran on a separate guessed clock, 1.5-2.3 s silent gaps between lines, and the map background was so dim it read as no background
+- Cause: Placed clips by guessed times instead of measured word times, and dimmed the map to 78 percent behind text
+- Rule: Get exact word times from the voice engine, cut leading silence, start each clip at its scene start, drive captions and key animations from word times (data/timing.json), size scenes to the speech, keep the map background clearly visible (dim 50 percent or less)
+- Guarded by: process

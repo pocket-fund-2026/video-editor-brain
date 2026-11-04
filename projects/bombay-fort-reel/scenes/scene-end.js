@@ -5,6 +5,7 @@ const S0 = 0.021, S1 = 3.0, CX = 292, CY = -12645, TX = 36, TY = -157;
 const OPT = ['Kyani & Co?', 'Yazdani?', 'Cafe Military?'];
 kit.scene('end', {
   init(kit) {
+    { const T = (kit.json('timing.json') || {})['end'] || {}; this.M = T.marks || {}; this.W = T.win; }
     FortMap.load(kit); FortMap.loadCity(kit);
     let pills = '';
     OPT.forEach((o, i) => { pills += '<span class="end-p' + i + '" style="display:inline-block;padding:14px 28px;border-radius:999px;border:2px solid color-mix(in srgb, var(--main) 70%, transparent);font-size:34px;font-weight:700;color:var(--main);white-space:nowrap">' + o.replace('&', '&amp;') + '</span>'; });
@@ -27,13 +28,14 @@ kit.scene('end', {
     this.poll = q('.end-poll').style; this.p = [0, 1, 2].map((i) => q('.end-p' + i).style); this.c = [q('.end-c1'), q('.end-c2')];
   },
   render(t, kit) {
+    const M = this.M, P0 = M.poll ?? 0.7;
     const zz = eio(seg(t, 0, 2.2)), s = S1 * Math.pow(S0 / S1, zz), w = (S0 / s) * zz;
     const cam = { W: 1080, H: lerp(1500, 1920, zz), fx: TX + (CX - TX) * w, fy: TY + (CY - TY) * w, rot: lerp(2.05, 0.1, zz), s: s,
       k: lerp(0.56, 1, sm(zz)), hk: 0.95 * (1 - sm(seg(zz, 0, 0.6))) };
     this.ctx.clearRect(0, 0, 1080, 1920);
     FortMap.draw(this.ctx, cam, { city: true, mid: 1 - sm(seg(zz, 0.35, 0.85)), rise: 1 - sm(seg(zz, 0.1, 0.5)), roads: 1,
       hl: { r: 1700, a: eo(seg(t, 1.5, 2.3)), t: t }, pins: [{ x: 0, y: 0, t: t, a: 1, fixed: true }] });
-    this.dim.opacity = lerp(0.2, 0.74, eo(seg(t, 0.5, 1.5)));
+    this.dim.opacity = lerp(0.15, 0.5, eo(seg(t, 0.5, 1.5)));
     this.bar.transform = 'scaleX(' + c01((kit.start + t) / 52) + ')';
     const lp = eob(seg(t, 0.9, 1.5), 1.9);
     this.lg.opacity = seg(t, 0.9, 1.05);
@@ -44,13 +46,13 @@ kit.scene('end', {
       this.w[i].opacity = p; this.w[i].transform = 'translateY(' + (1 - p) * 34 + 'px)';
     }
     this.tg.opacity = eo(seg(t, 1.9, 2.4));
-    this.ul.transform = 'scaleX(' + eio(seg(t, 2.1, 2.7)) + ')';
-    const pp = eo(seg(t, 2.0, 2.6)); this.poll.opacity = pp; this.poll.transform = 'translateY(' + (1 - pp) * 50 + 'px)';
+    this.ul.transform = 'scaleX(' + eio(seg(t, P0 + 0.1, P0 + 0.7)) + ')';
+    const pp = eo(seg(t, P0, P0 + 0.6)); this.poll.opacity = pp; this.poll.transform = 'translateY(' + (1 - pp) * 50 + 'px)';
     for (let i = 0; i < 3; i++) {
-      const a = 2.4 + i * 0.18, p = eob(seg(t, a, a + 0.45), 1.9);
+      const a = P0 + 0.4 + i * 0.18, p = eob(seg(t, a, a + 0.45), 1.9);
       this.p[i].opacity = seg(t, a, a + 0.1); this.p[i].transform = 'scale(' + (0.6 + 0.4 * p) + ')';
     }
-    const win = [[0.2, 2.7], [2.8, 4.4]];
+    const win = this.W || [[0.2, 2.7], [2.8, 4.4]];
     for (let i = 0; i < 2; i++) {
       TextFx.fadeFromRight(this.c[i], t, win[i][0], { stagger: 0.14 });
       this.c[i].style.visibility = t >= win[i][0] - 0.05 && t < win[i][1] ? 'visible' : 'hidden';

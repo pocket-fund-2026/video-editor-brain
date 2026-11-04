@@ -31,37 +31,37 @@
   {
    "id": "story",
    "name": "1923 to now",
-   "dur": 9,
+   "dur": 8.2,
    "desc": "A timeline draws across the map: founded, handed down, still open."
   },
   {
    "id": "dish",
    "name": "The dish",
-   "dur": 10,
+   "dur": 9.0,
    "desc": "The berry pulao: three ingredient lines draw in and a dotted route runs from Iran to the pin."
   },
   {
    "id": "verdict",
    "name": "The verdict",
-   "dur": 11,
+   "dur": 10.8,
    "desc": "A stamp lands, the rating meter fills to 4.2 and the line reads worth the trip, yes definitely."
   },
   {
    "id": "visit",
    "name": "Visit card",
-   "dur": 6,
+   "dur": 5.2,
    "desc": "A swaying ticket with the cafe logo and four icon rows: address, lunch only, closed Sundays, bring cash."
   },
   {
    "id": "nearby",
    "name": "Next stop",
-   "dur": 5,
+   "dur": 3.8,
    "desc": "A glowing walker runs the dotted path and a pin drops onto Bombay Coffee House."
   },
   {
    "id": "end",
    "name": "Your turn",
-   "dur": 4,
+   "dur": 4.0,
    "desc": "The map spins back out to the shape of Mumbai while the Bombay Cafe Map logo pops in with a poll card."
   }
  ]
