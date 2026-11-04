@@ -6,7 +6,7 @@ Usage: python3 tools/qa/run_evals.py PROJECT        (needs playwright for the ov
 import json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
-CHECKS = [("palette_check", "palette_check.py"), ("facts_check", "facts_check.py"), ("overlap_check", "overlap_check.py")]
+CHECKS = [("palette_check", "palette_check.py"), ("facts_check", "facts_check.py"), ("novelty_check", "../loop/novelty_check.py"), ("overlap_check", "overlap_check.py")]
 
 def main():
     project = sys.argv[1]; results = {}
@@ -22,6 +22,10 @@ def main():
         print(f"  {'ok ' if results.get(c['check'], True) else 'BAD'} {c['id']}  {c['lesson']}  {c['title']}  -> {c['check']}")
     bad = [c for c in cases if not results.get(c["check"], True)]
     print(f"\n{len(cases) - len(bad)}/{len(cases)} regression cases hold.", "READY TO SHOW" if not bad and all(results.values()) else "NOT READY: fix the failures above")
+    if all(results.values()) and not bad:   # remember that this exact version of the film passed (the Stop hook reads this)
+        sys.path.insert(0, os.path.join(ROOT, "tools", "loop")); from common import project_hash
+        sp = os.path.join(ROOT, "memory", ".evals_stamp.json"); st = json.load(open(sp)) if os.path.exists(sp) else {}
+        st[os.path.basename(os.path.normpath(project))] = project_hash(project); json.dump(st, open(sp, "w"), indent=1)
     sys.exit(0 if all(results.values()) else 1)
 
 if __name__ == "__main__":

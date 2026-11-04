@@ -2,6 +2,12 @@
 
 This repo is the memory and toolbox for editing videos with Claude. It gets better every time because every round of feedback becomes a lesson, and every lesson that a script can test becomes a check that blocks the next film.
 
+## The loop runs automatically (hooks)
+Three Claude Code hooks (installed with `python3 tools/loop/install_hooks.py`) run this loop for you in video folders: SessionStart loads the core rules, recent lessons and fresh design moves; UserPromptSubmit saves feedback word for word to `memory/inbox.jsonl` and surfaces the lessons that apply; Stop will not let you finish while feedback is unrecorded or a film changed since `run_evals.py` last passed. They stay silent outside video work.
+
+## Always innovate
+Never repeat the previous film's look. Run the `designer` agent first: it proposes 3 concepts, each changing at least 3 unlocked design dimensions against the last 3 films (`memory/design_log.jsonl`) and trying ONE move you have never used (`tools/loop/suggest_moves.py`, library in `playbook/DESIGN_MOVES.md`). Write the choice to `projects/<name>/design_brief.json`; `run_evals.py` fails without it. Palette and fonts stay locked when the user supplied a reference or brand. After the film ships: `tools/loop/novelty_check.py PROJECT --record`, and when the user reacts: `tools/loop/record_experiment.py` (kept / dropped / neutral).
+
 ## Before you touch a video
 1. Read the **Core rules** at the top of `memory/LEARNINGS.md` and `playbook/EDITING_PLAYBOOK.md`.
 2. Run `python3 tools/qa/retrieve.py "<what you are about to build>" -k 6` and obey the lessons it returns.

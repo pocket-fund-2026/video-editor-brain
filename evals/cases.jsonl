@@ -4,3 +4,4 @@
 {"id": "C004", "lesson": "L004", "title": "No unverified prices or hours on screen", "check": "facts_check"}
 {"id": "C005", "lesson": "L005", "title": "OpenStreetMap credit on screen", "check": "facts_check"}
 {"id": "C006", "lesson": "L008", "title": "Nothing runs outside the frame", "check": "overlap_check"}
+{"id": "C007", "lesson": "L012", "title": "A new film must change at least 3 unlocked design dimensions and try one new move", "check": "novelty_check"}
