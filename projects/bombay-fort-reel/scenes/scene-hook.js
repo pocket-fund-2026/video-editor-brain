@@ -23,6 +23,7 @@ kit.scene('hook', {
   },
   render(t, kit) {
     const M = this.M;
+    const tr = t; t = t * (7 / kit.dur);
     const z = seg(t, 1.9, 5.4), zz = eio(z);
     const s = S0 * Math.pow(S1 / S0, zz), w = (S0 / s) * (1 - zz);
     const cam = { W: 1080, H: 1920, fx: CX * w, fy: CY * w, rot: -0.2 * zz + 0.1 * (1 - zz), s: s,
@@ -46,8 +47,8 @@ kit.scene('hook', {
     this.bar.transform = 'scaleX(' + c01((kit.start + t) / 52) + ')';
     const win = this.W || [[0.2, 2.7], [2.9, 5.3], [5.5, 7.4]];
     for (let i = 0; i < 3; i++) {
-      TextFx.fadeFromRight(this.c[i], t, win[i][0], { stagger: 0.14 });
-      this.c[i].style.visibility = t >= win[i][0] - 0.05 && t < win[i][1] ? 'visible' : 'hidden';
+      TextFx.fadeFromRight(this.c[i], tr, win[i][0], { stagger: 0.14 });
+      this.c[i].style.visibility = tr >= win[i][0] - 0.05 && tr < win[i][1] ? 'visible' : 'hidden';
     }
     TextFx.fadeFromRight(this.line, t, -0.4);
   },

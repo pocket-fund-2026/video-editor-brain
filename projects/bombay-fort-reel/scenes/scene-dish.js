@@ -35,7 +35,7 @@ kit.scene('dish', {
     const p = FortMap.project(cam, 0, 0, 0);
     const d = 'M 60 700 Q 330 470 ' + p[0].toFixed(1) + ' ' + (p[1] - 18).toFixed(1);
     this.mp.setAttribute('d', d); this.ap.setAttribute('d', d);
-    this.mp.setAttribute('stroke-dashoffset', String(1 - eio(seg(t, A, A + 1.7))));
+    this.mp.setAttribute('stroke-dashoffset', String(1 - eio(seg(t, A, A + Math.min(1.7, Math.max(0.6, kit.dur - A - 0.15))))));
     this.iran.opacity = seg(t, A - 0.2, A + 0.4);
     this.bar.transform = 'scaleX(' + c01((kit.start + t) / 52) + ')';
     const at = [M.r0 ?? 3.4, M.r1 ?? 4.2, M.r2 ?? 5.0];

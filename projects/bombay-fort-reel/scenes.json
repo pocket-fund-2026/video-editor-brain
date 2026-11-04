@@ -25,43 +25,43 @@
   {
    "id": "hook",
    "name": "The hook",
-   "dur": 7,
+   "dur": 8.6,
    "desc": "The shape of Mumbai, a glowing highlight on Fort, then a zoom into Ballard Estate where the real buildings rise."
   },
   {
    "id": "story",
    "name": "1923 to now",
-   "dur": 8.2,
+   "dur": 10.3,
    "desc": "A timeline draws across the map: founded, handed down, still open."
   },
   {
    "id": "dish",
    "name": "The dish",
-   "dur": 9.0,
+   "dur": 11.2,
    "desc": "The berry pulao: three ingredient lines draw in and a dotted route runs from Iran to the pin."
   },
   {
    "id": "verdict",
    "name": "The verdict",
-   "dur": 10.8,
+   "dur": 13.0,
    "desc": "A stamp lands, the rating meter fills to 4.2 and the line reads worth the trip, yes definitely."
   },
   {
    "id": "visit",
    "name": "Visit card",
-   "dur": 5.2,
+   "dur": 7.6,
    "desc": "A swaying ticket with the cafe logo and four icon rows: address, lunch only, closed Sundays, bring cash."
   },
   {
    "id": "nearby",
    "name": "Next stop",
-   "dur": 3.8,
+   "dur": 4.7,
    "desc": "A glowing walker runs the dotted path and a pin drops onto Bombay Coffee House."
   },
   {
    "id": "end",
    "name": "Your turn",
-   "dur": 4.0,
+   "dur": 4.4,
    "desc": "The map spins back out to the shape of Mumbai while the Bombay Cafe Map logo pops in with a poll card."
   }
  ]

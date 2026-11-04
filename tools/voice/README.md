@@ -3,3 +3,5 @@
 - `mix_voiceover.py`: places the clips on the film timeline and normalises loudness.
 - Limits learned (L007): the Motion artifact cannot hold a voiceover; overlay the narration on the exported MP4 with the ffmpeg line in the script header.
 - Not verified by ear: Kohinoor, "poolaow" (the spelling used for pulao) and "nineteen twenty three" pronunciations. Listen before publishing.
+- `build_timing.py` (lesson L010): give it ANY voice's per-scene clips with any file names; it identifies each clip by transcribing it, finds every word's time, cuts the dead air, writes `data/timing.json`, sizes the scenes to the speech and mixes one level-normalised track. Used for Sana (ElevenLabs): `python3 tools/voice/build_timing.py projects/bombay-fort-reel CLIPS_DIR OUT.wav`.
+- ElevenLabs on a FREE plan: library voices (such as Sana) cannot be used through the API and Voice Design is paid only (402/403). Generate in the ElevenLabs web app instead, or upgrade. Keep the API key in a private `.env.local`, never in code or chat.

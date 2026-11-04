@@ -81,3 +81,10 @@
 - Cause: Placed clips by guessed times instead of measured word times, and dimmed the map to 78 percent behind text
 - Rule: Get exact word times from the voice engine, cut leading silence, start each clip at its scene start, drive captions and key animations from word times (data/timing.json), size scenes to the speech, keep the map background clearly visible (dim 50 percent or less)
 - Guarded by: process
+
+### L011 · 2026-11-04 · bombay-fort-reel · tooling-limit
+- Feedback (verbatim): use sana female audio / you do it on your own
+- Symptom: Chosen ElevenLabs library voice (Sana) could not be generated through the API on a free plan (402), Voice Design was also blocked (403)
+- Cause: Did not check plan limits for library voices before promising to generate with the chosen voice
+- Rule: Before offering a specific ElevenLabs library voice, test one short generation first; on a free plan use the web app and match clips to scenes by transcript with tools/voice/build_timing.py
+- Guarded by: process
