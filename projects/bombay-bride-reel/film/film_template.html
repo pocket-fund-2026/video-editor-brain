@@ -1,0 +1,185 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+__FONTS__
+*{margin:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;background:#fff;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#fff;color:#000;font-family:Jost,sans-serif}
+.sc{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:#fff;color:#000}
+.abs{position:absolute}
+.lab{font:500 30px/1 Jost;letter-spacing:.3em;text-transform:uppercase}
+.cap{font:italic 500 50px/1.14 "Bodoni Moda";letter-spacing:-.015em}
+.disp{font-family:"Bodoni Moda";font-weight:600;letter-spacing:-.02em}
+.credit{font:500 22px/1.3 Jost;letter-spacing:.14em;text-transform:uppercase}
+canvas{position:absolute;display:block}
+</style></head><body><div id="stage"></div>
+<script>
+const TIMING=__TIMING__; const BBD=__BB__;
+const SCENES=__SCENES__; const TR=0.42;
+const PH='__PH__';
+const stage=document.getElementById('stage');
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)), lerp=(a,b,t)=>a+(b-a)*t, ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2, easeOut=t=>1-Math.pow(1-t,3);
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+let acc=0; SCENES.forEach(s=>{s.start=acc;acc+=s.dur}); const TOTAL=acc;
+const IMGS={}; const loadImgs=names=>Promise.all(names.map(n=>new Promise(r=>{const i=new Image();i.onload=()=>{IMGS[n]=i;r()};i.src=PH+n+'.jpg'})));
+// ---------- helpers ----------
+const W=(id,k)=>{const w=TIMING[id].words[k]; return {s:w.s+0.15,e:w.e+0.15}};
+const bb=(x,y,w,color='#000')=>{const h=w*1540/BBD.width;return `<svg class="abs" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${BBD.width} 1540"><g transform="translate(${-BBD.bx} 1500) scale(1 -1)" fill="${color}"><path d="${BBD.B}"/><path transform="translate(${BBD.off} 0)" d="${BBD.b}"/></g></svg>`};
+const header=(label,dark=false)=>{const col=dark?'#fff':'#000';return bb(64,266,104,col)+`<div class="abs lab" style="left:196px;top:296px;font-size:28px;color:${col}">${label}</div>`};
+const photo=(src,x,y,w,h,fx=.5,fy=.5,extra='',scale=1)=>`<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:hidden;${extra}"><div style="position:absolute;inset:0;background:#fff url('${PH}${src}.jpg') ${fx*100}% ${fy*100}%/cover no-repeat;transform:scale(${scale})"></div></div>`;
+const words=(id,arr,from,t,style,cls='cap')=>{ // caption words revealed on their spoken time
+  return `<div class="abs ${cls}" style="${style}">`+arr.map((w,i)=>{const k=from+i; const on=t>=W(id,k).s-0.02; return `<span style="visibility:${on?'visible':'hidden'}">${w}${i<arr.length-1?' ':''}</span>`}).join('')+'</div>';
+};
+const HT={}; // cached source pixels for halftone
+function halftone(c,src,x,y,w,h,cell,{focus=[.5,.45],gain=1.15,angle=45}={}){
+  const key=src+w+'x'+h; if(!HT[key]){const im=IMGS[src]; const sc=Math.max(w/im.width,h/im.height), sw=im.width*sc, sh=im.height*sc; const t=document.createElement('canvas'); t.width=w;t.height=h; const tc=t.getContext('2d',{willReadFrequently:true}); tc.drawImage(im,-(sw-w)*focus[0],-(sh-h)*focus[1],sw,sh); HT[key]=tc.getImageData(0,0,w,h).data}
+  const d=HT[key]; const cv=document.createElement('canvas'); cv.width=w;cv.height=h; cv.style.left=x+'px';cv.style.top=y+'px'; c.appendChild(cv);
+  const ctx=cv.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#000';
+  const a=angle*Math.PI/180, ca=Math.cos(a), sa=Math.sin(a), R=Math.hypot(w,h);
+  for(let u=-R;u<R;u+=cell) for(let v=-R;v<R;v+=cell){const px=w/2+u*ca-v*sa, py=h/2+u*sa+v*ca; if(px<0||py<0||px>=w||py>=h) continue;
+    let s=0,n=0; for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const xx=clamp(Math.round(px+dx*cell/3),0,w-1),yy=clamp(Math.round(py+dy*cell/3),0,h-1);s+=d[(yy*w+xx)*4];n++}
+    const lum=s/n/255, r=cell*0.72*Math.sqrt(clamp((1-lum)*gain)); if(r>0.25){ctx.beginPath();ctx.arc(px,py,r,0,7);ctx.fill()}}
+}
+const flowerLess=0;
+// ---------- scenes ----------
+const DRAW={
+ hook(c,t){ c.style.background='#000'; const id='hook';
+   const lines=[['Everything','on','a'],['bridal','list','has'],['a','history.']]; let k=0,h='';
+   lines.forEach(l=>{h+='<div>'+l.map(w=>{const on=t>=W(id,k).s-0.02; k++; return `<span style="visibility:${on?'visible':'hidden'}">${w} </span>`}).join('')+'</div>'});
+   c.insertAdjacentHTML('beforeend',`<div class="abs" style="left:80px;top:420px;font:italic 500 130px/1.08 'Bodoni Moda';color:#fff;letter-spacing:-.03em">${h}</div>`);
+   const xs=[130,275,420,560,700,840,960], y=1170; const t0=W(id,3).s;
+   const items=[x=>`<circle cx="${x}" cy="${y}" r="30"/><path d="M${x-12} ${y-34} l12 -22 l12 22"/>`,x=>`<ellipse cx="${x}" cy="${y}" rx="40" ry="26"/><ellipse cx="${x}" cy="${y}" rx="30" ry="17"/>`,x=>`<g transform="translate(${x} ${y})">${[0,1,2,3,4,5].map(i=>`<ellipse cx="0" cy="-20" rx="9" ry="16" transform="rotate(${i*60})"/>`).join('')}<circle r="6" fill="#fff"/></g>`,x=>`<rect x="${x-24}" y="${y-34}" width="48" height="68"/><path d="M${x-24} ${y-14} h48 M${x-24} ${y+6} h48"/>`,x=>`<path d="M${x-34} ${y-20} h68 v20 h-68 z"/>${[-26,-14,-2,10,22].map(d=>`<path d="M${x+d} ${y} v34"/>`).join('')}`,x=>`<circle cx="${x}" cy="${y}" r="20" fill="#fff"/>`,x=>`<path d="M${x-40} ${y+24} q40 -80 80 0"/><path d="M${x-32} ${y+18} q32 -60 64 0"/>`];
+   let g=''; items.forEach((f,i)=>{const on=t>=t0+i*0.1; if(on) g+=`<g transform="translate(${xs[i]} ${y}) scale(1.5) translate(${-xs[i]} ${-y})">${f(xs[i])}</g>`});
+   const tp=ease(seg(t,t0+0.5,2.35));
+   c.insertAdjacentHTML('beforeend',`<svg class="abs" style="left:0;top:0" width="1080" height="1920"><g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round">${g}</g><path d="M70 ${y+120} C 200 ${y+175}, 330 ${y+60}, 470 ${y+130} S 760 ${y+175}, 1010 ${y+110}" fill="none" stroke="#fff" stroke-width="7" pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-tp}"/></svg>`);
+ },
+ cover(c,t){ const id='cover';
+   const cell=Math.exp(lerp(Math.log(44),Math.log(8),easeOut(seg(t,0,1.7)))); halftone(c,'hands',0,690,1080,840,Math.round(cell*2)/2,{focus:[.5,.45]});
+   const fillW=ease(seg(t,0.25,1.15))*100;
+   c.insertAdjacentHTML('beforeend',`<div class="abs disp" style="left:64px;top:290px;font-size:109px;line-height:1;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;color:transparent;-webkit-text-stroke:3px #000" data-ovk="1">Bombay Bride</div><div class="abs disp" style="left:64px;top:290px;width:${fillW}%;max-width:100%;overflow:hidden;font-size:109px;line-height:1;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;color:#000">Bombay Bride</div><div class="abs" style="left:64px;top:444px;width:900px;height:3px;background:#000"></div><div class="abs" style="left:64px;top:462px;width:900px;height:1px;background:#000"></div>`);
+   if(t>=W(id,3).s) c.insertAdjacentHTML('beforeend',`<div class="abs lab" style="left:64px;top:510px;font-size:52px;letter-spacing:.34em">The Shopping Issue</div>`);
+   if(t>=W(id,4).s+0.1) c.insertAdjacentHTML('beforeend',`<div class="abs lab" style="left:64px;top:598px;font-size:28px;letter-spacing:.2em">No. 01 · Mumbai · November to February</div>`);
+   c.insertAdjacentHTML('beforeend',bb(64,1556,104));
+ },
+ gold(c,t){ const id='gold'; c.insertAdjacentHTML('beforeend',header('Zaveri Bazaar'));
+   if(t>=W(id,0).s-0.02) c.insertAdjacentHTML('beforeend',`<div class="abs disp" style="left:64px;top:405px;font-size:176px;line-height:1;font-style:italic;font-weight:500">Gold</div>`);
+   c.insertAdjacentHTML('beforeend',photo('zaveri',600,400,480,300,.5,.5,'border:3px solid #000;border-right:0'));
+   const P=[[96,740],[96,1160],[984,1160],[984,740]]; const bez=u=>{const m=1-u;return [m*m*m*P[0][0]+3*m*m*u*P[1][0]+3*m*u*u*P[2][0]+u*u*u*P[3][0], m*m*m*P[0][1]+3*m*m*u*P[1][1]+3*m*u*u*P[2][1]+u*u*u*P[3][1]]};
+   const nrm=u=>{const a=bez(Math.max(0,u-0.002)),b=bez(Math.min(1,u+0.002));const dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;return [-dy/l,dx/l,dx/l,dy/l]}; // normal (pointing down/inside), tangent
+   const t0=W(id,2).s, tEnd=W(id,6).s;
+   let s=`<svg class="abs" style="left:0;top:0" width="1080" height="1920">`;
+   // the two threads draw in from both ends
+   const dp=ease(seg(t,t0,t0+0.9)); const half=(from,to,off)=>{let d='';for(let i=0;i<=40;i++){const u=lerp(from,to,i/40),p=bez(u),n=nrm(u);d+=(i?'L':'M')+(p[0]+n[0]*off).toFixed(1)+' '+(p[1]+n[1]*off).toFixed(1)+' '} return d};
+   for(const off of [-16,16]){ for(const [f,tt] of [[0,.5],[1,.5]]) s+=`<path d="${half(f,tt,off)}" fill="none" stroke="#000" stroke-width="${off<0?3:3}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-dp}"/>` }
+   // outer strand: black beads, in from both ends
+   const N=34; for(let k=0;k<N;k++){ const u=k/(N-1); const d=Math.min(k,N-1-k); const tk=t0+0.2+(d/(N/2))*1.25; if(t<tk) continue; const age=clamp((t-tk)/0.12), p=bez(u), n=nrm(u); s+=`<circle cx="${p[0]+n[0]*16}" cy="${p[1]+n[1]*16}" r="${11*easeOut(age||0.01)}" fill="#000"/>` }
+   // inner strand: gold chain links (outlined ovals along the tangent)
+   const M=30; for(let k=0;k<M;k++){ const u=(k+0.5)/M; const d=Math.min(k,M-1-k); const tk=t0+0.35+(d/(M/2))*1.15; if(t<tk) continue; const p=bez(u), n=nrm(u); const ang=Math.atan2(n[3],n[2])*180/Math.PI; s+=`<ellipse cx="${p[0]-n[0]*16}" cy="${p[1]-n[1]*16}" rx="${15*clamp((t-tk)/0.12||0.01)}" ry="6" transform="rotate(${ang} ${p[0]-n[0]*16} ${p[1]-n[1]*16})" fill="#fff" stroke="#000" stroke-width="3"/>` }
+   // pendant (vati): connector, short chain, two cups, drop bead; drops and swings on the word "thread"
+   const dt=t-tEnd; if(dt>=0){ const pv=bez(.5); const fall=easeOut(clamp(dt/0.3)); const ang=16*Math.sin(dt*8.5)*Math.exp(-dt*2.0);
+     s+=`<g transform="translate(${pv[0]} ${pv[1]+16}) rotate(${ang}) scale(1.45) translate(0 ${-90*(1-fall)})"><path d="M0 -6 L24 18 L0 42 L-24 18 Z" fill="#000"/><circle cx="0" cy="18" r="7" fill="#fff"/><path d="M0 42 L0 66" stroke="#000" stroke-width="4"/>
+       <path d="M-70 78 A34 34 0 0 0 -2 78 Z" fill="#000"/><path d="M2 78 A34 34 0 0 0 70 78 Z" fill="#000"/><circle cx="-36" cy="94" r="7" fill="#fff"/><circle cx="36" cy="94" r="7" fill="#fff"/><path d="M-70 78 H-2 M2 78 H70" stroke="#000" stroke-width="5"/>
+       <path d="M0 112 C 14 126, 12 146, 0 158 C -12 146, -14 126, 0 112Z" fill="#000"/></g>`}
+   c.insertAdjacentHTML('beforeend',s+'</svg>');
+   c.insertAdjacentHTML('beforeend',words(id,['A','mangalsutra','literally','means','‘auspicious','thread’.'],1,t,'left:64px;top:1340px;width:900px;font-size:58px'));
+ },
+ silk(c,t){ const id='silk'; c.insertAdjacentHTML('beforeend',header('Mulji Jetha & Kalbadevi'));
+   c.insertAdjacentHTML('beforeend',photo('shelves',0,400,1080,300,.5,.5,'border-top:3px solid #000;border-bottom:3px solid #000'));
+   const x0=64,y0=730,w=952,h=490; const prog=seg(t,W(id,3).s,W(id,11).e); const rows=Math.floor(27*prog)+ (prog>0?1:0);
+   let s=`<svg class="abs" style="left:0;top:0" width="1080" height="1920"><rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="#fff" stroke="#000" stroke-width="3"/>`;
+   for(let i=0;i<48;i++){const x=x0+30+i*(w-60)/47; s+=`<line x1="${x}" y1="${y0+10}" x2="${x}" y2="${y0+h-10}" stroke="#000" stroke-width="2"/>`}
+   for(let r=0;r<rows;r++){const y=y0+h-18-r*16; const dark=((r%9)<3)||((r%9)>=6&&(r%3)==0); s+=`<rect x="${x0+14}" y="${y-12}" width="${w-28}" height="12" fill="${dark?'#000':'#fff'}" stroke="#000" stroke-width="2"/>`}
+   const sy=y0+h-18-(Math.max(rows,1)-1)*16-4; const ping=Math.abs(((t*1.3)%2)-1); const sx=x0+60+ping*(w-200);
+   s+=`<path transform="translate(${sx} ${sy})" d="M0 0 C 40 -18, 96 -18, 130 0 C 96 18, 40 18, 0 0Z" fill="#000" stroke="#fff" stroke-width="3"/></svg>`; c.insertAdjacentHTML('beforeend',s);
+   const mo=Math.max(1,1+Math.floor(5.999*prog)); let mc=''; for(let m=0;m<6;m++){mc+=`<div class="abs" style="left:${64+m*84}px;top:1245px;width:70px;height:70px;border:3px solid #000;background:${m<mo?'#000':'#fff'};color:${m<mo?'#fff':'#000'};font:600 32px/64px Jost;text-align:center">${m+1}</div>`} c.insertAdjacentHTML('beforeend',mc);
+   c.insertAdjacentHTML('beforeend',words(id,['A','Banarasi','sari','can','take','up','to','six','months','to','weave.'],1,t,'left:64px;top:1345px;width:900px;font-size:54px'));
+ },
+ paithani(c,t){ const id='paithani'; c.insertAdjacentHTML('beforeend',header('Dadar–Matunga'));
+   const cx=540,cy=950; const fp=seg(t,W(id,0).s,W(id,6).e); const n=Math.floor(fp*11+0.999); let s=`<svg class="abs" style="left:0;top:0" width="1080" height="1920"><g stroke="#000" fill="none" stroke-linecap="round">`;
+   for(let i=0;i<Math.min(n,11);i++){const a=(-76+i*15.2)*Math.PI/180, L=480*easeOut(clamp(fp*11-i)), ex=cx+Math.sin(a)*L, ey=cy-Math.cos(a)*L;
+     s+=`<path d="M${cx} ${cy} Q ${cx+Math.sin(a)*L*.5+30*Math.cos(a)} ${cy-Math.cos(a)*L*.5} ${ex} ${ey}" stroke-width="6"/>`;
+     if(L>200) s+=`<ellipse cx="${ex}" cy="${ey}" rx="36" ry="50" transform="rotate(${a*180/Math.PI} ${ex} ${ey})" fill="#000"/><ellipse cx="${ex}" cy="${ey}" rx="17" ry="27" transform="rotate(${a*180/Math.PI} ${ex} ${ey})" fill="#fff"/><circle cx="${ex}" cy="${ey}" r="8" fill="#000"/>`}
+   s+=`</g><path d="M${cx-40} ${cy+80} Q ${cx} ${cy-34} ${cx+40} ${cy+80} Z" fill="#000"/></svg>`; c.insertAdjacentHTML('beforeend',s);
+   c.insertAdjacentHTML('beforeend',`<div class="abs lab" style="left:64px;top:1062px;font-size:28px;letter-spacing:.3em">Paithani · peacock motif</div>`);
+   const yp=ease(seg(t,W(id,8).s,W(id,11).e)); const yrs=Math.round(2000*yp);
+   if(t>=W(id,8).s-0.02) c.insertAdjacentHTML('beforeend',`<div class="abs disp" style="left:64px;top:1150px;font-size:128px;line-height:1.05">${yrs.toLocaleString('en')}<span style="font:italic 500 62px 'Bodoni Moda'"> years</span></div>`);
+   c.insertAdjacentHTML('beforeend',words(id,['Paithani','saris','were','traded','to','the','Roman','world','two','thousand','years','ago.'],0,t,'left:64px;top:1368px;width:900px;font-size:50px'));
+ },
+ mehndi(c,t){ const id='mehndi'; c.insertAdjacentHTML('beforeend',header('Colaba Causeway'));
+   const sc=1+0.05*seg(t,0,3.2); c.insertAdjacentHTML('beforeend',photo('mehendi',0,400,1080,860,.5,.28,'border-top:3px solid #000;border-bottom:3px solid #000',sc));
+   const p=ease(seg(t,W(id,0).s,W(id,5).e)); const R=lerp(340,130,p), cx=540, cy=830;
+   c.insertAdjacentHTML('beforeend',`<svg class="abs" style="left:0;top:0" width="1080" height="1920"><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fff" stroke-width="16"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#000" stroke-width="7"/><circle cx="${cx}" cy="${cy}" r="${R+11}" fill="none" stroke="#000" stroke-width="2"/></svg>`);
+   c.insertAdjacentHTML('beforeend',words(id,['Mehndi','often','hides','the','couple’s','initials','in','its','pattern.'],0,t,'left:64px;top:1320px;width:900px;font-size:58px'));
+ },
+ bangles(c,t){ const id='bangles'; c.insertAdjacentHTML('beforeend',header('Colaba Causeway'));
+   c.insertAdjacentHTML('beforeend',photo('colaba-bangles',0,400,500,830,.35,.5,'border-top:3px solid #000;border-bottom:3px solid #000;border-right:3px solid #000'));
+   const cx=800; const armL=y=>cx-62-(y-880)*0.075, armR=y=>cx+62+(y-880)*0.075;
+   let s=`<svg class="abs" style="left:0;top:0" width="1080" height="1920"><g fill="#fff" stroke="#000" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">`;
+   // forearm and wrist
+   s+=`<path d="M${armL(880)} 880 L${armL(1230)} 1230 M${armR(880)} 880 L${armR(1230)} 1230" fill="none"/>`;
+   // palm
+   s+=`<path d="M${armL(880)} 880 C ${cx-100} 860 ${cx-96} 790 ${cx-86} 730 L${cx+86} 730 C ${cx+96} 790 ${cx+100} 860 ${armR(880)} 880 Z"/>`;
+   // fingers (rounded capsules)
+   const f=[[cx-76,520],[cx-26,470],[cx+26,490],[cx+76,560]]; f.forEach(([x,top])=>{ s+=`<rect x="${x-21}" y="${top}" width="42" height="${745-top}" rx="21"/>` });
+   // thumb
+   s+=`<path d="M${cx-84} 830 C ${cx-130} 800 ${cx-150} 750 ${cx-142} 700 C ${cx-136} 676 ${cx-108} 676 ${cx-104} 700 C ${cx-100} 740 ${cx-92} 770 ${cx-80} 790 Z"/>`;
+   s+=`</g>`;
+   // bangles slide on from the right, one at a time, and settle on the wrist
+   const t0=W(id,5).s, t1=W(id,9).e, dl=(t1-t0-0.3)/10; let post='';
+   for(let i=0;i<11;i++){ const ti=t0+i*dl; if(t<ti) continue; const u=clamp((t-ti)/0.3), y0=912+i*33; const settle=u>=1?Math.exp(-(t-ti-0.3)*14)*Math.sin((t-ti-0.3)*38)*5:0; const dx=300*(1-easeOut(u)); const y=y0+settle;
+     const rx=(armR(y)-armL(y))/2+32, ry=14, x=cx+dx; const kind=i%3;
+     if(kind===0) s+=`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="none" stroke="#000" stroke-width="9"/>`;
+     else if(kind===1) s+=`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="none" stroke="#000" stroke-width="4"/><ellipse cx="${x}" cy="${y}" rx="${rx-9}" ry="${ry-4}" fill="none" stroke="#000" stroke-width="4"/>`;
+     else { s+=`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="none" stroke="#000" stroke-width="9"/>`; for(let k=-4;k<=4;k++){const a=k*0.32; s+=`<circle cx="${x+Math.sin(a)*rx}" cy="${y+Math.cos(a)*ry}" r="5" fill="#fff" stroke="#000" stroke-width="2"/>`} }
+     if(u<1) s+=`<g stroke="#000" stroke-width="5"><path d="M${x+rx+20} ${y-6} h${Math.round(70*(1-u))}"/><path d="M${x+rx+14} ${y+10} h${Math.round(95*(1-u))}"/></g>`;
+   }
+   c.insertAdjacentHTML('beforeend',s+'</svg>');
+   c.insertAdjacentHTML('beforeend',words(id,['In','some','traditions,','a','bride','never','buys','her','own','bangles.'],0,t,'left:64px;top:1310px;width:900px;font-size:58px'));
+ },
+ back(c,t){ c.style.background='#000'; const id='back'; const ti=0.38;
+   const dt=t-ti; const press=t<ti?easeOut(t/ti):1; const sc=lerp(1.22,1,press);
+   const dy=dt>0?Math.exp(-dt*13)*Math.sin(dt*58)*8:0;
+   const ripple=dt>0&&dt<0.5?dt/0.5:-1;
+   const col='#fff'; const R=330;
+   let s=`<svg class="abs" style="left:180px;top:${290+dy}px;overflow:visible" width="720" height="720" viewBox="0 0 720 720"><defs>
+     <path id="arcTop" d="M 90 360 A 270 270 0 0 1 630 360"/>
+     <path id="arcBot" d="M 60 360 A 300 300 0 0 0 660 360"/></defs>
+     <g transform="translate(360 360) scale(${sc}) translate(-360 -360)">
+     <circle cx="360" cy="360" r="${R}" fill="none" stroke="${col}" stroke-width="12"/>
+     <circle cx="360" cy="360" r="${R+16}" fill="none" stroke="${col}" stroke-width="2"/>
+     <circle cx="360" cy="360" r="238" fill="none" stroke="${col}" stroke-width="4"/>
+     <text font-family="Jost" font-weight="600" font-size="46" letter-spacing="11" fill="${col}" text-anchor="middle"><textPath href="#arcTop" startOffset="50%">BOMBAY BRIDE</textPath></text>
+     <text font-family="Jost" font-weight="500" font-size="34" letter-spacing="8" fill="${col}" text-anchor="middle"><textPath href="#arcBot" startOffset="50%">THE SHOPPING ISSUE · NO. 01</textPath></text>
+     <path d="M 70 360 l 12 -12 l 12 12 l -12 12 z" fill="${col}"/><path d="M 626 360 l 12 -12 l 12 12 l -12 12 z" fill="${col}"/>
+     </g>`;
+   if(ripple>=0) s+=`<circle cx="360" cy="360" r="${R+20+ripple*110}" fill="none" stroke="#fff" stroke-width="3" opacity="${1-ripple}"/>`;
+   s+='</svg>';
+   c.insertAdjacentHTML('beforeend',s);
+   // the Bb sits exactly at the centre of the ring (540, 650)
+   const bw=380*sc, bh=bw*1540/BBD.width; c.insertAdjacentHTML('beforeend',bb(540-bw/2,650+dy-bh/2,bw,'#fff'));
+   if(t>=W(id,0).s) c.insertAdjacentHTML('beforeend',`<div class="abs" style="left:180px;top:1110px;color:#fff;font:italic 500 88px/1.1 'Bodoni Moda'">Read the full issue</div>`);
+   if(t>=W(id,3).s) c.insertAdjacentHTML('beforeend',`<div class="abs lab" style="left:180px;top:1250px;color:#fff;font-size:38px">bombay-bride.com</div>`);
+   if(t>=1.5) c.insertAdjacentHTML('beforeend',`<div class="abs credit" style="left:180px;top:1440px;color:#bdbdbd">Photos: Wikimedia Commons</div>`);
+ }
+};
+// ---------- transitions: how scene i enters over scene i-1 ----------
+const TT={1:'cut',2:'slide',3:'tear',4:'iris',5:'wipe',6:'drop',7:'cut'};
+function mk(){const d=document.createElement('div');d.className='sc';return d}
+function renderScene(i,t){const c=mk(); DRAW[SCENES[i].id](c,t); return c}
+function renderAt(T){
+  stage.innerHTML=''; T=clamp(T,0,TOTAL-0.001);
+  let i=SCENES.findIndex(s=>T>=s.start&&T<s.start+s.dur); if(i<0) i=SCENES.length-1; const t=T-SCENES[i].start;
+  const type=TT[i];
+  if(i>0&&type&&type!=='cut'&&t<TR){
+    const u=t/TR, A=renderScene(i-1,SCENES[i-1].dur-0.001), B=renderScene(i,t);
+    stage.appendChild(A);
+    if(type==='slide'){const x=lerp(1080,0,ease(u)); const sh=document.createElement('div'); sh.className='abs'; sh.style.cssText=`left:${x-22}px;top:0;width:1102px;height:1920px;background:#000`; stage.appendChild(sh); B.style.transform=`translateX(${x}px)`; B.style.borderLeft='4px solid #000'; stage.appendChild(B)}
+    else if(type==='drop'){const y=lerp(-1920,0,ease(u)); const sh=document.createElement('div'); sh.className='abs'; sh.style.cssText=`left:0;top:${y-22}px;width:1080px;height:1942px;background:#000`; stage.appendChild(sh); B.style.transform=`translateY(${y}px)`; B.style.borderBottom='4px solid #000'; stage.appendChild(B)}
+    else if(type==='tear'){const edge=lerp(1960,-80,ease(u)); const jag=[]; for(let k=0;k<=27;k++) jag.push([k*40,edge+((k*53)%37)-18+(k%2?12:-12)]);
+      const clip='polygon('+jag.map(p=>p[0]+'px '+p[1]+'px').join(',')+',1080px 1960px,0px 1960px)', shade='polygon('+jag.map(p=>p[0]+'px '+(p[1]-14)+'px').join(',')+',1080px 1960px,0px 1960px)';
+      const s=document.createElement('div'); s.className='abs'; s.style.cssText=`left:0;top:0;width:1080px;height:1920px;background:#000;clip-path:${shade}`; stage.appendChild(s); B.style.clipPath=clip; stage.appendChild(B)}
+    else if(type==='wipe'){const x=lerp(-30,1110,ease(u)); B.style.clipPath=`inset(0 ${Math.max(0,1080-x)}px 0 0)`; stage.appendChild(B); const bar=document.createElement('div'); bar.className='abs'; bar.style.cssText=`left:${x-14}px;top:0;width:28px;height:1920px;background:#000`; stage.appendChild(bar)}
+    else if(type==='iris'){const half=u<.5; const r=half?lerp(1100,0,ease(u*2)):lerp(0,1100,ease((u-.5)*2)); stage.innerHTML=''; stage.appendChild(half?A:B); const m=document.createElementNS('http://www.w3.org/2000/svg','svg'); m.setAttribute('class','abs'); m.setAttribute('width','1080'); m.setAttribute('height','1920'); m.style.cssText='left:0;top:0'; m.innerHTML=`<path fill-rule="evenodd" d="M0 0H1080V1920H0Z M540 960 m-${r} 0 a${r} ${r} 0 1 0 ${2*r} 0 a${r} ${r} 0 1 0 ${-2*r} 0Z" fill="#000"/>`; stage.appendChild(m)}
+  } else stage.appendChild(renderScene(i,t));
+}
+window.renderAt=renderAt; window.TOTAL=TOTAL; window.SCENES=SCENES;
+loadImgs(['hands','zaveri','shelves','mehendi','colaba-bangles']).then(()=>document.fonts.ready).then(()=>{renderAt(0);window.__ready=true});
+</script></body></html>

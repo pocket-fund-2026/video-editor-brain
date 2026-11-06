@@ -1,0 +1,60 @@
+{
+ "note": "Strings shown or spoken in the reel (v5, bridal shopping). All are encyclopedic (Wikipedia); none verified by phone, visit or primary source. Owner to confirm before posting.",
+ "strings": [
+  {
+   "text": "Everything on a bridal list has a history.",
+   "source": "editorial opener",
+   "status": "editorial"
+  },
+  {
+   "text": "A mangalsutra literally means 'auspicious thread'.",
+   "source": "Wikipedia: Mangalasutra",
+   "status": "encyclopedia, needs confirmation"
+  },
+  {
+   "text": "A Banarasi sari can take up to six months to weave.",
+   "source": "Wikipedia: Banarasi sari (15 days to a month, sometimes up to six months)",
+   "status": "encyclopedia, needs confirmation"
+  },
+  {
+   "text": "Paithani saris were traded to the Roman world two thousand years ago.",
+   "source": "Wikipedia: Paithani (Satavahana period, 2nd c. BCE to 2nd c. CE; trade with Greco-Roman countries)",
+   "status": "encyclopedia, needs confirmation"
+  },
+  {
+   "text": "The bridal garland is the varmala, the 'boon garland'.",
+   "source": "Wikipedia: Varamala (lit. boon garland)",
+   "status": "encyclopedia, needs confirmation"
+  },
+  {
+   "text": "Mehndi often hides the couple's initials in its pattern.",
+   "source": "Wikipedia: Mehndi (names or initials of bride and groom hidden within the design)",
+   "status": "encyclopedia, needs confirmation"
+  },
+  {
+   "text": "In some traditions, a bride never buys her own bangles.",
+   "source": "Wikipedia: Bangle (tradition that a woman does not buy the bangles she will wear)",
+   "status": "encyclopedia, hedged with 'in some traditions'"
+  },
+  {
+   "text": "The lehenga became popular in the sixteenth century.",
+   "source": "Wikipedia: Lehenga",
+   "status": "encyclopedia, needs confirmation"
+  },
+  {
+   "text": "This is the Shopping Issue.",
+   "source": "editorial cover line",
+   "status": "editorial"
+  },
+  {
+   "text": "Read the full issue.",
+   "source": "editorial call to action",
+   "status": "editorial"
+  },
+  {
+   "text": "No. 01 \u00b7 Mumbai \u00b7 November to February",
+   "source": "bombay-bride.com season guide",
+   "status": "editorial"
+  }
+ ]
+}

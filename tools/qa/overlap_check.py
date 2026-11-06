@@ -36,9 +36,61 @@ JS = r"""
 }
 """
 
+FILM_JS = r"""
+() => { const out = []; const ui = document.getElementById('ui'); const k = 1080 / document.getElementById('stage').getBoundingClientRect().width;
+  document.querySelectorAll('#ui .tag').forEach((el) => { const cs = getComputedStyle(el); if (cs.display === 'none' || parseFloat(cs.opacity) < 0.35) return;
+    const b = el.getBoundingClientRect(), s = document.getElementById('stage').getBoundingClientRect();
+    out.push({ t: el.textContent.trim().slice(0, 38), x0: (b.left - s.left) * k, y0: (b.top - s.top) * k, x1: (b.right - s.left) * k + 9, y1: (b.bottom - s.top) * k + 9, g: el.textContent }); });
+  const l = document.getElementById('logo').getBoundingClientRect(), s = document.getElementById('stage').getBoundingClientRect();
+  out.push({ t: 'LOGO', x0: (l.left - s.left) * k, y0: (l.top - s.top) * k, x1: (l.right - s.left) * k, y1: (l.bottom - s.top) * k, g: 'logo' });
+  return out; }
+"""
+
+def film_main(a):
+    """Three.js film (film.html): sample the whole timeline, check caption tags + logo for overlap, frame bounds and UI zones."""
+    import pathlib
+    from playwright.sync_api import sync_playwright
+    fails, warns, errs = {}, {}, []
+    with sync_playwright() as pw:
+        b = pw.chromium.launch(args=["--use-gl=angle", "--use-angle=metal", "--ignore-gpu-blocklist", "--enable-unsafe-swiftshader"])
+        pg = b.new_page(viewport={"width": 540, "height": 960}); pg.on("pageerror", lambda e: errs.append(str(e)))
+        pg.goto(pathlib.Path(os.path.join(a.project, "film.html")).resolve().as_uri() + "?w=540&h=960"); pg.wait_for_function("window.ready===true && (window.pending||0)===0", timeout=60000)
+        t = 0.2
+        while t < 40:
+            pg.evaluate(f"window.setT({t})"); items = pg.evaluate(FILM_JS)
+            for i, p in enumerate(items):
+                if p["x0"] < -2 or p["x1"] > 1082 or p["y0"] < -2 or p["y1"] > 1922: fails.setdefault(f"outside frame: '{p['t']}'", []).append(t)
+                if p["t"] != "LOGO":
+                    if p["x1"] > 960 or p["y0"] < 250 or p["y1"] > 1500: warns.setdefault(f"outside safe zone (y 250-1500, x<960): '{p['t']}'", []).append(t)
+                for q in items[i + 1:]:
+                    ix = min(p["x1"], q["x1"]) - max(p["x0"], q["x0"]); iy = min(p["y1"], q["y1"]) - max(p["y0"], q["y0"])
+                    if ix > 4 and iy > 4: fails.setdefault(f"overlap: '{p['t']}' x '{q['t']}'", []).append(t)
+                    elif ix > -24 and iy > -24 and ix > 0 or (iy > -24 and iy <= 0 and ix > 4): warns.setdefault(f"closer than 24px: '{p['t']}' / '{q['t']}'", []).append(t)
+            t = round(t + a.step, 2)
+        b.close()
+    for m, ts in sorted(fails.items()): print(f"FAIL {m}  at t={ts[0]}..{ts[-1]}s ({len(ts)} samples)")
+    for m, ts in sorted(warns.items()): print(f"WARN {m}  at t={ts[0]}..{ts[-1]}s")
+    if errs: print("PAGE ERRORS:", errs[:3])
+    print(f"overlap_check: {len(fails)} fail, {len(warns)} warn"); sys.exit(1 if fails or errs else 0)
+
+def film_check(project):
+    """Single-page film layout: build film/film.html, then check text overlap and the safe area every 0.25 s (node + playwright-core)."""
+    import subprocess
+    fd = os.path.join(project, "film")
+    b = subprocess.run([sys.executable, "build_film.py"], cwd=fd, capture_output=True, text=True)
+    if b.returncode: print("FAIL film build failed:", (b.stdout + b.stderr)[-300:]); return 1
+    r = subprocess.run(["node", "film_overlap.cjs"], cwd=fd, capture_output=True, text=True, timeout=600)
+    out = (r.stdout + r.stderr)
+    for line in out.splitlines():
+        if line.startswith(("FAIL", "WARN", "OK")): print(line)
+    if "Cannot find module" in out or r.returncode not in (0, 1): print("FAIL film_overlap.cjs could not run:", out[-300:]); return 1
+    print("overlap_check: film layout,", "no overlaps" if r.returncode == 0 else "overlaps found"); return r.returncode
+
 def main():
+    if len(sys.argv) > 1 and not os.path.isdir(os.path.join(sys.argv[1], "scenes")) and os.path.exists(os.path.join(sys.argv[1], "film", "film_template.html")): sys.exit(film_check(sys.argv[1]))
     ap = argparse.ArgumentParser(); ap.add_argument("project"); ap.add_argument("--step", type=float, default=0.5)
     a = ap.parse_args()
+    if os.path.exists(os.path.join(a.project, 'film.html')): return film_main(a)
     from playwright.sync_api import sync_playwright
     fails, warns = {}, {}
     with sync_playwright() as pw:

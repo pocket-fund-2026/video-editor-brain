@@ -1,0 +1,18 @@
+{
+ "concept": "The Shopping Issue, redesigned after feedback L029: a magazine reel where every spread has its own composition and its own device, so no two animations repeat and nothing overlaps.",
+ "locked": ["palette", "fonts", "logo"],
+ "dimensions": {
+  "palette": "pure black, white and one pale hairline grey (Bombay Bride Edition 6)",
+  "fonts": "Bodoni Moda display with italic, Jost capitals for labels",
+  "opening": "a thread draws through seven drawn islands and joins them under the first line",
+  "transition": "mixed: continuous map glide inside Colaba, paper slide with hard edge, paper tear, shutter iris",
+  "camera": "map descent from city to island, then straight-on printed pages",
+  "layout": "magazine spreads, each a different composition: number-first, off-centre strip, centred monument, left column plus strip, plate",
+  "motion_device": ["outline-to-fill masthead", "sticker-slap painted board", "counter wheels", "carved frame", "temple hop with ghosts", "film-strip scroll", "lead-type setting", "passport stamp"],
+  "texture": "halftone only on the cover and Bandra; clean grain photographs elsewhere; torn paper edges",
+  "sound": "foley only: paper, press, chisel, tram rail, projector, rubber stamp",
+  "ending": "stamp the passport: the Bb inside a round stamp"
+ },
+ "moves": ["outline to fill", "paper tear", "shutter iris", "stamp the passport", "foley only", "sticker slap", "route-line draw"],
+ "experiment": {"move": "one device per spread, transitions that differ", "hypothesis": "If no device appears twice and a script checks text overlap, the viewer stops reading the spreads as one template."}
+}

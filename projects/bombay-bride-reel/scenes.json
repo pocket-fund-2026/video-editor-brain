@@ -1,0 +1,37 @@
+{
+ "v": 1,
+ "scenes": [
+  {
+   "id": "hook",
+   "dur": 3.0
+  },
+  {
+   "id": "cover",
+   "dur": 2.6
+  },
+  {
+   "id": "gold",
+   "dur": 4.4
+  },
+  {
+   "id": "silk",
+   "dur": 4.4
+  },
+  {
+   "id": "paithani",
+   "dur": 4.0
+  },
+  {
+   "id": "mehndi",
+   "dur": 3.7
+  },
+  {
+   "id": "bangles",
+   "dur": 3.6
+  },
+  {
+   "id": "back",
+   "dur": 4.0
+  }
+ ]
+}

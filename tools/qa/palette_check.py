@@ -24,12 +24,16 @@ def main():
     a = ap.parse_args()
     block = json.load(open(a.blocklist)); bad = [(n, c) for n, cs in block.items() if not n.startswith("_") for c in cs]
     cr = block.get("_cream_rule", {"L_min": 82, "b_min": 5, "b_max": 28})
-    files = [os.path.join(a.project, "base.css"), os.path.join(a.project, "shared.js")] + [os.path.join(a.project, "scenes", f) for f in sorted(os.listdir(os.path.join(a.project, "scenes")))]
+    if os.path.isdir(os.path.join(a.project, "scenes")):
+        files = [os.path.join(a.project, "base.css"), os.path.join(a.project, "shared.js")] + [os.path.join(a.project, "scenes", f) for f in sorted(os.listdir(os.path.join(a.project, "scenes")))]
+    else:   # single-page film layout (film/film_template.html draws every frame itself)
+        files = [os.path.join(a.project, "film", "film_template.html")]
     found = {}
     for f in files:
         if not os.path.exists(f): continue
         txt = open(f, encoding="utf8").read()
         for h in re.findall(r"#[0-9a-fA-F]{6}\b", txt): found.setdefault(h.upper(), set()).add(os.path.basename(f))
+        for h in re.findall(r"#([0-9a-fA-F]{3})\b(?![0-9a-fA-F])", txt): found.setdefault("#" + "".join(c * 2 for c in h).upper(), set()).add(os.path.basename(f))   # short hex like #fff
         for r, g, b in re.findall(r"rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)", txt):
             found.setdefault("#%02X%02X%02X" % (int(r), int(g), int(b)), set()).add(os.path.basename(f))
     fails = []
