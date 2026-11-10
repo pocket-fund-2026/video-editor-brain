@@ -1,0 +1,50 @@
+{
+ "hook": {
+  "chunks": [
+   "Taking you to a new cafe today.",
+   "Worli."
+  ],
+  "marks": {
+   "worli": "worli"
+  }
+ },
+ "pour": {
+  "chunks": [
+   "Javaphile's new flagship.",
+   "Simple coffee, done right."
+  ],
+  "marks": {
+   "simple": "simple"
+  }
+ },
+ "toast": {
+  "chunks": [
+   "Tiramisu,",
+   "raspberry cream cheese,",
+   "blueberry."
+  ],
+  "marks": {
+   "tir": "tiramisu",
+   "rasp": "raspberry",
+   "blue": "blueberry"
+  }
+ },
+ "bowls": {
+  "chunks": [
+   "Bowls",
+   "and tartines too."
+  ],
+  "marks": {
+   "bowls": "bowls",
+   "tart": "tartines"
+  }
+ },
+ "end": {
+  "chunks": [
+   "Which French toast would you order first?"
+  ],
+  "marks": {
+   "which": "which"
+  }
+ }
+}

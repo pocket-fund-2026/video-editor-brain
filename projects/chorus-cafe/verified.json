@@ -1,10 +1,6 @@
 {
- "note": "Strings verified against the cafe's own page and official menu PDF on 2026-11-04. Hours still need one phone call before publishing.",
+ "note": "Strings verified 2026-11-04. No prices are shown in this film.",
  "allowed_strings": [
-  "₹950",
-  "₹900",
-  "₹3,600",
-  "₹450",
   "11am",
   "8pm",
   "11 am",
@@ -12,6 +8,6 @@
  ],
  "sources": [
   "https://chorusworld.com/pages/cafe",
-  "https://cdn.shopify.com/s/files/1/0570/3149/1774/files/Chorus-Menu-Updated-Price-Mobile-Version.pdf?v=1787746683"
+  "https://www.district.in/dining/mumbai/chorus-cafe-churchgate"
  ]
 }

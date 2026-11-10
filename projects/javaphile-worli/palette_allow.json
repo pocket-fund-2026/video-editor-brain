@@ -1,0 +1,19 @@
+{
+ "reason": "These are the natural colours of the food and coffee only (brioche crust, sourdough crumb and crust, wooden board, quinoa, radish, kiwi core, mascarpone, crema). Every frame passes through the two-ink riso pass (cobalt blue + chartreuse on bone paper), so none of these warm colours reach the screen; the UI, map, lights and type are cool blue, chartreuse and bone.",
+ "allowed": [
+  "#965016",
+  "#9A6A33",
+  "#A7773D",
+  "#B87A2E",
+  "#B9772C",
+  "#B98D5D",
+  "#E8F0D8",
+  "#E9EFC2",
+  "#EFD9A8",
+  "#F1A58C",
+  "#F3ECD8",
+  "#F6F1E6",
+  "#F8EBC8",
+  "#FFF4D0"
+ ]
+}

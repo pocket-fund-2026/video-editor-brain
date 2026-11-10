@@ -2,16 +2,15 @@ const { seg, eo, eio, lerp } = kit;
 kit.scene('hook', {
   init(kit) { Stitch.load(kit); kit.stage.append(kit.h('<div class="ground"><canvas class="mapc" width="1080" height="1920"></canvas></div>')); this.ctx = kit.stage.querySelector('canvas').getContext('2d'); },
   render(t, kit) {
-    const ctx = this.ctx, S = Stitch, W = 1080, H = 1920, T0 = 2.6, u = eio(seg(t, T0, 8.2)), slide = eio(seg(t, 2.4, 3.6));
-    const cam = { W: W, H: H, cx: lerp(-70, 0, u), cy: lerp(-210, 20, u), s: lerp(0.62, 1.75, u), k: lerp(1, 0.6, eio(seg(t, 5.0, 8.4))) };
-    const R = 40 + 1100 * eio(seg(t, T0 + 0.3, 7.2)), route = eio(seg(t, T0 + 0.2, 5.4)), rise = eio(seg(t, 5.2, 8.4));
+    const ctx = this.ctx, S = Stitch, W = 1080, H = 1920, T0 = 1.8, u = eio(seg(t, T0, 6.6)), slide = eio(seg(t, 1.7, 2.8));
+    const cam = { W: W, H: H, cx: lerp(-60, 0, u), cy: lerp(-200, 20, u), s: lerp(0.62, 1.7, u), k: lerp(1, 0.62, eio(seg(t, 4.2, 6.8))) };
+    const R = 40 + 1100 * eio(seg(t, T0 + 0.2, 6)), route = eio(seg(t, T0 + 0.1, 4.4)), rise = eio(seg(t, 4.2, 6.8));
     const r = S.drawMap(ctx, cam, { reveal: R, route: route, rise: rise }); const pin = S.project(cam, 0, 0);
     if (route > 0 && route < 1) S.needle(ctx, r.tip, cam.s);
-    S.button(ctx, pin[0], pin[1], 26 * cam.s / 0.9 + 6, seg(t, 5.4, 6.4), t);
-    const py = lerp(790, 330, slide);
-    S.patch(ctx, 110, py, 860, 300, seg(t, 0.1, 1.0), -0.012 * (1 - slide));
-    const lg = S.logo(ctx, 220, py + 35, 640, seg(t, 0.8, 2.5), null, 'lockup'); if (lg) S.needle(ctx, lg, 0.9);
-    S.hud(ctx, 'KALA GHODA, MUMBAI', (kit.start + t) / 66.0);
-    S.caps(ctx, [["Upstairs from a fashion store in Kala Ghoda, there's a cafe where even the pasta wears stripes.", 0.4, 8.6, ['pasta', 'stripes.']]], t, { back: true });
+    S.button(ctx, pin[0], pin[1], 26 * cam.s / 0.9 + 6, seg(t, 4.4, 5.3), t);
+    const py = lerp(720, 300, slide);
+    S.patch(ctx, 40, py, 1000, 360, seg(t, 0.05, 0.8), -0.02 * (1 - slide));
+    const lg = S.logo(ctx, 110, py + 38, 860, seg(t, 0.5, 1.9), null, 'lockup'); if (lg) S.needle(ctx, lg, 0.9);
+    S.caps(ctx, [["A cafe where even the pasta wears stripes.", 0.3, 7, ['pasta', 'stripes.']]], t, { back: true, font: "500 64px Fraunces, Georgia, serif", lh: 76, x: 70, y: 1330 });
   },
 });

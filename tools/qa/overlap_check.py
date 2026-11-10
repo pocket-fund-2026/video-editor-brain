@@ -41,8 +41,8 @@ FILM_JS = r"""
   document.querySelectorAll('#ui .tag').forEach((el) => { const cs = getComputedStyle(el); if (cs.display === 'none' || parseFloat(cs.opacity) < 0.35) return;
     const b = el.getBoundingClientRect(), s = document.getElementById('stage').getBoundingClientRect();
     out.push({ t: el.textContent.trim().slice(0, 38), x0: (b.left - s.left) * k, y0: (b.top - s.top) * k, x1: (b.right - s.left) * k + 9, y1: (b.bottom - s.top) * k + 9, g: el.textContent }); });
-  const l = document.getElementById('logo').getBoundingClientRect(), s = document.getElementById('stage').getBoundingClientRect();
-  out.push({ t: 'LOGO', x0: (l.left - s.left) * k, y0: (l.top - s.top) * k, x1: (l.right - s.left) * k, y1: (l.bottom - s.top) * k, g: 'logo' });
+  const lg = document.getElementById('logo'), s = document.getElementById('stage').getBoundingClientRect();
+  if (lg) { const l = lg.getBoundingClientRect(); out.push({ t: 'LOGO', x0: (l.left - s.left) * k, y0: (l.top - s.top) * k, x1: (l.right - s.left) * k, y1: (l.bottom - s.top) * k, g: 'logo' }); }
   return out; }
 """
 

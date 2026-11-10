@@ -1,0 +1,27 @@
+{
+ "width": 1080,
+ "height": 1920,
+ "fps": 30,
+ "scenes": [
+  {
+   "id": "map",
+   "dur": 8
+  },
+  {
+   "id": "shopfront",
+   "dur": 8
+  },
+  {
+   "id": "pour",
+   "dur": 10
+  },
+  {
+   "id": "food",
+   "dur": 9
+  },
+  {
+   "id": "end",
+   "dur": 5
+  }
+ ]
+}

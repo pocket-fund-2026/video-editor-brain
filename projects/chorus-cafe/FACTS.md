@@ -24,6 +24,11 @@ Sources
 | Mittal Avenue, Fort | CAFE: "Chorus, Level 2, Mittal Avenue, Fort, Mumbai 400001" | Verified, primary |
 | Prices exclude service charge and tax | MENU: "Prices are subject to a 10% service charge and applicable government taxes" | Verified, primary |
 
+## Update 2026-11-04 (second pass)
+- Hours: District's live listing now also reads "Open • 11:00 AM to 8:00 PM", matching the cafe's own page, so the earlier conflict is resolved (still worth one phone call).
+- Ratings: Chorus Café has almost no public ratings (District: 3 ratings, Zomato: none attached, HappyCow: none). No public number is used. The on-screen **First Look score 4.7 / 5** is our own editorial score from the menu (all vegetarian with vegan and Jain options, a very wide menu), the space (textile artwork by the Chorus Collective, craft tableware, reading room) and press (Harper's Bazaar India: "carefully plated comfort"). It is labelled as not a meal review.
+- Prices are deliberately not shown anywhere (the user asked).
+
 ## Conflicts and risks
 1. **Hours or status:** the District listing showed the cafe as closed with one rating and ₹700 for two. The cafe's own page says open daily 11am to 8pm and its menu shows prices of ₹800 to ₹950 for plates, so the District listing looks stale. **Phone the cafe (+91 7039010070, from its page) once before publishing.**
 2. **"India's first fashion cafe":** this is Harper's Bazaar's headline claim. It is not used in the script. If used, attribute it ("Harper's Bazaar India called it...").

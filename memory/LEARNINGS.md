@@ -237,3 +237,52 @@
 - Cause: Drew abstract stand-ins instead of the real objects and placed the logo by eye, not by the ring's centre
 - Rule: Draw each bridal item as the real object (necklace with beads, chain and pendant; hand and forearm wearing bangles) so a stranger recognises it; centre the end-card Bb on the ring centre by calculation and keep ring text upright. Animations first, polish second.
 - Guarded by: process
+
+### L033 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): its not always necessary for storefront photo just have good food items in there and make the reel good
+- Symptom: I asked for a storefront photo and listed it as blocking, though no photo exists for this cafe
+- Cause: Applied the storefront rule (L019, L024) to every cafe, even when no reference photo is available
+- Rule: A storefront scene is optional. When there is no reference photo, skip it and spend that time on well-made food and coffee scenes; do not ask the user for a photo or invent an entrance
+- Guarded by: process
+
+### L034 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): make it 20 seconds long
+- Symptom: Reel was planned at 36 s because I copied the Mary Lodge length without asking; the user expected 20 s with a good hook
+- Cause: Assumed a length instead of asking at brief time
+- Rule: Ask the target length at brief time; default for Bombay Cafe Map cafe reels is about 20 s with a food-first hook in the first 2 s, map snap kept short, end card held 3 s
+- Guarded by: process
+
+### L035 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): the reel must be 20 seconds total (not 36). New timeline: 0-3 s hook: first frame is a striking close-up of the French toast with the line 'the French toast list at a quiet Worli cafe', then a fast map snap to Worli (about 2 s); 3-8 s coffee pour centrepiece; 8-15 s French toast flavours plus a fast bowls/tartine cut; 15-20 s end card (hold 3 s or more). Shorten the voiceover script to about 45 words.
+- Symptom: First cut was 36 s with a slow map opening; the hero food did not appear until 16 s
+- Cause: Built the scene lengths from the earlier brief without a total-length budget or a food-first hook
+- Rule: Bombay Cafe Map cafe reels: 20 s total; open on a close-up of the hero dish with one big typographic line in the first frame, then a fast map snap (about 2 s, OSM credit on screen); coffee pour centrepiece 3-8 s; flavours plus a fast bowls cut 8-15 s; end card 15-20 s holding 3 s or more; voiceover about 30-45 words
+- Guarded by: process
+
+### L036 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): the reel is glitching a lot and the voice is too fast can you improve it to be better and also where is the bombay cafe map stuff
+- Symptom: v2 20 s reel glitched visibly, narration was too fast to follow, and Bombay Cafe Map branding appeared only as a tiny label in the first 1.4 s
+- Cause: Cramming 31 words into the 20 s cut at engine default speed; strong frame-to-frame changes from the riso grain, misregistration and hard cuts; branding limited to one mono label
+- Rule: Bombay Cafe Map reels: narration at a calm pace (at most about 2.2 words a second, slower Kokoro speed, trim words rather than speed up), no frame-to-frame flicker (static grain, no per-frame jitter), and the Bombay Cafe Map logo/wordmark visible in the top bar throughout and large on the end card with the handle
+- Guarded by: process
+
+### L037 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): the hook is not fucking bombay cafe map what the fuck bro
+- Symptom: v2 opened on a Javaphile French toast close-up with the line 'the French toast list at a quiet Worli cafe'; Bombay Cafe Map was only a tiny label, so the hook was not the account
+- Cause: I replaced the user's standing map-first opening (L021) with my own food-first hook (L035) and treated 'make it 20 seconds' as approval of it
+- Rule: Supersedes L035's opening: every Bombay Cafe Map reel opens on Bombay Cafe Map itself: the real logo big in frame 1, then the 3D Mumbai map zoom and 'Bombay Cafe Map is taking you to a new cafe today'; the cafe and its food come after, never as the hook. Never replace a standing opening rule without the user's explicit yes
+- Guarded by: process
+
+### L038 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): you havent even included the cafe name
+- Symptom: v3 showed 'Javaphile Café' only for about 2 s over the map and as a small line on the end card; the voiceover never said it and it was absent from the pour, toast and bowls scenes
+- Cause: Fixed the brand hook and dropped the cafe name line from the voiceover to cut words; treated the name as secondary to the Bombay Cafe Map logo
+- Rule: Every cafe reel names the featured cafe three ways: spoken in the voiceover, a persistent name tag in every food scene, and big on the end card (about the same size as the account lockup); check the name is on screen in frames across the whole film, not only once
+- Guarded by: process
+
+### L039 · 2026-11-07 · javaphile-worli · brand-fit
+- Feedback (verbatim): yoou need to have new animations bro tomorrow onwards and open the folder where the video is right now
+- Symptom: Standing instruction: from the next reel onwards every reel must bring new animations, not reuse the same ones
+- Cause: Javaphile reuses the pour, 3D toast and map-zoom patterns from earlier films; the user expects fresh animations each day
+- Rule: From 2026-11-08 onwards each new reel must introduce new animations: before building, list the animations and name what is new versus the last 3 reels (pour, map zoom, food reveals, transitions, end card); at least 3 of the animations must be new, and the user hears the count and the list before the build starts
+- Guarded by: process

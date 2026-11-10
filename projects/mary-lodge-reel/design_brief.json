@@ -1,0 +1,49 @@
+{
+ "concept": "Inked Bandra: a hand-illustrated 3D reel. Mumbai island and real OSM buildings, a generated storefront and 3D coffee and bakes all run through one ink-and-cel pass (wobbled outlines, banded shading, hatching, paper grain). Captions are hard-shadow paper tags, scenes change with an ink wipe.",
+ "anti_slop": true,
+ "locked": [
+  "logo colours"
+ ],
+ "dimensions": {
+  "palette": "deep teal ground, pale paper grey, ink green, whitewash; food keeps its natural colour",
+  "fonts": "Fraunces headlines (italic accents) + DM Mono labels, two faces only",
+  "opening": "3D Mumbai island descent into real Bandra buildings",
+  "transition": "skewed paper ink-wipe",
+  "camera": "continuous descent, push-in on image, pour swoop to top-down",
+  "layout": "hard-shadow paper tags, left-weighted, tilted",
+  "motion_device": [
+   "ink-wipe transition",
+   "tilted paper tags with word stagger",
+   "3D building rise",
+   "pin drop",
+   "door/pour/pull-apart physical animations"
+  ],
+  "texture": "ink outlines, cel bands, diagonal hatching, paper grain",
+  "sound": "generated foley, no music, no voiceover",
+  "ending": "top-down crema end card"
+ },
+ "moves": [
+  "3D extruded real map",
+  "ink and cel post pass",
+  "paper tag captions",
+  "skewed ink wipe",
+  "top-down crema end card",
+  "generated storefront through ink pass"
+ ],
+ "experiment": {
+  "move": "ink and cel post pass over 3D and photo assets",
+  "hypothesis": "One shared illustration pass makes generated and modelled assets feel like a single hand-drawn world and avoids the AI-slop look"
+ },
+ "palette": {
+  "ground": "#10201f",
+  "main": "#eef2ef",
+  "second": "#2c5a48",
+  "accent": "#2c5b66"
+ },
+ "pin": {
+  "lat": 19.0531651,
+  "lon": 72.8300804,
+  "source": "OpenStreetMap node: Subko Speciality Coffee Roasters and Bakehouse, Chapel Road",
+  "label": "Mary Lodge by Subko, Chapel Road, Bandra West"
+ }
+}

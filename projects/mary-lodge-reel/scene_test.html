@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#0b1013}canvas{display:block}</style></head><body>
+<script src="vendor/three.min.js"></script><script src="scenes/common.js"></script><script src="scenes/ink.js"></script><script src="data/map_data.js"></script><script src="data/shop_img.js"></script>
+<script>
+const q = new URLSearchParams(location.search), name = q.get('scene'), Wd = +(q.get('w') || 1080), Ht = +(q.get('h') || 1920);
+document.write('<script src="scenes/' + name + '.js"><\/script>');
+</script>
+<script>
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wd, Ht); renderer.setPixelRatio(1); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace; document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, Wd / Ht, 0.05, 300);
+const S = window.SCENES[name], B = S.build(THREE, { W: Wd, H: Ht });
+scene.add(B.group); B.lights.forEach((l) => { scene.add(l); if (l.target) scene.add(l.target); });
+scene.background = new THREE.Color(B.bg); if (B.fog) scene.fog = new THREE.Fog(B.bg, B.fog[0], B.fog[1]);
+window.DUR = S.dur; const ink = q.get('ink') === '0' ? null : window.Ink.create(THREE, renderer, Wd, Ht);
+if (ink && S.ink) ink.set(S.ink);
+window.setT = (t) => { const p = B.setT(t); cam.position.set(...p.pos); cam.fov = p.fov; cam.near = p.near || 0.05; cam.far = p.far || 300; cam.updateProjectionMatrix(); cam.lookAt(...p.look); if (ink) ink.render(scene, cam); else renderer.render(scene, cam); window.ready = true; };
+window.setT(0);
+</script></body></html>

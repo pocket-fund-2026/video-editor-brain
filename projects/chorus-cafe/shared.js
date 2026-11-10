@@ -222,7 +222,7 @@ window.Stitch = (function () {
 
 
   // film HUD: a stitched progress thread across the top and a small place label
-  const TOTAL = 66.0;
+  const TOTAL = 45.3;
   function hud(ctx, str, prog) { ctx.fillStyle = 'rgba(10,13,38,0.88)'; ctx.fillRect(40, 262, 420, 40); line(ctx, [[56, 252], [1024, 252]], COL.chalk, 2.2, 1, { len: 6, gap: 6, jit: 0.4, seed: 3, holes: false }); line(ctx, [[56, 252], [1024, 252]], COL.rose, 3.4, c01(prog), { len: 9, gap: 3, jit: 0.4, seed: 4, holes: false }); label(ctx, str, 56, 274, { a: 0.8, g: 'hud' }); }
   // chunked captions: only the active chunk shows. chunks = [[text, t0, t1, [emphasis words]]]
   function caps(ctx, chunks, t, o) { for (let i = 0; i < chunks.length; i++) { const c = chunks[i]; if (t >= c[1] && t < c[2]) caption(ctx, c[0], t, c[1], Object.assign({ hl: c[3] }, o || {})); } }

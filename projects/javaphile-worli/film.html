@@ -1,0 +1,152 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Bombay Cafe Map: Javaphile Worli reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&family=IBM+Plex+Mono:wght@500&family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap">
+<style>
+:root{--blue:#1c2a9a;--chart:#c8e600;--bone:#e9ebe4;--mx:6px;--my:5px}
+html,body{margin:0;background:#e9ebe4;overflow:hidden}
+#stage{position:relative;overflow:hidden;background:#e9ebe4}
+#stage canvas{position:absolute;left:0;top:0;display:block}
+#ui{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;pointer-events:none}
+.cap{z-index:6;position:absolute;box-sizing:border-box;display:inline-block;max-width:840px;background:var(--blue);color:var(--bone);box-shadow:var(--mx) var(--my) 0 var(--chart);font-family:'Archivo',Helvetica,Arial,sans-serif;line-height:.98;letter-spacing:-0.01em}
+.cap .k{display:block;font:500 30px 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.08em;background:var(--chart);color:var(--blue);padding:9px 24px 8px}
+.cap .h{display:block;padding:14px 26px 22px}
+.cap.paper{background:var(--bone);color:var(--blue)}
+.cap.persist{z-index:30}
+.cap.mono{font:500 24px 'IBM Plex Mono',ui-monospace,monospace;background:var(--bone);color:var(--blue);padding:8px 16px;letter-spacing:.06em}
+.cap.mono .h{padding:0}
+.cap.word{background:transparent;box-shadow:none;color:var(--blue);text-shadow:calc(var(--mx)*2.2) calc(var(--my)*2.2) 0 var(--chart)}
+.cap.word .h{padding:0 26px;font-variation-settings:'wght' 820}
+.w{display:inline-block;white-space:pre}
+/* the real Bombay Cafe Map lockup (steaming-cup icon geometry from brand/logo/bombaycafemap-icon.svg, wordmark set in the brand serif), printed in one ink */
+#logo{position:absolute;left:56px;top:252px;width:470px;height:92px;box-sizing:border-box;background:var(--bone);box-shadow:var(--mx) var(--my) 0 var(--chart);z-index:30}
+#logo svg{position:absolute;left:20px;top:14px;width:64px;height:64px}
+#logo .wm{position:absolute}
+#logo .wm,#stack .wm{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:400;color:var(--blue);white-space:nowrap;letter-spacing:-0.025em}
+#logo .wm{font-size:38px;line-height:1;left:100px;top:27px}
+.wm b{font-weight:700}
+#stack{position:absolute;left:56px;top:252px;width:520px;box-sizing:border-box;background:var(--bone);box-shadow:var(--mx) var(--my) 0 var(--chart);padding:20px 26px 18px;z-index:30;display:none}
+#stack svg{width:112px;height:112px;display:block;margin-bottom:8px}
+#stack .wm{font-size:54px;line-height:1.05;display:block}
+#stack .id{display:block;font:500 26px 'IBM Plex Mono',ui-monospace,monospace;color:var(--blue);letter-spacing:.04em;margin-top:6px}
+#iris,#iris2{display:none;z-index:5}
+</style></head>
+<body>
+<div id="stage"><canvas id="under" style="display:none"></canvas><div id="ui">
+<div id="logo"><svg viewBox="0 0 512 512" aria-label="Bombay Cafe Map"><defs><pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#1c2a9a"/><circle cx="7" cy="7" r="3.6" fill="#e9ebe4"/></pattern></defs>
+<rect width="512" height="512" rx="114" fill="#1c2a9a"/><path d="M340 232c34 4 56 26 56 60s-27 60-64 60" fill="none" stroke="#e9ebe4" stroke-width="26" stroke-linecap="round"/><path d="M136 210h208l-24 168a40 40 0 0 1-40 34h-80a40 40 0 0 1-40-34z" fill="#e9ebe4"/><path d="M136 210h208l-9 62H145z" fill="url(#dots)"/><g fill="none" stroke="#e9ebe4" stroke-width="21" stroke-linecap="round"><path d="M205 186c-18-20 18-32 0-52s18-32 0-52"/><path d="M275 186c-18-20 18-32 0-52s18-32 0-52"/></g></svg><span class="wm">Bombay Cafe <b>Map</b></span></div>
+<div id="stack" class="tag"><svg viewBox="0 0 512 512" aria-label="Bombay Cafe Map"><rect width="512" height="512" rx="114" fill="#1c2a9a"/><path d="M340 232c34 4 56 26 56 60s-27 60-64 60" fill="none" stroke="#e9ebe4" stroke-width="26" stroke-linecap="round"/><path d="M136 210h208l-24 168a40 40 0 0 1-40 34h-80a40 40 0 0 1-40-34z" fill="#e9ebe4"/><path d="M136 210h208l-9 62H145z" fill="url(#dots)"/><g fill="none" stroke="#e9ebe4" stroke-width="21" stroke-linecap="round"><path d="M205 186c-18-20 18-32 0-52s18-32 0-52"/><path d="M275 186c-18-20 18-32 0-52s18-32 0-52"/></g></svg><span class="wm">Bombay Cafe <b>Map</b></span><span class="id">@bombaycafemap</span><span class="id">bombaycafemap.com</span></div>
+<div id="iris2"></div><div id="iris"></div></div></div>
+<script src="vendor/three.min.js"></script><script src="scenes/common.js"></script><script src="scenes/riso.js"></script><script src="scenes/fc.js"></script>
+<script>
+// scene-local timings (seconds): toast flavours follow the voice; bowls hold each dish well over 1.2 s
+window.TIMING = { toast: { tir: [0.95, 1.1], rasp: [1.4, 1.85], blue: [1.95, 3.0], ban: [20, 21] }, bowls: { a: -0.2, b: 99, c: 0.8 } };
+</script>
+<script src="data/map_data.js"></script>
+<script src="scenes/map.js"></script><script src="scenes/pour.js"></script><script src="scenes/toast.js"></script><script src="scenes/bowls.js"></script>
+<script>
+const q = new URLSearchParams(location.search), Wd = +(q.get('w') || 1080), Ht = +(q.get('h') || 1920), SC = Wd / 1080;
+const { clamp, seg, eo, eio, eob } = window.C;
+const stage = document.getElementById('stage'); stage.style.width = Wd + 'px'; stage.style.height = Ht + 'px';
+document.getElementById('ui').style.transform = 'scale(' + SC + ')';
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wd, Ht); renderer.setPixelRatio(1); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+const under = document.getElementById('under'); under.width = Wd; under.height = Ht; const uctx = under.getContext('2d');
+stage.insertBefore(renderer.domElement, document.getElementById('ui'));
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, Wd / Ht, 0.05, 300);
+const riso = window.Riso.create(THREE, renderer, Wd, Ht);
+// timeline (seconds). intro = the logo on bone paper; map = island -> Worli (starts as the intro ring opens); the rest follow the voice.
+const TL = [{ id: 'intro', s: 0, d: 1.5 }, { id: 'map', s: 1.5, d: 7.0 }, { id: 'pour', s: 8.5, d: 3.4 }, { id: 'toast', s: 11.9, d: 2.5 }, { id: 'bowls', s: 14.4, d: 2.2 }, { id: 'end', s: 16.6, d: 3.4 }];
+const HALF = 0.2, WARP = { pour: 2.7 };            // each transition is 0.4 s (12 frames): the next scene is already inside the growing letter O
+const built = {};
+['map', 'pour', 'toast', 'bowls'].forEach((id) => { const S = window.SCENES[id], B = S.build(THREE, { W: Wd, H: Ht }); built[id] = { S, B }; scene.add(B.group); B.lights.forEach((l) => { scene.add(l); if (l.target) scene.add(l.target); }); });
+
+// plate misregistration: kicked by landings, rises and settles smoothly (no per-frame jitter, no jumps)
+const LANDS = [0.0, 3.2, 5.7, 8.5 + 0.8, 8.5 + 2.5, 11.9 + 0.1, 11.9 + 0.3, 11.9 + 0.5, 11.9 + 0.95, 11.9 + 1.4, 11.9 + 1.95, 14.4 + 0.3, 14.4 + 1.3, 16.6 + 0.1];
+function misreg(T) { let last = -9, n = 0; LANDS.forEach((l, i) => { if (l <= T && l > last) { last = l; n = i; } });
+  const u = T - last, k = last < 0 ? 0 : (1 - Math.exp(-u * 24)) * Math.exp(-u * 4.2) * 1.45, a = n * 2.4; return { x: 3 * Math.cos(1.1) + 8 * k * Math.cos(a), y: 3 * Math.sin(1.1) + 6 * k * Math.sin(a), k }; }
+
+// ---------- captions (pure functions of time) ----------
+const ui = document.getElementById('ui'), items = [];
+function cap(o) { // o: {t0,t1,x,y,h,k,size,cls,rot,fast}
+  const el = document.createElement('div'); el.className = 'tag cap ' + (o.cls || ''); el.style.left = o.x + 'px'; el.style.top = o.y + 'px';
+  const words = (o.h || '').split(/(\s+)/).map((w) => (/^\s+$/.test(w) ? w : '<span class="w">' + w + '</span>')).join('');
+  el.innerHTML = (o.k ? '<span class="k">' + o.k + '</span>' : '') + '<span class="h" style="font-size:' + (o.size || 90) + 'px">' + words + '</span>';
+  ui.insertBefore(el, document.getElementById('iris2')); items.push(Object.assign({ el, words: [...el.querySelectorAll('.w')], hEl: el.querySelector('.h') }, o)); }
+// MAP (0-8.5): logo hold, then the island zooms into Worli; the cafe name arrives with the pin and then stays on screen to the end card
+cap({ t0: 3.0, t1: 8.35, x: 56, y: 1110, size: 150, k: 'MUMBAI', h: 'Worli', rot: 1, fast: 1 });
+cap({ t0: 1.9, t1: 8.35, x: 56, y: 1425, size: 24, cls: 'mono', h: 'Map data: OpenStreetMap contributors' });
+cap({ t0: 5.4, t1: 16.6, x: 56, y: 382, size: 56, cls: 'persist', h: 'Javaphile Café', rot: -1, fast: 1 });
+// POUR (8.5-11.9)
+cap({ t0: 8.8, t1: 11.85, x: 56, y: 532, size: 92, cls: 'paper', h: 'Simple coffee, done right', rot: -1, fast: 1 });
+// TOAST (11.9-14.4): three ways
+{ const s = 11.9;
+  cap({ t0: s + 0.3, t1: s + 2.5, x: 56, y: 532, size: 72, cls: 'paper', k: 'FRENCH TOAST', h: 'three ways', rot: 0, fast: 1 });
+  cap({ t0: s + 1.0, t1: s + 1.45, x: 56, y: 1250, size: 112, h: 'tiramisu', rot: -1, fast: 1 });
+  cap({ t0: s + 1.45, t1: s + 1.95, x: 56, y: 1250, size: 74, h: 'raspberry cream cheese', rot: 1, fast: 1 });
+  cap({ t0: s + 1.95, t1: s + 2.5, x: 56, y: 1250, size: 112, h: 'blueberry', rot: -1, fast: 1 }); }
+// BOWLS (14.4-16.6): two dishes, each held 1.2 s or more
+{ const s = 14.4;
+  cap({ t0: s + 0.2, t1: s + 2.2, x: 56, y: 532, size: 84, k: '01', h: 'grain bowls', rot: -1, fast: 1 });
+  cap({ t0: s + 1.2, t1: s + 2.2, x: 56, y: 752, size: 84, k: '02', h: 'tartines', rot: 1, fast: 1 }); }
+// END (16.6-20): Javaphile Café as big as the lockup, the place, the question; the card holds 3 s or more
+{ const s = 16.6;
+  cap({ t0: s + 0.12, t1: s + 3.5, x: 56, y: 600, size: 124, cls: 'word', h: 'Javaphile', rot: 0, fast: 1 });
+  cap({ t0: s + 0.22, t1: s + 3.5, x: 56, y: 768, size: 124, cls: 'word', h: 'Café', rot: 0, fast: 1 });
+  cap({ t0: s + 0.3, t1: s + 3.5, x: 60, y: 945, size: 28, cls: 'mono', h: 'WORLI · MUMBAI' });
+  cap({ t0: s + 0.3, t1: s + 3.5, x: 56, y: 1270, size: 58, k: 'COMMENT BELOW', h: 'Which French toast would you order first?', rot: -1, fast: 1 }); }
+const logo = document.getElementById('logo'), stack = document.getElementById('stack');
+function updateCaps(T, m) {
+  const pulse = Math.exp(-5 * ((T * 2) % 1)), wg = 620 + 230 * pulse, root = document.documentElement;
+  root.style.setProperty('--mx', m.x.toFixed(1) + 'px'); root.style.setProperty('--my', m.y.toFixed(1) + 'px');
+  items.forEach((it) => {
+    const p = T - it.t0, vis = T >= it.t0 && T <= it.t1; it.el.style.display = vis ? 'inline-block' : 'none'; if (!vis) return;
+    const mono = it.cls === 'mono', sp = it.fast ? 0.5 : 1, fade = it.cls === 'persist' ? 1 : 1 - seg(T, it.t1 - 0.06, it.t1), box = eob(seg(p, 0, 0.3 * sp), 1.5);
+    it.el.style.opacity = Math.min(1, p / 0.06) * fade;
+    it.el.style.transform = mono ? 'none' : 'rotate(' + ((it.rot || 0) * (0.4 + 0.6 * box)) + 'deg) translateY(' + ((1 - box) * 36) + 'px)'; it.el.style.transformOrigin = '0 100%';
+    if (!mono && it.cls !== 'word') it.hEl.style.fontVariationSettings = "'wght' " + Math.round(wg);
+    it.words.forEach((w, i) => { const k = eo(seg(p, (0.04 + i * 0.05) * sp, (0.04 + i * 0.05 + 0.2) * sp)); w.style.opacity = mono ? 1 : k; w.style.transform = mono ? 'none' : 'translateY(' + ((1 - k) * 20) + 'px)'; });
+  });
+  // the logo: a large stacked lockup for the first 1.3 s (the hook is the name), then it settles into the top bar while the map opens; the end card swaps it for the big lockup
+  const endS = 16.6, e = eio(seg(T, 1.3, 2.1)), L = (a, z) => a + (z - a) * e, isEnd = T >= endS;
+  logo.style.display = isEnd ? 'none' : 'block'; stack.style.display = isEnd ? 'block' : 'none';
+  logo.style.top = L(540, 252) + 'px'; logo.style.width = L(893, 470) + 'px'; logo.style.height = L(600, 92) + 'px';
+  const ic = logo.querySelector('svg'), wm = logo.querySelector('.wm');
+  ic.style.left = L(40, 20) + 'px'; ic.style.top = L(40, 14) + 'px'; ic.style.width = ic.style.height = L(380, 64) + 'px';
+  wm.style.left = L(40, 100) + 'px'; wm.style.top = L(450, 27) + 'px'; wm.style.fontSize = L(100, 38) + 'px';
+}
+// ---------- the letter O: the next scene is already inside its counter, which grows until it fills the frame ----------
+const iris = document.getElementById('iris'), iris2 = document.getElementById('iris2'), cv = renderer.domElement;
+function setIris(p) {
+  if (p === null) { cv.style.clipPath = 'none'; under.style.display = 'none'; iris.style.display = iris2.style.display = 'none'; return; }
+  const e = p * p * (3 - 2 * p), rx = 26 + 904 * e, ry = rx * 1.28, bw = Math.max(6, rx * 0.12);
+  cv.style.clipPath = 'ellipse(' + (rx * SC) + 'px ' + (ry * SC) + 'px at 50% 50%)'; under.style.display = 'block';
+  const w = 2 * (rx + bw), h = 2 * (ry + bw), L = 540 - w / 2, Tp = 960 - h / 2;
+  const base = 'position:absolute;display:block;box-sizing:border-box;border-radius:50%;width:' + w + 'px;height:' + h + 'px;left:' + L + 'px;top:' + Tp + 'px;background:transparent;border:' + bw + 'px solid ';
+  iris.style.cssText = base + '#1c2a9a;z-index:5'; iris2.style.cssText = base + '#c8e600;z-index:4;transform:translate(14px,10px)';
+}
+// ---------- the film clock ----------
+function drawScene(id, t) {
+  Object.keys(built).forEach((k) => { const on = k === id || (id === 'end' && k === 'toast'); built[k].B.group.visible = on; built[k].B.lights.forEach((l) => (l.visible = on)); });
+  let B, p;
+  if (id === 'intro') { scene.background = new THREE.Color('#f1f3ec'); scene.fog = null; cam.position.set(0, 1, 3); cam.lookAt(0, 1, 0); cam.fov = 30; cam.updateProjectionMatrix(); riso.render(scene, cam); return; }
+  if (id === 'end') { B = built.toast.B; B.wall.visible = false; p = B.setT(2.8 + t * 0.1); const lk = [p.look[0], p.look[1], p.look[2] - 0.12], ps = p.pos.map((v, i) => p.look[i] + (v - p.look[i]) * 2.2);
+    cam.position.set(...ps); cam.fov = p.fov; cam.near = 0.05; cam.far = 300; cam.updateProjectionMatrix(); cam.lookAt(...lk); scene.background = new THREE.Color('#f1f3ec'); scene.fog = new THREE.Fog('#f1f3ec', 1.6, 3.2); riso.render(scene, cam); return; }
+  B = built[id].B; if (id === 'toast') B.wall.visible = true;
+  p = B.setT(id === 'map' ? (t + 0.2) * 1.3 : t * (WARP[id] || 1));
+  cam.position.set(...p.pos); cam.fov = p.fov; cam.near = p.near || 0.05; cam.far = p.far || 300; cam.updateProjectionMatrix(); cam.lookAt(...p.look);
+  scene.background = new THREE.Color(B.bg); scene.fog = B.fog ? new THREE.Fog(B.bg, B.fog[0], B.fog[1]) : null; riso.render(scene, cam);
+}
+window.setT = function (T) {
+  let i = 0; TL.forEach((s, k) => { if (T >= s.s) i = k; });
+  riso.set({ mis: [0, 0] }); const m = misreg(T); riso.set({ mis: [m.x, m.y] });
+  let tr = null; for (let k = 1; k < TL.length; k++) { const c = TL[k].s; if (T >= c - HALF && T < c + HALF) tr = { k, p: (T - (c - HALF)) / (2 * HALF) }; }
+  if (!tr) { setIris(null); drawScene(TL[i].id, T - TL[i].s); }
+  else { const A = TL[tr.k - 1], Bs = TL[tr.k]; drawScene(A.id, T - A.s); uctx.drawImage(cv, 0, 0); drawScene(Bs.id, Math.max(0, T - Bs.s)); setIris(tr.p); }
+  updateCaps(T, m); window.ready = true;
+};
+window.pending = (window.pending || 0) + 1;
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => Promise.all([document.fonts.load("800 80px Archivo"), document.fonts.load('500 20px "IBM Plex Mono"'), document.fonts.load('400 40px Newsreader'), document.fonts.load('700 40px Newsreader')])).catch(() => {}).then(() => { window.pending--; });
+window.setT(0);
+</script></body></html>

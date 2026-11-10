@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#222}canvas{display:block}</style></head><body>
+<script src="vendor/three.min.js"></script><script src="scenes/common.js"></script><script src="scenes/riso.js"></script><script src="scenes/fc.js"></script><script src="data/map_data.js"></script>
+<script>
+const q = new URLSearchParams(location.search), name = q.get('scene'), Wd = +(q.get('w') || 1080), Ht = +(q.get('h') || 1920);
+document.write('<script src="scenes/' + name + '.js"><\/script>');
+</script>
+<script>
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wd, Ht); renderer.setPixelRatio(1); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace; document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, Wd / Ht, 0.05, 300);
+const S = window.SCENES[name], B = S.build(THREE, { W: Wd, H: Ht });
+scene.add(B.group); B.lights.forEach((l) => { scene.add(l); if (l.target) scene.add(l.target); });
+scene.background = new THREE.Color(B.bg); if (B.fog) scene.fog = new THREE.Fog(B.bg, B.fog[0], B.fog[1]);
+const ws = +(q.get('ws') || 1);
+const riso = q.get('riso') === '0' ? null : window.Riso.create(THREE, renderer, Wd, Ht);
+window.setT = (t) => { const p = B.setT(t * ws); cam.position.set(...p.pos); cam.fov = p.fov; cam.near = p.near || 0.05; cam.far = p.far || 300; cam.updateProjectionMatrix(); cam.lookAt(...p.look); if (riso) riso.render(scene, cam); else renderer.render(scene, cam); window.ready = true; };
+window.setT(0);
+</script></body></html>

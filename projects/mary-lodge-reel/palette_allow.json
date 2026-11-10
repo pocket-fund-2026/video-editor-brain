@@ -1,0 +1,26 @@
+{
+ "reason": "Natural colours of the food and coffee themselves (pastry glaze, crumb, almond, marmalade, crema) plus the Bombay Cafe Map logo artwork. The environment, UI, lights and map stay cool; only the edible subjects are warm.",
+ "allowed": [
+  "#22120B",
+  "#3A2216",
+  "#7E3D14",
+  "#8C4A1A",
+  "#8F5220",
+  "#8F5322",
+  "#964E0E",
+  "#A05410",
+  "#B5651D",
+  "#B97A34",
+  "#B98D5D",
+  "#BE823C",
+  "#C88335",
+  "#EFE0C8",
+  "#F0DEB4",
+  "#FAF0D6",
+  "#FFEEBE",
+  "#FFEEC4",
+  "#FFF0C8",
+  "#FFF2E0",
+  "#FFFAF0"
+ ]
+}

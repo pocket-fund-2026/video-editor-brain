@@ -1,0 +1,98 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Mary Lodge reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=DM+Mono:wght@500&display=swap">
+<style>
+html,body{margin:0;background:#10201f;overflow:hidden}
+#stage{position:relative;overflow:hidden;background:#10201f}
+#stage canvas{position:absolute;left:0;top:0;display:block}
+#ui{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;pointer-events:none}
+.tag{position:absolute;box-sizing:border-box;background:#eef2ef;color:#10201f;border:4px solid #10201f;box-shadow:9px 9px 0 #10201f;padding:14px 26px 18px;font-family:'Fraunces',Georgia,serif;font-weight:800;line-height:1.02;letter-spacing:-0.01em;max-width:860px}
+.tag.mono{font-family:'DM Mono',ui-monospace,monospace;font-weight:500;letter-spacing:0.08em;padding:8px 16px;box-shadow:6px 6px 0 #10201f;border-width:3px}
+.tag.dark{background:#10201f;color:#eef2ef;border-color:#eef2ef;box-shadow:9px 9px 0 #2c5a48}
+.tag i{font-style:italic;font-weight:600}
+.w{display:inline-block;white-space:pre}
+#logo{position:absolute;left:56px;top:252px;width:470px;border:3px solid #10201f;border-radius:14px;box-shadow:6px 6px 0 #10201f;display:block}
+#wipe{position:absolute;left:0;top:0;width:1080px;height:1920px;background:#eef2ef;border-right:14px solid #10201f;box-sizing:border-box;transform:translateX(-120%) skewX(-9deg)}
+</style></head>
+<body>
+<div id="stage"><div id="ui"><img id="logo" src="assets/lockup.png"><div id="wipe"></div></div></div>
+<script src="vendor/three.min.js"></script><script src="scenes/common.js"></script><script src="scenes/ink.js"></script>
+<script src="data/map_data.js"></script>
+<script src="scenes/map.js"></script><script src="scenes/subko.js"></script><script src="scenes/pour.js"></script><script src="scenes/food.js"></script>
+<script>
+const q = new URLSearchParams(location.search), Wd = +(q.get('w') || 1080), Ht = +(q.get('h') || 1920);
+const { clamp, seg, eo, eio, eob } = window.C;
+const stage = document.getElementById('stage'); stage.style.width = Wd + 'px'; stage.style.height = Ht + 'px';
+document.getElementById('ui').style.transform = 'scale(' + (Wd / 1080) + ')';
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wd, Ht); renderer.setPixelRatio(1); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace; stage.insertBefore(renderer.domElement, stage.firstChild);
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, Wd / Ht, 0.05, 300);
+const ink = window.Ink.create(THREE, renderer, Wd, Ht);
+const TL = [{ id: 'map', s: 0, d: 8 }, { id: 'subko', s: 8, d: 8 }, { id: 'pour', s: 16, d: 10 }, { id: 'food', s: 26, d: 9 }, { id: 'end', s: 35, d: 5 }];
+const CUTS = [8, 16, 26, 35];
+const built = {};
+['map', 'subko', 'pour', 'food'].forEach((id) => {
+  const S = window.SCENES[id], B = S.build(THREE, { W: Wd, H: Ht }); built[id] = { S, B };
+  scene.add(B.group); B.lights.forEach((l) => { scene.add(l); if (l.target) scene.add(l.target); });
+});
+const INK_DEF = { colEdge: 0, bands: 5, sat: 1, hatch: 0.22 };
+
+// ---------- caption tags (pure functions of time) ----------
+const ui = document.getElementById('ui'), items = [];
+function tag(o) { // o: {t0,t1,x,y,html,cls,size,rot,words}
+  const el = document.createElement('div'); el.className = 'tag ' + (o.cls || ''); el.style.left = o.x + 'px'; el.style.top = o.y + 'px';
+  el.style.fontSize = (o.size || 90) + 'px'; el.style.transformOrigin = '0 100%';
+  const plain = o.html.split(/(\s+)/).map((w) => (/^\s+$/.test(w) ? w : '<span class="w">' + w + '</span>')).join('');
+  el.innerHTML = plain; ui.appendChild(el); items.push(Object.assign({ el, words: [...el.querySelectorAll('.w')] }, o)); }
+const MAPC = [];
+tag({ t0: 0.5, t1: 4.4, x: 56, y: 450, size: 96, html: 'Taking you to a <i>new cafe</i> today', rot: -1.2 });
+tag({ t0: 4.7, t1: 8, x: 56, y: 450, size: 40, cls: 'mono', html: 'BANDRA · MUMBAI', rot: 0 });
+tag({ t0: 5.4, t1: 8, x: 56, y: 1290, size: 68, html: 'Chapel Road', rot: -1 });
+tag({ t0: 0.2, t1: 8, x: 56, y: 1428, size: 22, cls: 'mono', html: 'Map data: OpenStreetMap contributors', rot: 0 });
+tag({ t0: 8.7, t1: 15.6, x: 56, y: 450, size: 120, html: 'Step <i>inside</i>', rot: -1.4 });
+tag({ t0: 11, t1: 16, x: 56, y: 1250, size: 46, html: 'Chapel Road, Bandra', rot: 1 });
+tag({ t0: 8.6, t1: 16, x: 56, y: 1428, size: 22, cls: 'mono', html: '3D model from a photo of the entrance', rot: 0 });
+tag({ t0: 16.9, t1: 19.5, x: 56, y: 450, size: 92, html: 'Coffee, <i>poured slow</i>', rot: -1.2 });
+tag({ t0: 22.6, t1: 26, x: 56, y: 1300, size: 62, html: 'Watch the crema', rot: 1 });
+tag({ t0: 26.3, t1: 35, x: 56, y: 1320, size: 46, cls: 'dark', html: 'From the Subko bakehouse', rot: -1 });
+tag({ t0: 26.5, t1: 29.3, x: 56, y: 450, size: 120, html: 'Croissant', rot: -1.4 });
+tag({ t0: 29.5, t1: 32.3, x: 56, y: 450, size: 96, html: 'Marmalade muffin', rot: 1.2 });
+tag({ t0: 32.5, t1: 35, x: 56, y: 450, size: 120, html: 'Friand', rot: -1.2 });
+tag({ t0: 35.3, t1: 40.4, x: 56, y: 520, size: 150, cls: 'dark', html: 'Mary Lodge', rot: -1.6 });
+tag({ t0: 35.7, t1: 40.4, x: 64, y: 760, size: 30, cls: 'mono', html: 'BY SUBKO · CHAPEL ROAD · BANDRA WEST', rot: 0 });
+tag({ t0: 36.6, t1: 40.4, x: 56, y: 1230, size: 56, html: 'Save it for your next <i>Bandra</i> day', rot: 1 });
+function updateTags(T) {
+  items.forEach((it) => {
+    const p = T - it.t0, vis = T >= it.t0 && T <= it.t1; it.el.style.display = vis ? 'block' : 'none'; if (!vis) return;
+    const n = it.words.length, stag = it.cls === 'mono' ? 0.04 : 0.1, fadeOut = 1 - seg(T, it.t1 - 0.3, it.t1);
+    const box = eob(seg(p, 0, 0.4), 1.5); it.el.style.opacity = Math.min(1, p / 0.12) * fadeOut;
+    it.el.style.transform = 'rotate(' + (it.rot * (0.4 + 0.6 * box)) + 'deg) translateY(' + ((1 - box) * 40) + 'px) scale(' + (0.94 + 0.06 * box) + ')';
+    it.words.forEach((w, i) => { const k = eo(seg(p, 0.12 + i * stag, 0.12 + i * stag + 0.32)); w.style.opacity = k; w.style.transform = 'translateY(' + ((1 - k) * 22) + 'px)'; });
+  });
+}
+const wipe = document.getElementById('wipe');
+function updateWipe(T) {
+  let x = -140;
+  CUTS.forEach((c) => { const u = (T - (c - 0.3)) / 0.6; if (u > 0 && u < 1) x = -140 + 280 * eio(u); });
+  wipe.style.transform = 'translateX(' + x + '%) skewX(-9deg)';
+}
+
+// ---------- the film clock ----------
+let currentId = null;
+window.setT = function (T) {
+  const seg0 = TL.find((s) => T >= s.s && T < s.s + s.d) || TL[TL.length - 1], id = seg0.id, t = T - seg0.s;
+  Object.keys(built).forEach((k) => { const on = k === id; built[k].B.group.visible = on; built[k].B.lights.forEach((l) => (l.visible = on)); });
+  if (id === 'end') { built.pour.B.group.visible = true; built.pour.B.lights.forEach((l) => (l.visible = true)); }
+  const gid = id === 'end' ? 'pour' : id, lt = id === 'end' ? 9.99 + t * 0.5 : t;
+  if (false) {}
+  { const { S, B } = built[gid]; const p = B.setT(lt);
+    cam.position.set(...p.pos); cam.fov = p.fov; cam.near = p.near || 0.05; cam.far = p.far || 300; cam.updateProjectionMatrix(); cam.lookAt(...p.look);
+    scene.background = new THREE.Color(B.bg); scene.fog = B.fog ? new THREE.Fog(B.bg, B.fog[0], B.fog[1]) : null; ink.set(Object.assign({}, INK_DEF, S.ink || {})); }
+  ink.render(scene, cam); updateTags(T); updateWipe(T); window.ready = true;
+};
+window.pending = (window.pending || 0) + 1;
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => Promise.all([document.fonts.load('800 80px Fraunces'), document.fonts.load('500 20px "DM Mono"')])).catch(() => {}).then(() => { window.pending--; window.setT(0); });
+window.setT(0);
+</script></body></html>

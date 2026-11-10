@@ -1,0 +1,27 @@
+{
+ "scenes": [
+  {
+   "id": "map",
+   "dur": 8.5
+  },
+  {
+   "id": "pour",
+   "dur": 3.4
+  },
+  {
+   "id": "toast",
+   "dur": 2.5
+  },
+  {
+   "id": "bowls",
+   "dur": 2.2
+  },
+  {
+   "id": "end",
+   "dur": 3.4
+  }
+ ],
+ "width": 1080,
+ "height": 1920,
+ "fps": 30
+}

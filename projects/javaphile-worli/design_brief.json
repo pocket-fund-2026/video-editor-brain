@@ -1,0 +1,36 @@
+{
+ "concept": "Bombay Cafe Map x Javaphile Worli: a logo-first, two-ink risograph reel. The real Bombay Cafe Map lockup opens as the hook, a letter-O reveal drops into the 3D island-to-Worli zoom, and every scene keeps the lockup as a top bar until the big end-card lockup.",
+ "anti_slop": true,
+ "locked": [],
+ "dimensions": {
+  "palette": "cobalt blue ink, chartreuse ink, bone paper, overprint dark where inks cross (no orange, no cream)",
+  "fonts": "variable-weight grotesk headlines + IBM Plex Mono labels, two faces only",
+  "opening": "logo-first: the real Bombay Cafe Map lockup printed in one cobalt ink holds large, then settles into the top bar as a letter-O reveal opens the Mumbai island and zooms into Worli",
+  "transition": "continuous letter-O reveal: the next scene is already inside the growing counter of the O (no blank frame), 12 frames",
+  "camera": "parallax layers with slow drift, one hard dolly-in on the facade",
+  "layout": "magazine grid: asymmetric boxes of image, number and text",
+  "motion_device": [
+   "variable weight pulse",
+   "ink-layer misregistration settle",
+   "coffee pour fills the grid cell",
+   "overprint count-up"
+  ],
+  "texture": "risograph overprint with grain and 3D extruded map",
+  "sound": "slow calm voice (Kokoro 0.5, at most 2.2 words/s, 0.4 s air), cafe foley, soft pad with a light pluck",
+  "ending": "stacked Bombay Cafe Map lockup with @bombaycafemap and bombaycafemap.com, the cafe name, and the question, held 3 s+"
+ },
+ "moves": [
+  "logo-first opening",
+  "city-shape zoom",
+  "zoom through a letter",
+  "parallax layers",
+  "variable weight pulse",
+  "magazine grid",
+  "risograph overprint",
+  "next-stop teaser"
+ ],
+ "experiment": {
+  "move": "risograph overprint",
+  "hypothesis": "A two-ink overprint look with visible misregistration feels printed and calm for a quiet cafe, and avoids the Claude-orange/cream and the teal-ink look of Mary Lodge."
+ }
+}
