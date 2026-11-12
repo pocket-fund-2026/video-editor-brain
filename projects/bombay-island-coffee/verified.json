@@ -1,0 +1,5 @@
+{
+ "note": "Strings verified 2026-11-12 from bombayisland.com About, Contact and homepage, and the restaurantindia.in Andheri article. No prices, hours or street addresses are shown. Andheri West and Malad are marked with locality pulse rings, not street pins.",
+ "allowed_strings": ["Malad","Vikhroli","Andheri West","2018","2021","2026","Island 1.0","Island 2.0","Micro-roastery","Beginning","Transformation","Signatures","Maple Coconut Latte","Black Sesame Latte","Tiramisu Cold Brew","Caprese Burrata Sandwich","Truffle Mushroom Tagliatelle","Island Brew Bar","Map data: OpenStreetMap contributors","First crack","Rupal","Vineet"],
+ "sources": ["https://www.bombayisland.com/pages/about-us","https://www.bombayisland.com/pages/contact-us","https://www.restaurantindia.in/news/bombay-island-expands-mumbai-presence-with-new-andheri-cafe.n17168"]
+}

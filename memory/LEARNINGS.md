@@ -286,3 +286,59 @@
 - Cause: Javaphile reuses the pour, 3D toast and map-zoom patterns from earlier films; the user expects fresh animations each day
 - Rule: From 2026-11-08 onwards each new reel must introduce new animations: before building, list the animations and name what is new versus the last 3 reels (pour, map zoom, food reveals, transitions, end card); at least 3 of the animations must be new, and the user hears the count and the list before the build starts
 - Guarded by: process
+
+### L040 · 2026-11-11 · bombaycafemap-prithvi · brand-fit
+- Feedback (verbatim): use prithvi cafe juhu and better color palette for it
+- Symptom: I picked Kyani & Co. and proposed ink plus cool white; the user wanted Prithvi Cafe Juhu and a better, more distinctive palette
+- Cause: Chose the cafe with the best-documented history and defaulted to a near-monochrome brand palette instead of designing a palette for the cafe's own mood
+- Rule: When the user picks a cafe, use it; propose a cafe-specific two-to-three colour palette (not orange/cream, not the last 3 reels' palettes) and show it as swatches in the storyboard before building
+- Guarded by: process
+
+### L041 · 2026-11-11 · bombaycafemap-prithvi · brand-fit
+- Feedback (verbatim): where is the script and i dont want tea pouring eeverytime and what about the zoom into the location
+- Symptom: Plan gave a compact table, not a full scene-by-scene script; featured chai again as a hero food; the map zoom into Juhu was a one-line mention
+- Cause: Assumed a table was the script and reused the tea/coffee drink beat from earlier cafe reels; skipped specifying the L009/L021 zoom
+- Rule: Show the full scene-by-scene script (voice, on-screen text, sound) and a stage-by-stage map zoom spec; no tea/chai pouring as a hero shot, vary the hero food per reel
+- Guarded by: process
+
+### L042 · 2026-11-11 · bombaycafemap-prithvi · brand-fit
+- Feedback (verbatim): and the buildings properly made as well
+- Symptom: Plan only said real OSM buildings rise as extruded blocks; user wants the buildings properly made, not generic boxes
+- Cause: Relied on plain footprint extrusion from the map engine without a detail pass or a hand-built hero building
+- Rule: Map buildings need a detail pass (heights from OSM levels, roof shapes, window and edge detail, lighting) and the cafe's own building/compound is hand-modelled and checked in frames before the film is shown
+- Guarded by: process
+
+### L043 · 2026-11-11 · bombaycafemap-prithvi · brand-fit
+- Feedback (verbatim): the food items look bad first of all and bombay cafe map is inconsistent and the spotlight follow map looks so bad you know how to edit improve on it i have given you a shit tonne of github repos to make 3d animations
+- Symptom: Animation preview used crude CSS food, a hand-drawn cup logo with a different wordmark than the real lockup, and a flat 2D spotlight map instead of the existing 3D engines and repos
+- Cause: Drew quick CSS placeholders instead of using the real brand logo files, the FortMap engine, the three.js tooling and the food models already in the repo
+- Rule: Previews must use the real logo files, the real FortMap/three.js map and the project 3D food models, never CSS stand-ins; look through the user's cloned repos and tools for 3D assets before drawing anything
+- Guarded by: process
+
+### L044 · 2026-11-11 · acquisition-lore-bakery · timing-sync
+- Feedback (verbatim): the audio and animation need to match
+- Symptom: User reminded mid-build that voiceover and on-screen animation must be in sync (applies to the first Acquisition Lore reel)
+- Cause: Risk of timing animations on a guessed clock separate from the voice
+- Rule: Every Acquisition Lore animation (caption words, count-ups, stamps, strike-throughs, pose changes, marker marks) fires from data/timing.json word times taken from the voice engine; scenes are sized to the speech; no guessed timestamps
+- Guarded by: scene cue times in film.html must be read from timing.json, not hard-coded
+
+### L045 · 2026-11-12 · bombay-island-coffee · brand-fit
+- Feedback (verbatim): go through the site and pick the logo https://www.facebook.com/Bombayisland/ and use this logo and make sure a lot of people can watch it and it should look good too. i need the page to be well built attracting audience
+- Symptom: I used the site's cream lockup (BOMBAY ISLAND COFFEE ROASTERS) but the user wanted the cafe's official Facebook page logo (ARTISAN ROASTERS / BOMBAY ISLAND / COFFEE COMPANY with roaster icon)
+- Cause: Took the logo from the website header only and did not check the cafe's social profile
+- Rule: When the user names a cafe's social page, take the logo from that page's profile picture (og:image) as the primary lockup and cross-check the site; design the reel for reach: hook in the first 2 s, burned-in captions, safe zones, strong end-card follow prompt
+- Guarded by: process
+
+### L046 · 2026-11-12 · bombay-island-coffee · timing-sync
+- Feedback (verbatim): the animations and subtitles shouldnt mismatch
+- Symptom: Animations and subtitles must line up; user warns they should not mismatch
+- Cause: Standing risk: captions and animations driven from separate clocks instead of the voice word times (see L010)
+- Rule: Drive every caption and key animation from the voice engine word times (data/timing.json); the subtitle text must name what is on screen at that moment; check that each caption's start is within 0.15 s of its animation cue
+- Guarded by: retrieve-only until a cue-sync check exists
+
+### L047 · 2026-11-12 · bombay-island-coffee · timing-sync
+- Feedback (verbatim): the animations and subtitles shouldnt mismatch
+- Symptom: Captions and key animations could drift apart when each was timed by hand
+- Cause: No single clock: captions, map markers and drink layers were not all driven from the voice word times
+- Rule: Drive every caption word and key animation from data/timing.json (voice word times); run projects/bombay-island-coffee/verify_sync.py (copy it per project) and require every caption/animation pair within 0.15 s; check frames at each caption change
+- Guarded by: verify_sync.py (project-level)

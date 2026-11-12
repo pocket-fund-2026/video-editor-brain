@@ -1,0 +1,22 @@
+{
+  "concept": "Roast Log: Bombay Island Coffee Company as a roaster's log sheet. Open on the Bombay Cafe Map logo, zoom the real 3D Mumbai map to Malad, cut to a glass-face roaster drum whose beans turn green to brown while a roast curve and temperature dial draw themselves, flip a signature menu card, glide a steam-thread route Malad to Vikhroli to Andheri West with progress rings, build a layered Tiramisu Cold Brew in cutaway and pull back to the brew bar, then drop a bean into the roaster hopper of the Bombay Island logo on the end card.",
+  "anti_slop": true,
+  "locked": [],
+  "dimensions": {
+    "palette": "cafe's own charcoal #3F3A3A and teal #108474 with cool white #F4F7F6 and a lighter signal teal; beans keep natural colour; no orange, no cream",
+    "fonts": "Crimson Pro bold serif captions + Montserrat mono-style labels (the cafe's own site fonts)",
+    "opening": "Bombay Cafe Map logo big in frame 1, then top-down island-shape descent to Malad",
+    "transition": "roast-curve wipe: a teal heat-curve edge sweeps up the frame and the scene swaps behind it",
+    "camera": "top-down descent, then a 3/4 push-in on the drum, a cutaway side view of the glass, and a pull-back reveal",
+    "layout": "instrument-panel scenes: chart + dial panel under the drum, progress-ring plate left-aligned under the map pin, caption band with teal rule",
+    "motion_device": ["rotating roaster drum with bean colour shift", "roast-curve line draw with temperature dial", "progress ring fills while a fact is spoken", "steam-thread map route", "layered cutaway drink build", "bean drop into the logo hopper"],
+    "texture": "graph-paper roast log grid, brushed steel drum and glass, real OSM buildings",
+    "sound": "drum rumble, first-crack pops, ice and pour foley, soft pad, slow voice at most about 2.3 words per second",
+    "ending": "Bombay Cafe Map big card (same size as frame 1 so it loops) under the Bombay Island logo, a bean drops into the roaster hopper on the last word, follow and save prompts"
+  },
+  "moves": ["logo-first opening", "city-shape zoom", "progress ring", "roast-curve wipe", "layered cutaway drink build", "bean drop end card"],
+  "experiment": {
+    "move": "progress ring",
+    "hypothesis": "A ring that fills while each fact is spoken (2018, 2021, 2026) gives the viewer a visible countdown to the next fact and should raise watch-through compared with static year labels."
+  }
+}

@@ -1,0 +1,211 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Bombay Cafe Map: Bombay Island Coffee Company reel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,700;1,700&family=Montserrat:wght@600&display=swap">
+<style>
+:root{--ink:#131412;--char:#3F3A3A;--deep:#2a2626;--teal:#108474;--sig:#2fd8bd;--white:#F4F7F6;--mute:#b9c4c1}
+html,body{margin:0;background:var(--ink);overflow:hidden}
+#stage{position:relative;overflow:hidden;background:var(--ink)}
+#stage canvas{position:absolute;left:0;top:0;display:block}
+#ui{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;pointer-events:none;font-family:'Crimson Pro',Georgia,serif;color:var(--white)}
+#ui>*{position:absolute}
+.mono{font:600 28px 'Montserrat',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+/* top bar */
+#logo{z-index:60;background:#131412;border-radius:26px;overflow:hidden}
+#logo img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
+#bi{left:676px;top:262px;width:270px;height:147px;z-index:58;background:var(--char);border-radius:22px;display:none;overflow:hidden}
+#bi img{position:absolute;left:18px;top:14px;width:234px;height:114px;object-fit:contain}
+#osm{left:56px;top:254px;z-index:30;font-size:20px;letter-spacing:.1em;color:var(--white);display:none;background:var(--deep);padding:8px 14px 6px}
+/* caption */
+#cap{left:56px;top:1300px;z-index:50;max-width:880px;box-sizing:border-box;background:var(--deep);border-left:12px solid var(--teal);padding:16px 28px 18px 26px;font-weight:700;font-size:70px;line-height:78px;display:none}
+#cap .w{display:inline-block;opacity:0;margin-right:.26em;white-space:nowrap}
+#cap .ico{display:inline-block;width:46px;height:58px;vertical-align:-8px;margin-right:16px}
+/* map plate (progress ring + tag) */
+#plate{left:56px;top:1030px;height:200px;z-index:40;background:var(--deep);border-radius:100px 26px 26px 100px;display:none}
+#plate svg{position:absolute;left:10px;top:10px}
+#plate>*,#chart>*{position:absolute}
+#ptag{left:216px;top:84px;white-space:nowrap;font-size:28px;color:var(--sig)}
+#route{left:0;top:0;width:1080px;height:1920px;z-index:25;display:none}
+/* roast chart + dial */
+#chart{left:56px;top:970px;width:884px;height:290px;z-index:40;background:var(--deep);border-radius:26px;display:none;overflow:hidden}
+#fcl{left:0;top:0;font-size:22px;color:var(--sig);white-space:nowrap;opacity:0}
+/* menu card */
+#menu{left:56px;top:452px;width:868px;height:600px;z-index:42;background:var(--white);color:var(--deep);border-radius:12px;display:none;transform-origin:50% 100%;box-sizing:border-box;padding:44px 50px}
+#menu .k{font:600 26px 'Montserrat',sans-serif;letter-spacing:.2em;color:var(--teal);margin-bottom:10px}
+#menu .rule{height:6px;background:var(--teal);margin-bottom:18px}
+#menu .it{font-weight:700;font-size:56px;line-height:1;padding:15px 0 12px 0;border-bottom:2px solid #cdd6d3;opacity:0}
+#menu .it:last-child{border-bottom:0}
+/* wipe */
+#wipe{left:0;top:0;width:1080px;height:1920px;z-index:55;display:none}
+/* end card */
+#ebg{left:0;top:0;width:1080px;height:1920px;z-index:44;background:var(--deep);display:none}
+#ebi{left:260px;top:270px;width:560px;height:273px;z-index:48;display:none;transform-origin:50% 100%}
+#ebi img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
+#ering{left:0;top:0;z-index:49;display:none}
+#bean{left:0;top:0;z-index:52;display:none}
+#handle{left:50%;transform:translateX(-50%);white-space:nowrap;top:1150px;text-align:center;font-size:27px;z-index:48;display:none;color:var(--white)}
+#follow{left:50%;transform:translateX(-50%);white-space:nowrap;top:1230px;text-align:center;font-size:24px;z-index:48;display:none;color:var(--sig)}
+</style></head>
+<body>
+<div id="stage"><div id="ui">
+<svg id="route" viewBox="0 0 1080 1920"><path id="rt1" fill="none" stroke="#2fd8bd" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path id="rt2" fill="none" stroke="#2fd8bd" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div id="osm" class="mono tag">Map data: OpenStreetMap contributors</div>
+<div id="plate"><svg width="180" height="180" viewBox="0 0 180 180"><circle cx="90" cy="90" r="74" fill="none" stroke="#5a5353" stroke-width="12"/><circle id="pring" cx="90" cy="90" r="74" fill="none" stroke="#2fd8bd" stroke-width="12" stroke-linecap="round" transform="rotate(-90 90 90)" stroke-dasharray="465 465" stroke-dashoffset="465"/>
+<g transform="translate(90 90) rotate(32)"><ellipse rx="22" ry="33" fill="#2fd8bd"/><path d="M-6 -30 C 10 -12, -10 12, 6 30" fill="none" stroke="#2a2626" stroke-width="5" stroke-linecap="round"/></g></svg><div id="ptag" class="mono tag"></div></div>
+<div id="chart"><svg width="884" height="300" viewBox="0 0 884 300">
+ <g stroke="#5a5353" stroke-width="2"><path d="M24 270H584M24 210H584M24 150H584M24 90H584M24 30H584"/><path d="M24 30V270M164 30V270M304 30V270M444 30V270M584 30V270"/></g>
+ <path id="curve" fill="none" stroke="#2fd8bd" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+ <circle id="chead" r="12" fill="#F4F7F6"/><circle id="cpop" r="0" fill="none" stroke="#F4F7F6" stroke-width="5"/>
+ <path d="M650 262 A110 110 0 0 1 870 262" fill="none" stroke="#5a5353" stroke-width="18" stroke-linecap="round"/>
+ <path id="dial" fill="none" stroke="#2fd8bd" stroke-width="18" stroke-linecap="round"/>
+ <g id="ticks" stroke="#F4F7F6" stroke-width="3"></g>
+ <line id="needle" x1="760" y1="262" x2="760" y2="170" stroke="#F4F7F6" stroke-width="7" stroke-linecap="round"/><circle cx="760" cy="262" r="14" fill="#F4F7F6"/>
+</svg><div id="fcl" class="mono tag">First crack</div></div>
+<div id="menu" class="tag"><div class="k">SIGNATURES</div><div class="rule"></div><div class="it">Maple Coconut Latte</div><div class="it">Black Sesame Latte</div><div class="it">Tiramisu Cold Brew</div><div class="it">Caprese Burrata Sandwich</div><div class="it">Truffle Mushroom Tagliatelle</div></div>
+<div id="cap" class="tag"></div>
+<div id="bi" class="tag"><img src="assets/brand/facebook-logo-white-transparent.png" alt="Bombay Island Coffee Company"></div>
+<div id="logo"><img id="logoS" src="assets/bombaycafemap-lockup-stacked-ondark.png" alt="Bombay Cafe Map"><img id="logoH" src="assets/bombaycafemap-lockup-horizontal-ondark.png" alt="Bombay Cafe Map"></div>
+<div id="ebg"></div>
+<div id="ebi" class="tag"><img src="assets/brand/facebook-logo-white-transparent.png" alt="Bombay Island Coffee Company"></div>
+<svg id="ering" width="1080" height="700" viewBox="0 0 1080 700"><circle id="ering1" cx="534" cy="366" r="10" fill="none" stroke="#2fd8bd" stroke-width="8" opacity="0"/></svg>
+<svg id="bean" width="1080" height="1920" viewBox="0 0 1080 1920"><g id="beanG"><ellipse rx="22" ry="33" fill="#4a2a16"/><path d="M-6 -30 C 10 -12, -10 12, 6 30" fill="none" stroke="#9a6a3a" stroke-width="4" stroke-linecap="round"/></g></svg>
+<div id="handle" class="mono tag">@bombaycafemap &nbsp;&middot;&nbsp; bombaycafemap.com</div>
+<div id="follow" class="mono tag">Follow for a new Mumbai cafe every day</div>
+<svg id="wipe" viewBox="0 0 1080 1920"><path id="wp" fill="#2a2626"/><path id="wl" fill="none" stroke="#2fd8bd" stroke-width="14" stroke-linejoin="round"/></svg>
+</div></div>
+<script src="vendor/three.min.js"></script><script src="scenes/common.js"></script><script src="data/timing.js"></script><script src="data/map_data.js"></script><script src="data/major_data.js"></script>
+<script src="scenes/map.js"></script><script src="scenes/roast.js"></script><script src="scenes/hero.js"></script>
+<script>
+const q = new URLSearchParams(location.search), Wd = +(q.get('w') || 1080), Ht = +(q.get('h') || 1920), SC = Wd / 1080;
+const { clamp, seg, eo, eio, eob, lerp } = window.C;
+const TMG = window.TIMING, CU = TMG.cues, CAPS = TMG.captions;
+const CUES = { film: TMG.film, starts: {} };               // read by tools/qa/overlap_check.py
+const stage = document.getElementById('stage'); stage.style.width = Wd + 'px'; stage.style.height = Ht + 'px';
+const ui = document.getElementById('ui'); ui.style.transform = 'scale(' + SC + ')';
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wd, Ht); renderer.setPixelRatio(1); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+const cv = renderer.domElement; stage.insertBefore(cv, ui);
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, Wd / Ht, 0.05, 300);
+const built = {}; ['map', 'roast', 'hero'].forEach((id) => { const S = window.SCENES[id], B = S.build(THREE, { W: Wd, H: Ht }); built[id] = { S, B }; scene.add(B.group); });
+const $ = (id) => document.getElementById(id), show = (el, on, d) => { el.style.display = on ? (d || 'block') : 'none'; };
+
+// ---- timeline (film seconds). Every cue below is a voice word time from data/timing.js.
+const T_ROAST = 10.0, T_MAP2 = 15.0, T_HERO = 22.6, T_END = 27.5, FILM = TMG.film;
+function sceneAt(t) { return t < T_ROAST ? ['map', t] : t < T_MAP2 ? ['roast', t - T_ROAST] : t < T_HERO ? ['map', t - 5.0] : t < T_END ? ['hero', t - T_HERO] : [null, 0]; }
+function drawScene(id, t) { Object.keys(built).forEach((k) => { built[k].B.group.visible = k === id; });
+  const B = built[id].B, p = B.setT(Math.min(built[id].S.dur - 0.001, Math.max(0, t)));
+  cam.position.set(...p.pos); cam.fov = p.fov; cam.near = p.near || 0.05; cam.far = p.far || 300; cam.updateProjectionMatrix(); cam.lookAt(...p.look);
+  scene.background = new THREE.Color(B.bg); scene.fog = null; renderer.render(scene, cam); }
+
+// ---- caption phrases: [words], visible from the first word time until `until`
+const PH = [
+  { w: CAPS.l1, until: CAPS.l2[0][1] }, { w: CAPS.l2, until: T_ROAST + 0.05 },
+  { w: CAPS.l3.slice(0, 4), until: CU.menu - 0.08 }, { w: CAPS.l3.slice(4), until: T_MAP2 },
+  { w: CAPS.l4.slice(0, 2), until: 18.2 }, { w: CAPS.l4.slice(2), until: T_HERO },
+  { w: CAPS.l5, until: T_END + 0.05 }, { w: CAPS.l6, until: 99 } ];
+const cap = $('cap'); cap.innerHTML = '';
+PH.forEach((p, i) => { const d = document.createElement('div'); d.className = 'ph'; d.style.display = 'none'; p.el = d;
+  if (i === PH.length - 1) { d.innerHTML = '<svg class="ico" id="bkm" viewBox="0 0 56 70"><path id="bkp" d="M8 6H48V64L28 50L8 64Z" fill="none" stroke="#F4F7F6" stroke-width="6" stroke-linejoin="round"/></svg>'; }
+  if (p.w.map((x) => x[0]).join(' ').length > 40) { d.style.fontSize = '62px'; d.style.lineHeight = '70px'; }
+  p.words = p.w.map((x) => { const s = document.createElement('span'); s.className = 'w'; s.textContent = x[0]; d.appendChild(s); return { el: s, t: x[1] }; }); cap.appendChild(d); });
+window.CAPLOG = PH.flatMap((p) => p.words.map((w) => ({ word: w.el.textContent, t: w.t, el: w.el })));
+
+// ---- roast chart + dial helpers
+const heat = (u) => 0.14 + 0.78 * (1 - Math.exp(-2.7 * u)) - 0.2 * Math.exp(-15 * u);
+const UC = (CU.crack - CU.roast) / (CU.menu - CU.roast);
+const curveXY = (u) => [24 + u * 560, 270 - heat(u) * 240];
+{ const tk = $('ticks'); for (let i = 0; i <= 10; i++) { const a = Math.PI - i / 10 * Math.PI, r0 = 128, r1 = i % 5 ? 136 : 144; const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    l.setAttribute('x1', 760 + Math.cos(a) * r0); l.setAttribute('y1', 262 - Math.sin(a) * r0); l.setAttribute('x2', 760 + Math.cos(a) * r1); l.setAttribute('y2', 262 - Math.sin(a) * r1); tk.appendChild(l); } }
+const dialPath = (h) => { const a = Math.PI - h * Math.PI; return 'M650 262 A110 110 0 0 1 ' + (760 + Math.cos(a) * 110).toFixed(1) + ' ' + (262 - Math.sin(a) * 110).toFixed(1); };
+
+// ---- wipe: a teal roast-curve edge sweeps up the frame, the scene swaps while it covers the screen
+const shape = (x) => 200 * (1 - Math.exp(-3.2 * x / 1080)) - 90 * Math.exp(-12 * x / 1080);
+const edge = (b) => { const pts = []; for (let x = 0; x <= 1080; x += 36) pts.push([x, b - shape(x)]); return pts; };
+const WIPES = [T_ROAST, T_MAP2, T_HERO, T_END], WD = 0.24;
+function wipe(t) { let on = false, a = 0, b = 0, lead = null;
+  WIPES.forEach((T) => { if (t > T - WD && t < T + WD) { on = true;
+    if (t < T) { const k = eio(seg(t, T - WD, T)); a = lerp(2200, -400, k); b = 2400; lead = edge(a); } else { const k = eio(seg(t, T, T + WD)); a = -400; b = lerp(2200, -400, k); lead = edge(b); } } });
+  show($('wipe'), on); if (!on) return;
+  const top = edge(a), bot = edge(b), d = 'M' + top.map((p) => p.join(' ')).join('L') + 'L' + bot.slice().reverse().map((p) => p.join(' ')).join('L') + 'Z';
+  $('wp').setAttribute('d', d); $('wl').setAttribute('d', 'M' + lead.map((p) => p.join(' ')).join('L')); }
+
+// ---- projection of a world point to the 1080x1920 ui frame
+const proj = (v) => { const p = new THREE.Vector3(v[0], v[1], v[2]).project(cam); return [(p.x * 0.5 + 0.5) * 1080, (-p.y * 0.5 + 0.5) * 1920, p.z]; };
+const lerp3 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
+function routePath(a, b, k) { const pts = [], n = 36, dx = b[0] - a[0], dz = b[2] - a[2], L = Math.hypot(dx, dz) || 1, nx = -dz / L, nz = dx / L;
+  for (let i = 0; i <= n * k; i++) { const s = i / n, o = Math.sin(Math.PI * s) * L * 0.1; const p = proj([lerp(a[0], b[0], s) + nx * o, 30, lerp(a[2], b[2], s) + nz * o]); pts.push(p[0].toFixed(1) + ' ' + p[1].toFixed(1)); }
+  if (n * k % 1) { const s = k, o = Math.sin(Math.PI * s) * L * 0.1, p = proj([lerp(a[0], b[0], s) + nx * o, 30, lerp(a[2], b[2], s) + nz * o]); pts.push(p[0].toFixed(1) + ' ' + p[1].toFixed(1)); }
+  return pts.length > 1 ? 'M' + pts.join('L') : ''; }
+
+function logoBox(t) { const el = $('logo'), E = eio(seg(t, 2.2, 2.9)), Ee = eob(seg(t, T_END, T_END + 0.6), 1.2), L = (a, b, k) => a + (b - a) * k;
+  let x, y, w, h, r;
+  if (t < T_END) { x = L(130, 56, E); y = L(640, 60, E); w = L(820, 600, E); h = L(520, 147, E); r = L(30, 22, E); }
+  else { x = L(56, 160, Ee); y = L(60, 640, Ee); w = L(600, 760, Ee); h = L(147, 482, Ee); r = L(22, 30, Ee); }
+  el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.width = w + 'px'; el.style.height = h + 'px'; el.style.borderRadius = r + 'px';
+  const toH = t < T_END ? eio(seg(t, 2.35, 2.7)) : 1 - eio(seg(t, T_END + 0.05, T_END + 0.4));
+  $('logoS').style.opacity = 1 - toH; $('logoH').style.opacity = toH; }
+
+window.setT = function (T) {
+  const [sid, st] = sceneAt(T), mapT = T < T_MAP2 ? T : T - 5.0;
+  // canvas
+  if (!sid || T < 0.6) cv.style.display = 'none'; else { cv.style.display = 'block'; drawScene(sid, st); cv.style.opacity = sid === 'map' && T < 2.6 ? eo(seg(T, 0.6, 2.2)) : 1; }
+  stage.style.background = (!sid || T < 0.6) ? '#131412' : '#131412';
+  // top bar
+  logoBox(T);
+  const bi = $('bi'), bk = eob(seg(T, CU.bi_badge, CU.bi_badge + 0.45), 1.5); show(bi, T >= CU.bi_badge && T < T_END); bi.style.transform = 'scale(' + (0.7 + 0.3 * bk) + ')'; bi.style.opacity = Math.min(1, bk * 2);
+  const mv = (T >= 2.9 && T < T_ROAST) || (T >= T_MAP2 && T < T_HERO); show($('osm'), mv); $('osm').style.opacity = T < T_ROAST ? eo(seg(T, 2.9, 3.4)) : 1;
+  // route thread + plates (map scenes)
+  const mapOn = sid === 'map', M = built.map.B;
+  if (mapOn) {
+    const p1 = T >= T_MAP2 ? eio(seg(mapT, 10.4, CU.vikhroli - 5)) : 0, p2 = T >= T_MAP2 ? eio(seg(mapT, 13.2, CU.andheri - 5)) : 0;
+    show($('route'), T >= T_MAP2 && T < T_HERO);
+    $('rt1').setAttribute('d', p1 > 0 ? routePath(M.pins.malad, M.pins.vikhroli, p1) : ''); $('rt2').setAttribute('d', p2 > 0 ? routePath(M.pins.vikhroli, M.pins.andheri, p2) : '');
+  } else show($('route'), false);
+  const PL = [[CU.malad, T_ROAST, 'MICRO-ROASTERY', CU.y2018], [CU.vikhroli, 18.2, 'ISLAND 1.0 · BEGINNING', CU.y2021], [CU.andheri, T_HERO, 'ISLAND 2.0 · TRANSFORMATION', CU.y2026]];
+  let pl = null; PL.forEach((p) => { if (T >= p[0] && T < p[1]) pl = p; }); show($('plate'), !!pl); show($('ptag'), !!pl);
+  if (pl) { const k = eob(seg(T, pl[0], pl[0] + 0.4), 1.3); $('ptag').textContent = pl[2]; const w = 216 + $('ptag').scrollWidth + 34; $('plate').style.width = w + 'px'; $('plate').style.transform = 'translateX(' + ((1 - k) * -200) + 'px)'; $('plate').style.opacity = Math.min(1, k * 2);
+    $('pring').setAttribute('stroke-dashoffset', 465 * (1 - eio(seg(T, pl[3], pl[3] + 1.25)))); }
+  // roast chart, dial, first-crack tag, menu card
+  const cv1 = T >= T_ROAST + 0.2 && T < CU.menu + 0.3; show($('chart'), cv1); show($('fcl'), cv1);
+  if (cv1) { const u = clamp((T - CU.roast) / (CU.menu - CU.roast)), ch = $('chart'); ch.style.opacity = eo(seg(T, T_ROAST + 0.2, T_ROAST + 0.45)) * (1 - seg(T, CU.menu - 0.25, CU.menu + 0.05)); ch.style.transform = 'translateY(' + (seg(T, CU.menu - 0.25, CU.menu + 0.05) * 40) + 'px)';
+    let d = ''; const n = Math.max(1, Math.round(u * 70)); if (u > 0) for (let i = 0; i <= n; i++) { const p = curveXY(u * i / n); d += (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+    $('curve').setAttribute('d', d); const hp = curveXY(u), hh = heat(u); $('chead').setAttribute('cx', hp[0]); $('chead').setAttribute('cy', hp[1]); $('chead').style.opacity = u > 0 ? 1 : 0;
+    $('dial').setAttribute('d', dialPath(Math.max(0.02, hh))); const a = Math.PI - hh * Math.PI; const nd = $('needle'); nd.setAttribute('x2', 760 + Math.cos(a) * 96); nd.setAttribute('y2', 262 - Math.sin(a) * 96);
+    const cpk = T >= CU.crack, pk = curveXY(UC), f = $('fcl'); f.style.opacity = cpk ? eo(seg(T, CU.crack, CU.crack + 0.2)) : 0; f.style.left = (pk[0] - 60) + 'px'; f.style.top = (pk[1] - 64) + 'px';
+    const pr = seg(T, CU.crack, CU.crack + 0.5); $('cpop').setAttribute('cx', pk[0]); $('cpop').setAttribute('cy', pk[1]); $('cpop').setAttribute('r', cpk ? 12 + 40 * pr : 0); $('cpop').style.opacity = cpk ? 1 - pr : 0; }
+  const mn = $('menu'), mk = eob(seg(T, CU.menu, CU.menu + 0.45), 1.2); show(mn, T >= CU.menu && T < T_MAP2); mn.style.transform = 'perspective(1400px) rotateX(' + ((1 - mk) * 88) + 'deg)'; mn.style.opacity = Math.min(1, mk * 3);
+  [...mn.querySelectorAll('.it')].forEach((e, i) => { const k = eo(seg(T, CU.menu + 0.3 + i * 0.12, CU.menu + 0.55 + i * 0.12)); e.style.opacity = k; e.style.transform = 'translateX(' + ((1 - k) * 40) + 'px)'; });
+  // captions: each word appears at its own voice time
+  let act = -1; PH.forEach((p, i) => { if (T >= p.w[0][1] && T < p.until) act = i; });
+  PH.forEach((p, i) => { p.el.style.display = i === act ? 'block' : 'none'; });
+  show(cap, act >= 0);
+  PH.forEach((p) => p.words.forEach((w) => { const k = eob(seg(T, w.t, w.t + 0.14), 1.4); w.el.style.opacity = Math.min(1, k * 1.2); w.el.style.transform = 'translateY(' + ((1 - k) * 16) + 'px)'; }));
+  { const sv = clamp((T - CU.save) / 0.3); const bp = $('bkp'); if (bp) { bp.setAttribute('fill', sv > 0 ? '#2fd8bd' : 'none'); bp.setAttribute('stroke', sv > 0 ? '#2fd8bd' : '#F4F7F6'); $('bkm').style.transform = 'scale(' + (1 + 0.35 * Math.sin(Math.PI * clamp((T - CU.save) / 0.35)) * (T >= CU.save ? 1 : 0)) + ')'; } }
+  // end card
+  const en = T >= T_END; show($('ebg'), en); show($('ebi'), en && T >= T_END + 0.35); show($('handle'), en && T >= T_END + 0.7); show($('follow'), en && T >= T_END + 0.9);
+  if (en) { $('ebg').style.opacity = eo(seg(T, T_END - 0.0, T_END + 0.1));
+    const ik = eob(seg(T, T_END + 0.35, T_END + 0.95), 1.3); const thud = T >= CU.bean ? Math.sin(Math.PI * clamp((T - CU.bean) / 0.3)) : 0;
+    $('ebi').style.transform = 'translateY(' + ((1 - ik) * -120) + 'px) scale(' + (1 - 0.03 * thud) + ',' + (1 - 0.05 * thud) + ')'; $('ebi').style.opacity = Math.min(1, ik * 2);
+    $('handle').style.opacity = eo(seg(T, T_END + 0.7, T_END + 1.0)); $('follow').style.opacity = eo(seg(T, T_END + 0.9, T_END + 1.2));
+    // bean drops into the roaster hopper on the last word
+    const b0 = CU.bean - 0.55, bk2 = clamp((T - b0) / (CU.bean - b0)), by = lerp(-90, 292, bk2 * bk2), bn = T >= b0 && T < CU.bean; show($('bean'), bn);
+    $('beanG').setAttribute('transform', 'translate(529 ' + by.toFixed(1) + ') rotate(' + (bk2 * 340) + ')');
+    const rk = clamp((T - CU.bean) / 0.6), r1 = $('ering1'); show($('ering'), T >= CU.bean && rk < 1); r1.setAttribute('r', 10 + 120 * eo(rk)); r1.setAttribute('opacity', 1 - rk); }
+  wipe(T);
+  window.ready = true;
+};
+// measured animation onsets (read from real scene/DOM state, not from the cue table) for the sync verification
+window.measure = function () { const m = {}, M = built.map.B, Hh = built.hero.B, Rr = built.roast.B;
+  m.malad = !!(M.state().maladOn) && M.group.visible; m.vikhroli = M.group.visible && M.state().pinLanded; m.andheri = M.group.visible && M.state().andheriOn;
+  m.y2018 = +($('pring').getAttribute('stroke-dashoffset')) < 464 && $('plate').style.display !== 'none' && $('ptag').textContent === 'MICRO-ROASTERY';
+  m.y2021 = +($('pring').getAttribute('stroke-dashoffset')) < 464 && $('plate').style.display !== 'none' && $('ptag').textContent.indexOf('1.0') > 0;
+  m.y2026 = +($('pring').getAttribute('stroke-dashoffset')) < 464 && $('plate').style.display !== 'none' && $('ptag').textContent.indexOf('2.0') > 0;
+  m.menu = $('menu').style.display !== 'none' && parseFloat($('menu').style.opacity || 0) > 0.05; m.save = $('bkp').getAttribute('fill') !== 'none';
+  m.crack = parseFloat($('fcl').style.opacity || 0) > 0.05 && $('chart').style.display !== 'none';
+  m.roast = Rr.group.visible && $('curve').getAttribute('d') && $('curve').getAttribute('d').length > 8;
+  m.layers = Hh.group.visible && Hh.state().layerH > 0.05; m.ice = Hh.group.visible && ((Hh.state().iceDown || [])[0] || 0) > 0.03; m.foam = Hh.group.visible && Hh.state().foamK > 0.03; m.bar = Hh.group.visible && Hh.state().barK > 0.01;
+  m.bi_badge = $('bi').style.display !== 'none' && parseFloat($('bi').style.opacity || 0) > 0.3; m.bean = $('bean').style.display === 'none' && $('ering').style.display !== 'none';
+  m.beanDrop = $('bean').style.display !== 'none'; return m; };
+window.pending = (window.pending || 0) + 1;
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => Promise.all([document.fonts.load('700 80px "Crimson Pro"'), document.fonts.load('600 20px "Montserrat"')])).catch(() => {}).then(() => { window.pending--; });
+window.setT(0);
+</script></body></html>
