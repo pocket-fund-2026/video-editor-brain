@@ -1,0 +1,60 @@
+{
+  "concept": "Marble Top: Kyani & Co., Marine Lines (1904). The camera works top-down over one marble table. A chequered tablecloth wipes between scenes, a ceiling fan spin opens the room, a bun is split and butter melts in, a mawa cake is sliced to show its crumb, handwritten bill lines write themselves in the founder-era ink. Food named, no prices.",
+  "anti_slop": true,
+  "locked": [
+    "palette",
+    "fonts"
+  ],
+  "alternatives": [
+    {
+      "name": "Marble Top",
+      "note": "chosen: top-down tabletop, chequered wipe, fan spin"
+    },
+    {
+      "name": "Handwritten Ledger Walk",
+      "note": "rejected: too close to the receipt/ledger device used in the Acquisition Lore film"
+    },
+    {
+      "name": "Mirror Hall",
+      "note": "the cafe's big mirrors as scene frames, reflections swap scenes"
+    }
+  ],
+  "dimensions": {
+    "palette": "ink #121316, marble white #F1F4F6, Irani red #D0344A (no orange, no cream)",
+    "fonts": "Fraunces variable (weight pulse) + DM Mono labels, two faces only",
+    "opening": "cafe name first: big 'Kyani & Co.' lockup in frame 1 under a ceiling-fan spin, then the 3D Mumbai map dive. No Bombay Cafe Map logo in scene 1 (L051, supersedes L037)",
+    "transition": "chequered tablecloth wipe",
+    "camera": "map dive to Marine Lines, then locked top-down dolly over the marble table",
+    "layout": "top-down table scenes, one hero dish per scene, left-weighted headlines",
+    "motion_device": [
+      "ceiling-fan spin reveal",
+      "chequered tablecloth wipe",
+      "bun split with butter melt",
+      "mawa cake slice cross-section",
+      "handwritten bill pen-write",
+      "top-down table dolly",
+      "variable-weight headline pulse"
+    ],
+    "texture": "marble veining, enamel plates, 3D extruded OSM buildings with detail pass",
+    "sound": "fan hum, plate clink, knife on bun, pen scratch, soft pad, voice at most 2.2 words per second",
+    "ending": "hard cut to the large Bombay Cafe Map lockup with @bombaycafemap and bombaycafemap.com, Kyani & Co. as a smaller line, held 3 s"
+  },
+  "moves": [
+    "cafe-name-first opening",
+    "city-shape zoom",
+    "ceiling-fan spin reveal",
+    "chequered tablecloth wipe",
+    "bun split with butter melt",
+    "mawa cake slice cross-section",
+    "variable-weight headline pulse"
+  ],
+  "experiment": {
+    "move": "variable-weight headline pulse",
+    "hypothesis": "Headline weight swelling on each spoken beat ties type to the voice without extra motion."
+  },
+  "render_engine": "raea if the install check passes, else the HTML + Playwright pipeline",
+  "rules": [
+    "no prices anywhere (L049)",
+    "food items only from FACTS.md"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+ "reason": "Natural food colours only (pav crust, kulcha, kheema, butter, coffee, cream) plus the brand icon's own copper and brown inside the real logo files. UI, map, lights and type use the stage-night palette (aubergine, oxblood, cool white, lime).",
+ "allowed": [
+  "#C98A45",
+  "#E0B36A",
+  "#C88A45",
+  "#D2A05A",
+  "#A2602A",
+  "#F0DCB4",
+  "#F7E8A0",
+  "#EAD9A0",
+  "#E2B66D",
+  "#B9783A",
+  "#6B3020",
+  "#3B1A10",
+  "#5B2C12",
+  "#F7F1E1",
+  "#6B4A35",
+  "#3A1C0F",
+  "#2A150C",
+  "#1C0B05",
+  "#FBF9F4"
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "scenes": [
+  {
+   "id": "intro",
+   "dur": 1.4
+  },
+  {
+   "id": "map",
+   "dur": 10.6
+  },
+  {
+   "id": "food",
+   "dur": 4.5
+  },
+  {
+   "id": "end",
+   "dur": 3.5
+  }
+ ],
+ "width": 1080,
+ "height": 1920,
+ "fps": 30
+}

@@ -9,3 +9,5 @@
 {"id": "C009", "lesson": "L029", "title": "No repeated device and no overlapping elements in any frame of a storyboard or film", "check": "overlap_check"}
 {"id": "C010", "lesson": "L031", "title": "End-card logo is never masked mid-transition and no text collides, checked every 0.25 s", "check": "overlap_check"}
 {"id": "C011", "lesson": "L030", "title": "Every spoken line is a sourced fact listed in verified.json", "check": "facts_check"}
+{"id": "C012", "lesson": "L049", "title": "No price (rupee sign, Rs, INR) appears on screen or in narration, even if listed in verified.json", "check": "facts_check"}
+{"id": "C013", "lesson": "L050", "title": "A new-film request needs a newer design_brief.json before the session can finish; task notices are not captured as feedback", "check": "novelty_check"}

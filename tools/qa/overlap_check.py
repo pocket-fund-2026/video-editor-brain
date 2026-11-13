@@ -10,6 +10,25 @@ import argparse, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from render_frames import open_page
 
+
+def raea_project(project):
+    import glob
+    return bool(glob.glob(os.path.join(project, "*.tsx"))) and not os.path.exists(os.path.join(project, "film.html")) and not os.path.isdir(os.path.join(project, "scenes"))
+
+def run_raea(project):
+    """A raea composition project: text clipped / cramped / safe areas come from `raea check` (quick, on the composition) and the export check (video)."""
+    import glob, subprocess, shutil
+    raea = shutil.which("raea") or os.path.expanduser("~/.local/bin/raea"); bad = 0
+    tsx = sorted(glob.glob(os.path.join(project, "*.tsx")))[0]
+    outs = [f for f in sorted(glob.glob(os.path.join(project, "out", "*.mp4"))) if "silent" not in f]
+    for cmd in ([raea, "check", tsx, "--quick", "--shape", "9:16", "--platform", "reels"], [raea, "check", outs[-1], "--shape", "9:16", "--platform", "reels"] if outs else None):
+        if not cmd: continue
+        r = subprocess.run(cmd, capture_output=True, text=True); out = (r.stdout + r.stderr)
+        for line in out.splitlines():
+            if line.startswith("error") or line.startswith("  error"): print("FAIL", line.strip()); bad += 1
+            elif line.startswith(("warn", "  warn")) and "frozen" not in line and "exposure" not in line: print("WARN", line.strip())
+    print(f"overlap_check (raea check): {bad} fail"); sys.exit(1 if bad else 0)
+
 JS = r"""
 () => {
   const stage = document.getElementById('stage'), sr = stage.getBoundingClientRect(), out = [];
@@ -46,6 +65,20 @@ FILM_JS = r"""
   return out; }
 """
 
+
+SCENE_JS = r"""
+() => { const out = []; if (!document.querySelector('.scene')) return out; const S = document.getElementById('stage').getBoundingClientRect();
+  const eff = (el) => { let o = 1; for (let e = el; e && e.id !== 'stage'; e = e.parentElement) { const c = getComputedStyle(e); if (c.display === 'none') return 0; o *= parseFloat(c.opacity); } return o; };
+  const clip = (el, r) => { for (let e = el.parentElement; e && e.id !== 'stage'; e = e.parentElement) { if (e.classList.contains('m')) { const m = e.getBoundingClientRect(); r = { left: Math.max(r.left, m.left), right: Math.min(r.right, m.right), top: Math.max(r.top, m.top), bottom: Math.min(r.bottom, m.bottom) }; } } return r; };
+  const add = (el, t, kind) => { let r = el.getBoundingClientRect(); r = clip(el, r); if (r.right - r.left < 4 || r.bottom - r.top < 4) return; if (eff(el) < 0.35) return;
+    out.push({ t: t.trim().slice(0, 38), x0: r.left - S.left, y0: r.top - S.top, x1: r.right - S.left, y1: r.bottom - S.top, g: kind, kind }); };
+  document.querySelectorAll('.scene').forEach((sc) => { if (getComputedStyle(sc).display === 'none') return;
+    sc.querySelectorAll('.cap, .lab, .w, .row span, .mono, .stamp').forEach((el) => { if (el.children.length && !el.classList.contains('w') && !el.classList.contains('cap')) return; const tx = el.textContent; if (!tx.trim()) return; add(el, tx, el.classList.contains('stamp') ? 'stamp' : 'text'); });
+    const h = sc.querySelector('.host'); if (h) { const r = h.getBoundingClientRect(); const w = r.right - r.left, hh = r.bottom - r.top; out.push({ t: 'HOST FACE', x0: r.left - S.left + w * 0.28, y0: r.top - S.top + hh * 0.05, x1: r.right - S.left - w * 0.28, y1: r.top - S.top + hh * 0.56, g: 'host', kind: 'host' }); } });
+  const b = document.getElementById('bug'); if (b && eff(b) > 0.35) { const r = b.getBoundingClientRect(); out.push({ t: 'LOGO', x0: r.left - S.left, y0: r.top - S.top, x1: r.right - S.left, y1: r.bottom - S.top, g: 'logo', kind: 'logo' }); }
+  return out; }
+"""
+
 def film_main(a):
     """Three.js film (film.html): sample the whole timeline, check caption tags + logo for overlap, frame bounds and UI zones."""
     import pathlib
@@ -56,13 +89,17 @@ def film_main(a):
         pg = b.new_page(viewport={"width": 540, "height": 960}); pg.on("pageerror", lambda e: errs.append(str(e)))
         pg.goto(pathlib.Path(os.path.join(a.project, "film.html")).resolve().as_uri() + "?w=540&h=960"); pg.wait_for_function("window.ready===true && (window.pending||0)===0", timeout=60000)
         t = 0.2
-        while t < 40:
-            pg.evaluate(f"window.setT({t})"); items = pg.evaluate(FILM_JS)
+        T_END = pg.evaluate("typeof CUES!=='undefined' ? CUES.film : 40"); SL = pg.evaluate("typeof CUES!=='undefined' ? Object.values(CUES.starts) : []")
+        while t < T_END:
+            if any(s - 0.26 <= t < s + 0.01 for s in SL if s > 0): t = round(t + a.step, 2); continue   # paper slide windows overlap by design
+            pg.evaluate(f"window.setT({t})"); items = pg.evaluate(FILM_JS) + pg.evaluate(SCENE_JS)
             for i, p in enumerate(items):
                 if p["x0"] < -2 or p["x1"] > 1082 or p["y0"] < -2 or p["y1"] > 1922: fails.setdefault(f"outside frame: '{p['t']}'", []).append(t)
                 if p["t"] != "LOGO":
                     if p["x1"] > 960 or p["y0"] < 250 or p["y1"] > 1500: warns.setdefault(f"outside safe zone (y 250-1500, x<960): '{p['t']}'", []).append(t)
                 for q in items[i + 1:]:
+                    if p.get('kind') == 'stamp' and q.get('kind') != 'host' or q.get('kind') == 'stamp' and p.get('kind') != 'host': continue   # stamps land on the paper on purpose
+                    if p.get('kind') == 'host' and q.get('kind') == 'host': continue
                     ix = min(p["x1"], q["x1"]) - max(p["x0"], q["x0"]); iy = min(p["y1"], q["y1"]) - max(p["y0"], q["y0"])
                     if ix > 4 and iy > 4: fails.setdefault(f"overlap: '{p['t']}' x '{q['t']}'", []).append(t)
                     elif ix > -24 and iy > -24 and ix > 0 or (iy > -24 and iy <= 0 and ix > 4): warns.setdefault(f"closer than 24px: '{p['t']}' / '{q['t']}'", []).append(t)
@@ -87,6 +124,7 @@ def film_check(project):
     print("overlap_check: film layout,", "no overlaps" if r.returncode == 0 else "overlaps found"); return r.returncode
 
 def main():
+    if raea_project(sys.argv[1]): run_raea(sys.argv[1])
     if len(sys.argv) > 1 and not os.path.isdir(os.path.join(sys.argv[1], "scenes")) and os.path.exists(os.path.join(sys.argv[1], "film", "film_template.html")): sys.exit(film_check(sys.argv[1]))
     ap = argparse.ArgumentParser(); ap.add_argument("project"); ap.add_argument("--step", type=float, default=0.5)
     a = ap.parse_args()

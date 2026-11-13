@@ -342,3 +342,38 @@
 - Cause: No single clock: captions, map markers and drink layers were not all driven from the voice word times
 - Rule: Drive every caption word and key animation from data/timing.json (voice word times); run projects/bombay-island-coffee/verify_sync.py (copy it per project) and require every caption/animation pair within 0.15 s; check frames at each caption change
 - Guarded by: verify_sync.py (project-level)
+
+### L048 · 2026-11-12 · yazdani-bakery-fort · brand-fit
+- Feedback (verbatim): can you generate a new reel for bombaycafemap instagram with better animations and use the self learning loops please
+- Symptom: Request for a new Bombay Cafe Map reel with better animations, explicitly through the self-learning loop, with no cafe named
+- Cause: No cafe was chosen by the user, so one must be proposed from the site with verified facts; the last 5 reels already used Mary Lodge, Chorus, Prithvi, Javaphile and Bombay Island
+- Rule: When asked for a new reel with no cafe named: run retrieve, designer (3 concepts, 1 experiment) and suggest_moves, propose a cafe not yet featured with facts verified on its bombaycafemap.com page, and show animation count plus new-vs-last-3 list, scene script, palette swatches and map zoom spec before building
+- Guarded by: process
+
+### L049 · 2026-11-13 · araku-coffee-apollo-bunder · brand-fit
+- Feedback (verbatim): dont ever use the prices just the food items and the self learning loop isnt working
+- Symptom: A price figure was in the draft facts for Araku and the plan still mentioned it; earlier lessons already said no prices, but facts_check let verified prices through
+- Cause: facts_check allowed any price listed in verified.json, so a standing no-prices rule was never a hard block
+- Rule: Never show or say a price in any reel, verified or not; name the food items from the cafe's own page instead
+- Guarded by: facts_check
+
+### L050 · 2026-11-13 · araku-coffee-apollo-bunder · process-skipped-verification
+- Feedback (verbatim): the self learning loop isnt working
+- Symptom: A new-reel request ended with no designer run and no design_brief.json; lessons only logged, planning steps were rules with no gate; 14 of 48 inbox rows were task notifications; the same 'no prices' feedback came back
+- Cause: Stop gate only inspected existing projects and feedback-like prompts, so a request that never became a project passed; facts_check was permissive; task notifications were captured as feedback
+- Rule: A new-film request logged in memory/requests.jsonl blocks finishing until a design_brief.json newer than the request exists; system and task notices are never captured as feedback
+- Guarded by: stop_gate
+
+### L051 · 2026-11-13 · kyani-co-marine-lines · brand-fit
+- Feedback (verbatim): i approve it dont start with bombay cafe map at start start with the cafe's name and end with bombay cafe map and make sure it is good
+- Symptom: Plan opened on the Bombay Cafe Map logo (per L037); user wants the cafe's own name first and Bombay Cafe Map only at the end
+- Cause: Applied the standing logo-first opening rule without asking whether it still held
+- Rule: Supersedes L037 from 2026-11-13 by the user's explicit yes: every Bombay Cafe Map reel opens on the featured cafe's name in frame 1 (no Bombay Cafe Map logo in the first scene), keeps the cafe name on screen and spoken, and ends on the large Bombay Cafe Map lockup with the handle held 3 s; a small top-bar Bombay Cafe Map mark may appear from scene 2
+- Guarded by: process
+
+### L052 · 2026-11-13 · kyani-co-marine-lines · process-skipped-verification
+- Feedback (verbatim): do it faster it shouldnt take 2hrs
+- Symptom: Reel build was estimated at 30 to 60 more minutes after about 40 already spent, and the user expected far less
+- Cause: Polished every scene before rendering anything complete, and gave a vague estimate instead of a time budget
+- Rule: Give a time budget up front and render a complete rough first cut of the whole reel (voice, foley, end card) within about 20 minutes, then polish in a v2; never polish scene by scene before the whole film exists
+- Guarded by: process

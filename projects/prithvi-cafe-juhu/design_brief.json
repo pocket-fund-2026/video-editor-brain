@@ -1,0 +1,22 @@
+{
+  "concept": "Stage Night: Prithvi Cafe, Juhu as a theatre curtain-up. Curtain opens on the Bombay Cafe Map logo, a single moving spotlight lights a dark 3D Mumbai map down to the real Prithvi compound, a bulb marquee lights the cafe name, a theatre flip-board rolls to 1978, three dishes sit in pools of light, and the curtain drops on the end card.",
+  "anti_slop": true,
+  "locked": [],
+  "dimensions": {
+    "palette": "aubergine ground #1d1226, oxblood curtain #6e1f33, cool white #f4f6fb, acid lime accent #c6f24a (no orange, no cream)",
+    "fonts": "condensed grotesk marquee headlines + IBM Plex Mono labels, two faces only",
+    "opening": "logo-first inside an opening curtain, then spotlight-follow map zoom from the island shape to the Prithvi compound",
+    "transition": "spotlight hand-off: the light pool moves to the next subject, scenes never cut through black",
+    "camera": "tilt-down descent over the map, slow push-ins on food, hard drop for the end card",
+    "layout": "each scene differs: centred stage, left-weighted marquee, split flip-board, three-beat food row, full-bleed curtain end card",
+    "motion_device": ["curtain open", "spotlight-follow map", "marquee bulb sign", "flip-board date", "spotlight-spill captions", "curtain-call end card"],
+    "texture": "velvet curtain, bulb glow, 3D extruded OSM buildings with a detail pass, hand-modelled Prithvi compound",
+    "sound": "curtain rustle, bulb clicks, flip-board clatter, soft pad, slow voice at most 2.2 words per second, no tea pouring",
+    "ending": "curtain drops, stacked Bombay Cafe Map lockup with @bombaycafemap and bombaycafemap.com, Prithvi Cafe at lockup size, held 3 s"
+  },
+  "moves": ["logo-first opening", "city-shape zoom", "spotlight-follow map", "curtain open", "marquee bulb sign", "flip-board date", "spotlight-spill captions", "curtain-call end card"],
+  "experiment": {
+    "move": "spotlight-follow map",
+    "hypothesis": "A dark map lit only by a moving spotlight focuses attention on the location and makes the zoom feel like a stage reveal, unlike the lit island zooms of the last three reels."
+  }
+}

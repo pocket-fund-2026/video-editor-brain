@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Catch claims that must not ship unverified (lessons L004, L005).
- - no prices (rupee signs, 'Rs') and no clock times (11am, 4 pm, 11:30) in on-screen text unless project/verified.json lists them
+ - NO prices ever (rupee signs, 'Rs', INR): name food items instead. No clock times (11am, 4 pm, 11:30) unless project/verified.json lists them
  - the map credit 'OpenStreetMap' must be on screen when the project uses OSM data (data/*.json present)
 Usage: facts_check.py PROJECT      Exit 1 on any failure.
 """
@@ -15,8 +15,12 @@ def main():
     vf = os.path.join(p, "verified.json")
     vdoc = json.load(open(vf)) if os.path.exists(vf) else {}
     verified = [s.lower() for s in vdoc.get("allowed_strings", [])]
-    film = not os.path.isdir(sd)
-    files = [os.path.join(p, "film", "film_template.html")] if film else [os.path.join(sd, f) for f in sorted(os.listdir(sd))]
+    import glob
+    tsx = sorted(glob.glob(os.path.join(p, "*.tsx")))      # a raea composition project: scan its source and its voice lines
+    film = (not os.path.isdir(sd)) and not tsx
+    _ft = os.path.join(p, "film", "film_template.html")
+    if tsx: files = tsx + ([os.path.join(p, "voice_lines.json")] if os.path.exists(os.path.join(p, "voice_lines.json")) else [])
+    else: files = [_ft if os.path.exists(_ft) else os.path.join(p, "film.html")] if film else [os.path.join(sd, f) for f in sorted(os.listdir(sd))]
     alltext = ""
     if film:   # every spoken sentence (data/timing.json) must be one of verified.json's strings
         vs = [" ".join(norm(x.get("text", ""))) for x in vdoc.get("strings", [])]
@@ -29,9 +33,12 @@ def main():
                 if not any(" ".join(w) in v for v in vs): fails.append(f"{sid}: spoken line not in verified.json: '{sent}'")
     for fpath in files:
         f = os.path.basename(fpath); t = open(fpath, encoding="utf8").read(); alltext += t
-        for m in re.finditer(r"₹\s?\d|\bRs\.?\s?\d|\b\d{1,2}(:\d\d)?\s?(am|pm)\b", t, re.I):
+        # prices are NEVER allowed on screen or in narration, verified or not (L049: "dont ever use the prices just the food items")
+        for m in re.finditer(r"₹\s?\d|\bRs\.?\s?\d|\bINR\s?\d|\b\d[\d,]*\s?(rupees|rs)\b|\bunder\s+₹|₹\d+\+", t, re.I):
+            fails.append(f"{f}: price '{m.group(0)}' is banned; name the food items instead")
+        for m in re.finditer(r"\b\d{1,2}(:\d\d)?\s?(am|pm)\b", t, re.I):
             s = m.group(0).lower()
-            if not any(s in v for v in verified): fails.append(f"{f}: unverified price or time '{m.group(0)}'")
+            if not any(s in v for v in verified): fails.append(f"{f}: unverified clock time '{m.group(0)}'")
     mapdata = [x for x in (os.listdir(os.path.join(p, "data")) if os.path.isdir(os.path.join(p, "data")) else []) if x != "timing.json"]
     if mapdata and "openstreetmap" not in alltext.lower():
         fails.append("uses OpenStreetMap data but no 'OpenStreetMap contributors' credit is on screen")

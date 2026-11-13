@@ -1,0 +1,53 @@
+{
+ "note": "No real business, person or price is shown. The bakery is a HYPOTHETICAL (called out in the voiceover 'Let's say', the HYPOTHETICAL stamp and ILLUSTRATIVE FIGURES labels). Arithmetic checked: 15 L x 3 = 45 L; 15 L - 6 L (head baker salary) = 9 L; 9 L x 3 = 27 L; 1 Cr = 100 L. The 3x multiple is the script's own illustration, not a market claim. Source: Aryan's script (WhatsApp, 2026-11-05).",
+ "allowed_strings": [
+  "₹1 Cr",
+  "₹15 L",
+  "₹45 L",
+  "₹6 L",
+  "₹9 L",
+  "₹27 L",
+  "3 times",
+  "3 × PROFIT",
+  "₹0 L",
+  "₹0 Cr",
+  "₹0.0 Cr",
+  "₹2",
+  "₹4"
+ ],
+ "strings": [
+  {
+   "text": "You can buy a business making one crore rupees a year, for just twenty seven lakh. Let me explain."
+  },
+  {
+   "text": "Let's say there's a bakery. It makes one crore a year in sales. One day, the owner says he's selling."
+  },
+  {
+   "text": "You think, okay, one crore business, so I need one crore to buy it. Wrong."
+  },
+  {
+   "text": "That one crore isn't what he takes home. Staff, ingredients, rent, electricity. After all of it, the bakery keeps fifteen lakh a year in operating profit."
+  },
+  {
+   "text": "Here's the thing. You're not buying sales. You're buying its ability to make money. Pay three times that profit, and it's forty five lakh."
+  },
+  {
+   "text": "A one crore bakery for forty five lakh. Sounds like a steal. Well, not so fast."
+  },
+  {
+   "text": "What if the owner is the head baker? The moment he leaves, you hire someone for six lakh a year."
+  },
+  {
+   "text": "Now fifteen lakh of profit becomes nine. Same three times, and your forty five lakh drops to twenty seven."
+  },
+  {
+   "text": "Same bakery. Same one crore in sales. A completely different price."
+  },
+  {
+   "text": "So the real question isn't how much it sells. It's how much it will make after you take over."
+  },
+  {
+   "text": "Save this reel. And if you'd rather buy than build, DM LORE."
+  }
+ ]
+}

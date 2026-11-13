@@ -1,0 +1,22 @@
+{
+ "concept": "Acquisition Lore x The Bakery Price: 'The Paper Trail' explainer. The illustrated Host (poses H00-H04 from the brand guide) walks through a hypothetical bakery's numbers on a deal-desk: receipt slips, a strike-through villain line, thud stamps and orange marker marks. Every animation fires on a word time from the voice engine (data/cues.json), including count-ups, strikes, stamps, pose changes and nods.",
+ "anti_slop": true,
+ "locked": ["palette", "fonts", "logo", "mascot"],
+ "dimensions": {
+  "palette": "Acquisition Lore brand guide: Lore Black #0A0A0A, Lore White, Notch Orange #D3743E (one focus per frame), Paper #F3EEE6, Graphite #1E1E1E, Smoke #75747A, Ember #A4501F for small text on paper. Supplied by the brand guide, so locked (the orange + paper pairing is the client's own identity, not Claude branding).",
+  "fonts": "Archivo 900/700 headlines, Instrument Serif Italic accent word, JetBrains Mono labels (brand guide 4.1)",
+  "opening": "hook on black with the illustrated Host pointing, full headline and the big number visible in frame 1 (the cover), marker underline drawn on the spoken number",
+  "transition": "paper slide, 240 ms, inside the 0.45 s voice gap; the split scene slides its two halves in from opposite sides",
+  "camera": "flat desk-top layout, no camera move; Host breathes and nods on keywords",
+  "layout": "asymmetric: big numerals left, Host bleeding off the bottom corner, receipt slips tilted 2-3 degrees",
+  "motion_device": ["word-by-word mask headlines", "receipt row-by-row ledger", "strike-through villain line", "stamp thud", "marker underline and circle on twos", "count-up and count-down on spoken numbers", "Host pose pop and nod on keywords"],
+  "texture": "monochrome film grain on every ground (shifts on twos), torn-edge paper slips with soft shadow",
+  "sound": "word-synced foley (tick, stamp thud, pen scratch, paper slide, tape), minimal warm lo-fi pad and pluck ducked under the voice, Kokoro male voice at word-timed cues",
+  "ending": "close card: full wordmark held over 2 s, Don't start one. Buy one., orange DM LORE box with thud, Host with hand on chest"
+ },
+ "moves": ["mascot host pose library", "receipt ledger rows", "strike-through villain line", "stamp thud", "marker marks on twos", "paper slide transition", "split panels from opposite sides", "word-time count-ups", "film grain on twos"],
+ "experiment": {
+  "move": "word-time count-ups",
+  "hypothesis": "When every number counts up exactly on the spoken word, viewers feel the voice and the screen are one thing, and the ₹27 lakh payoff lands harder."
+ }
+}

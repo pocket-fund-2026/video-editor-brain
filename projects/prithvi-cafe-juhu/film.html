@@ -1,0 +1,153 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Bombay Cafe Map: Prithvi Cafe, Juhu reel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{--bg:#1d1226;--wine:#6e1f33;--ink:#f4f6fb;--lime:#c6f24a;--mute:#b6abc8}
+html,body{margin:0;background:#0e0714;overflow:hidden}
+#stage{position:relative;overflow:hidden;background:#0e0714}
+#stage canvas{position:absolute;left:0;top:0;display:block}
+#ui{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;pointer-events:none;font-family:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;color:var(--ink)}
+#ui>*,#fb>*,#mq>*{position:absolute}
+#mq .bulb,#mbt>.bulb,#mbb>.bulb{position:absolute}
+.mono{font:500 28px 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.cur{top:0;width:600px;height:1920px;background:linear-gradient(90deg,#3d0f1d,#6e1f33 38%,#3d0f1d 62%,#6e1f33 82%,#3d0f1d);z-index:40;box-shadow:0 0 60px #000a}
+#curL{left:0}#curR{right:0}
+#cone{left:-100px;top:200px;width:1280px;height:1100px;background:radial-gradient(ellipse at 50% 50%,#f4f6fb30 0,#f4f6fb12 45%,transparent 70%);z-index:1}
+#logo{z-index:50;background:#f4f6fb;border-radius:26px;overflow:hidden;box-shadow:0 10px 40px #0008}
+#logo img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
+#tag{left:56px;top:244px;z-index:45;background:var(--lime);color:#1d1226;padding:6px 22px 4px;font:900 58px 'Big Shoulders Display',sans-serif;letter-spacing:.03em;text-transform:uppercase;display:none}
+#shade{left:0;top:1080px;width:1080px;height:840px;z-index:28;background:linear-gradient(180deg,transparent,#1d1226cc 38%,#1d1226e6);display:none}
+#osm{left:56px;top:1850px;z-index:30;font-size:22px;color:var(--mute);display:none}
+/* map label */
+#jl{left:56px;top:1360px;z-index:30;display:none}
+#jl .k{display:block;font:500 28px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--lime)}
+#jl .h{display:block;text-shadow:0 4px 24px #000a;font-weight:900;font-size:230px;line-height:.9;text-transform:uppercase}
+/* marquee */
+#mq{left:56px;top:540px;width:968px;height:470px;z-index:35;background:#2b1a38ee;border:14px solid #4a3560;box-sizing:border-box;display:none}
+.bulb{width:26px;height:26px;border-radius:50%;background:#4a3a5e}
+#mq .word{left:0;right:0;top:64px;text-align:center;font-weight:900;font-size:250px;line-height:1;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+#mq .word span{display:inline-block}
+#mq .sub{left:0;right:0;top:336px;text-align:center;font:500 36px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+/* flip board */
+#fb{left:0;top:0;z-index:30;display:none}
+.tile{position:absolute;top:1110px;width:215px;height:290px;background:#0d0713;border:7px solid #4a3560;box-sizing:border-box;overflow:hidden;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:260px;line-height:1}
+.tile i{font-style:normal;display:block;transform-origin:50% 50%}
+.tile::after{content:"";position:absolute;left:0;right:0;top:50%;height:7px;background:#000}
+#fbl{left:74px;top:1445px;color:var(--lime);white-space:nowrap;background:#1d1226d9;padding:8px 18px 6px}
+#fbs{left:74px;top:1515px;width:930px;box-sizing:border-box;font-weight:900;font-size:70px;line-height:1;text-transform:uppercase;background:#1d1226d9;padding:16px 20px 14px}
+/* dish captions */
+#dn{left:56px;top:430px;z-index:30;font-weight:900;font-size:176px;line-height:.9;text-transform:uppercase;white-space:nowrap;display:none}
+#dnp{left:-40px;top:360px;width:1160px;height:420px;z-index:29;background:radial-gradient(ellipse at 40% 50%,#f4f6fb26 0,#f4f6fb0c 55%,transparent 72%);display:none}
+/* end card */
+#drop{left:0;top:0;width:1080px;height:1920px;z-index:55;background:linear-gradient(180deg,#3d0f1d,#6e1f33 18%,#6e1f33);display:none}
+#ename{left:56px;top:210px;z-index:60;font-weight:900;font-size:330px;line-height:.86;text-transform:uppercase;display:none;transform-origin:0 100%}
+#ecard{left:56px;top:960px;width:760px;height:482px;z-index:60;background:#f4f6fb;border-radius:30px;display:none;overflow:hidden;box-shadow:0 14px 50px #0009}
+#ecard img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
+#eid{left:56px;top:1500px;z-index:60;display:none;font-size:34px}
+#eid b{color:var(--lime);font-weight:500}
+#eplace{left:56px;top:1572px;z-index:60;display:none;color:var(--mute);font-size:28px}
+</style></head>
+<body>
+<div id="stage"><canvas id="under" style="display:none"></canvas><div id="ui">
+<div id="cone"></div>
+<div id="curL" class="cur"></div><div id="curR" class="cur"></div>
+<div id="logo"><img id="logoS" src="assets/bombaycafemap-lockup-stacked.png" alt="Bombay Cafe Map"><img id="logoH" src="assets/bombaycafemap-lockup-horizontal.png" alt="Bombay Cafe Map"></div>
+<div id="tag">Prithvi Cafe</div>
+<div id="shade"></div><div id="osm" class="mono">Map data: OpenStreetMap contributors</div>
+<div id="jl"><span class="k mono">MUMBAI</span><span class="h">Juhu</span></div>
+<div id="mq"><div id="mbt"></div><div id="mbb"></div><div class="word" id="mw"></div><div class="sub">Cafe &middot; Juhu</div></div>
+<div id="fb"><div class="tile" id="t0"><i></i></div><div class="tile" id="t1"><i></i></div><div class="tile" id="t2"><i></i></div><div class="tile" id="t3"><i></i></div><div id="fbl" class="mono">Prithvi Theatre founded</div><div id="fbs">The cafe began as a basic eatery for drama students on their breaks</div></div>
+<div id="dnp"></div><div id="dn"></div>
+<div id="drop"></div><div id="ename">Prithvi<br>Cafe</div><div id="ecard"><img src="assets/bombaycafemap-lockup-stacked.png" alt="Bombay Cafe Map"></div>
+<div id="eid" class="mono"><b>@bombaycafemap</b> &nbsp;&middot;&nbsp; bombaycafemap.com</div><div id="eplace" class="mono">Juhu &middot; Mumbai</div>
+</div></div>
+<script src="vendor/three.min.js"></script><script src="scenes/common.js"></script><script src="data/map_data.js"></script>
+<script src="scenes/map.js"></script><script src="scenes/food.js"></script>
+<script>
+const q = new URLSearchParams(location.search), Wd = +(q.get('w') || 1080), Ht = +(q.get('h') || 1920), SC = Wd / 1080;
+const { clamp, seg, eo, eio, eob, lerp } = window.C;
+const stage = document.getElementById('stage'); stage.style.width = Wd + 'px'; stage.style.height = Ht + 'px';
+const ui = document.getElementById('ui'); ui.style.transform = 'scale(' + SC + ')';
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wd, Ht); renderer.setPixelRatio(1); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+const cv = renderer.domElement, under = document.getElementById('under'); under.width = Wd; under.height = Ht; const uctx = under.getContext('2d');
+stage.insertBefore(cv, ui); stage.insertBefore(under, cv);
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, Wd / Ht, 0.05, 300);
+const built = {};
+['map', 'food'].forEach((id) => { const S = window.SCENES[id], B = S.build(THREE, { W: Wd, H: Ht }); built[id] = { S, B }; scene.add(B.group); });
+// timeline (seconds): intro 0-1.4, map 1.4-12.0 (descent, name, theatre orbit), food 12.0-16.5, end card 16.5-20
+const T_MAP = 1.4, T_FOOD = 12.0, T_END = 16.5;
+function drawScene(id, t) {
+  Object.keys(built).forEach((k) => { built[k].B.group.visible = k === id; });
+  const B = built[id].B, p = B.setT(Math.min(built[id].S.dur - 0.001, Math.max(0, t)));
+  cam.position.set(...p.pos); cam.fov = p.fov; cam.near = p.near || 0.05; cam.far = p.far || 300; cam.updateProjectionMatrix(); cam.lookAt(...p.look);
+  scene.background = new THREE.Color(B.bg); scene.fog = B.fog ? new THREE.Fog(B.bg, B.fog[0], B.fog[1]) : null; renderer.render(scene, cam);
+}
+const $ = (id) => document.getElementById(id), show = (el, on, d) => { el.style.display = on ? (d || 'block') : 'none'; };
+// marquee bulbs + letters
+const NAME = 'PRITHVI'; const mw = $('mw'); NAME.split('').forEach((c) => { const s = document.createElement('span'); s.textContent = c; mw.appendChild(s); });
+const NB = 14, bulbs = [];
+['mbt', 'mbb'].forEach((id, r) => { const row = $(id); row.style.cssText = 'left:34px;right:34px;top:' + (r ? 416 : 14) + 'px;height:26px'; for (let i = 0; i < NB; i++) { const b = document.createElement('div'); b.className = 'bulb'; b.style.left = (i * (900 / (NB - 1)) - 13) + 'px'; row.appendChild(b); bulbs.push({ el: b, i: r ? NB - 1 - i : i }); } });
+const tiles = [0, 1, 2, 3].map((i) => $('t' + i)); tiles.forEach((t, i) => { t.style.left = (74 + i * 239) + 'px'; });
+const LAND = [8.95, 9.3, 9.65, 10.0], FINAL = [1, 9, 7, 8];
+const DISH = [[12.0, 13.7, 'Kheema pav'], [13.7, 15.0, 'Amritsari kulcha'], [15.0, 16.5, 'Irish coffee']];
+
+function logoBox(T) {
+  // frame 1: big card centred; settles into the top bar as the map opens
+  const e = eio(seg(T, 1.0, 1.7)), L = (a, b) => a + (b - a) * e, el = $('logo');
+  el.style.left = L(130, 56) + 'px'; el.style.top = L(640, 60) + 'px'; el.style.width = L(820, 600) + 'px'; el.style.height = L(520, 147) + 'px'; el.style.borderRadius = L(30, 22) + 'px';
+  $('logoS').style.opacity = 1 - eio(seg(T, 1.25, 1.5)); $('logoH').style.opacity = eio(seg(T, 1.3, 1.6));
+  show(el, T < T_END + 0.15 && !(T >= T_END + 0.1));
+}
+window.setT = function (T) {
+  // canvas phase
+  const mapOn = T >= 0.9 && T < T_FOOD + 0.4, foodOn = T >= T_FOOD - 0.4;
+  const trK = seg(T, T_FOOD - 0.2, T_FOOD + 0.3);
+  if (T < 0.9) { cv.style.display = 'none'; under.style.display = 'none'; }
+  else if (T < T_FOOD - 0.2) { cv.style.display = 'block'; cv.style.webkitMaskImage = cv.style.maskImage = 'none'; under.style.display = 'none'; drawScene('map', T - T_MAP); }
+  else if (T < T_FOOD + 0.3) { // spotlight reveal: the food scene opens inside a growing soft circle over the last map frame
+    drawScene('map', T - T_MAP); uctx.drawImage(cv, 0, 0); under.style.display = 'block'; drawScene('food', T - T_FOOD);
+    const R = Math.round((60 + 1500 * eio(trK)) * SC), m = 'radial-gradient(circle at 50% 62%, #000 ' + R + 'px, transparent ' + (R + 140 * SC) + 'px)';
+    cv.style.webkitMaskImage = cv.style.maskImage = m; }
+  else { cv.style.webkitMaskImage = cv.style.maskImage = 'none'; under.style.display = 'none'; cv.style.display = 'block'; drawScene('food', T - T_FOOD); }
+
+  // curtains
+  const co = eio(seg(T, 0.18, 0.95)), off = 566 * co; $('curL').style.transform = 'translateX(' + (-off) + 'px)'; $('curR').style.transform = 'translateX(' + off + 'px)';
+  show($('curL'), T < T_END + 0.05); show($('curR'), T < T_END + 0.05);
+  $('cone').style.opacity = (1 - eio(seg(T, 1.2, 1.9))) * eio(seg(T, 0.1, 0.6)); show($('cone'), T < 2.0);
+  logoBox(T);
+  show($('osm'), T >= 1.9 && T < T_FOOD); show($('shade'), T >= 5.4 && T < T_FOOD); $('shade').style.opacity = eo(seg(T, 5.4, 6.0));
+  // name tag, persistent in every scene after the marquee
+  show($('tag'), T >= 8.6 && T < T_END + 0.2); $('tag').style.opacity = 1 - seg(T, T_END + 0.05, T_END + 0.2);
+  // map label
+  const jv = T >= 5.9 && T < 8.5; show($('jl'), jv); if (jv) $('jl').style.opacity = eo(seg(T, 5.9, 6.3)) * (1 - seg(T, 8.3, 8.5));
+  // marquee 6.6-8.6
+  const mv = T >= 6.6 && T < 8.7; show($('mq'), mv);
+  if (mv) { $('mq').style.opacity = eo(seg(T, 6.6, 6.7)) * (1 - seg(T, 8.5, 8.7));
+    bulbs.forEach((b) => { const on = seg(T, 6.65 + b.i * 0.055, 6.75 + b.i * 0.055), ch = T > 7.9 ? 0.55 + 0.45 * Math.sin(T * 14 - b.i * 0.9) : 1;
+      b.el.style.background = on > 0.5 ? '#c6f24a' : '#4a3a5e'; b.el.style.boxShadow = on > 0.5 ? '0 0 ' + (22 * ch) + 'px #c6f24a' : 'none'; b.el.style.opacity = on > 0.5 ? (0.5 + 0.5 * ch) : 1; });
+    [...mw.children].forEach((s, i) => { const k = eo(seg(T, 6.95 + i * 0.1, 7.15 + i * 0.1)); s.style.opacity = k; s.style.transform = 'translateY(' + ((1 - k) * 36) + 'px)'; }); }
+  // flip board 8.6-12.0
+  const fv = T >= 8.7 && T < T_FOOD; show($('fb'), fv);
+  if (fv) { tiles.forEach((t, i) => { const step = Math.floor((T - 8.75) / 0.11), fr = ((T - 8.75) / 0.11) % 1, landed = T >= LAND[i], d = landed ? FINAL[i] : ((step * 7 + i * 3 + 11) % 10 + 10) % 10;
+      const i0 = t.firstChild; i0.textContent = d; const sy = landed ? (T - LAND[i] < 0.12 ? 0.2 + 0.8 * eo((T - LAND[i]) / 0.12) : 1) : 0.25 + 0.75 * eo(fr); i0.style.transform = 'scaleY(' + sy + ')';
+      t.style.opacity = eo(seg(T, 8.7, 8.85)); });
+    $('fbl').style.opacity = eo(seg(T, 10.05, 10.35)); $('fbs').style.opacity = eo(seg(T, 9.2, 9.6)); $('fbs').style.transform = 'translateY(' + ((1 - eo(seg(T, 9.2, 9.6))) * 24) + 'px)'; }
+  // dish captions 12.0-16.5, each inside a pool of light that slides with the camera
+  let di = -1; DISH.forEach((d, i) => { if (T >= d[0] && T < d[1]) di = i; });
+  const dv = di >= 0 && T >= T_FOOD + 0.15 && T < T_END; show($('dn'), dv); show($('dnp'), dv);
+  if (dv) { const d = DISH[di], u = T - d[0], k = eo(seg(u, 0.05, 0.4)), out = 1 - seg(T, d[1] - 0.12, d[1]); $('dn').textContent = d[2]; $('dn').style.fontSize = '176px'; { const w = $('dn').scrollWidth; if (w > 968) $('dn').style.fontSize = Math.floor(176 * 968 / w) + 'px'; } $('dn').style.opacity = k * out; $('dn').style.transform = 'translateX(' + ((1 - k) * -90) + 'px)';
+    $('dnp').style.opacity = k * out; $('dnp').style.transform = 'translateX(' + ((1 - k) * -160) + 'px)'; }
+  // end card: curtain drops over the last dish, the name bounces in, the lockup bows in
+  const dr = T >= T_END; show($('drop'), dr); show($('ename'), dr && T >= T_END + 0.55); show($('ecard'), dr && T >= T_END + 0.85); show($('eid'), dr && T >= T_END + 1.5); show($('eplace'), dr && T >= T_END + 1.5);
+  if (dr) { const dk = seg(T, T_END + 0.1, T_END + 0.75); $('drop').style.transform = 'translateY(' + ((1 - eob(dk, 0.9)) * -1920) + 'px)';
+    const nk = eob(seg(T, T_END + 0.55, T_END + 1.15), 1.6); $('ename').style.transform = 'scale(' + (0.6 + 0.4 * nk) + ')'; $('ename').style.opacity = Math.min(1, seg(T, T_END + 0.55, T_END + 0.7));
+    const ck = eob(seg(T, T_END + 0.85, T_END + 1.5), 1.4); $('ecard').style.transform = 'translateY(' + ((1 - ck) * 260) + 'px)'; $('ecard').style.opacity = Math.min(1, seg(T, T_END + 0.85, T_END + 1.0));
+    $('eid').style.opacity = eo(seg(T, T_END + 1.5, T_END + 1.8)); $('eplace').style.opacity = eo(seg(T, T_END + 1.6, T_END + 1.9)); }
+  window.ready = true;
+};
+window.pending = (window.pending || 0) + 1;
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => Promise.all([document.fonts.load('900 80px "Big Shoulders Display"'), document.fonts.load('500 20px "IBM Plex Mono"')])).catch(() => {}).then(() => { window.pending--; });
+window.setT(0);
+</script></body></html>

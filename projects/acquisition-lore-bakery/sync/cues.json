@@ -1,0 +1,826 @@
+{
+ "W": {
+  "s1": [
+   0.0,
+   0.1,
+   0.2,
+   0.425,
+   0.5,
+   0.875,
+   1.2,
+   1.45,
+   1.775,
+   2.125,
+   2.2,
+   2.725,
+   2.85,
+   3.05,
+   3.325,
+   3.575,
+   4.575,
+   4.7,
+   4.825
+  ],
+  "s2": [
+   5.975,
+   6.15,
+   6.4,
+   6.55,
+   6.625,
+   7.775,
+   7.85,
+   8.075,
+   8.3,
+   8.525,
+   8.6,
+   8.775,
+   8.9,
+   10.0,
+   10.225,
+   10.425,
+   10.575,
+   10.775,
+   10.975,
+   11.15
+  ],
+  "s3": [
+   12.125,
+   12.25,
+   12.475,
+   13.15,
+   13.375,
+   13.625,
+   14.0,
+   14.15,
+   14.225,
+   14.4,
+   14.625,
+   14.85,
+   14.95,
+   15.2,
+   16.05
+  ],
+  "s4": [
+   16.975,
+   17.15,
+   17.35,
+   17.875,
+   18.075,
+   18.175,
+   18.3,
+   18.575,
+   19.625,
+   19.95,
+   20.55,
+   20.925,
+   22.3,
+   22.55,
+   22.675,
+   22.75,
+   23.05,
+   23.15,
+   23.525,
+   23.775,
+   24.125,
+   24.3,
+   24.4,
+   24.625,
+   24.775,
+   25.2
+  ],
+  "s5": [
+   26.275,
+   26.55,
+   26.675,
+   27.65,
+   27.75,
+   27.95,
+   28.3,
+   29.375,
+   29.525,
+   29.85,
+   29.975,
+   30.4,
+   30.475,
+   30.725,
+   31.725,
+   31.975,
+   32.2,
+   32.525,
+   32.675,
+   33.275,
+   33.375,
+   33.525,
+   33.8,
+   34.05
+  ],
+  "s6": [
+   35.0,
+   35.1,
+   35.325,
+   35.625,
+   36.025,
+   36.175,
+   36.45,
+   36.65,
+   37.65,
+   37.9,
+   38.05,
+   38.125,
+   39.225,
+   39.45,
+   39.625,
+   39.825
+  ],
+  "s7": [
+   40.8,
+   40.925,
+   41.025,
+   41.25,
+   41.575,
+   41.7,
+   41.8,
+   42.025,
+   43.1,
+   43.2,
+   43.5,
+   43.625,
+   44.275,
+   44.4,
+   44.675,
+   44.9,
+   45.075,
+   45.325,
+   45.5,
+   45.575
+  ],
+  "s8": [
+   46.55,
+   46.75,
+   47.15,
+   47.35,
+   47.45,
+   47.8,
+   48.1,
+   49.175,
+   49.45,
+   49.675,
+   50.35,
+   50.45,
+   50.575,
+   50.85,
+   51.2,
+   51.45,
+   51.775,
+   51.875,
+   52.175
+  ],
+  "s9": [
+   53.175,
+   53.475,
+   54.625,
+   54.9,
+   55.125,
+   55.35,
+   55.475,
+   56.55,
+   56.65,
+   57.15,
+   57.45
+  ],
+  "s10": [
+   58.5,
+   58.625,
+   58.725,
+   59.0,
+   59.575,
+   59.8,
+   59.975,
+   60.15,
+   60.25,
+   61.325,
+   61.475,
+   61.7,
+   61.9,
+   61.975,
+   62.125,
+   62.6,
+   62.825,
+   62.95,
+   63.15
+  ],
+  "s11": [
+   64.1,
+   64.35,
+   64.525,
+   65.5,
+   65.6,
+   65.675,
+   65.8,
+   66.025,
+   66.275,
+   66.4,
+   66.825,
+   67.225
+  ]
+ },
+ "film": 70.925,
+ "starts": {
+  "s1": 0.0,
+  "s2": 5.975,
+  "s3": 12.125,
+  "s4": 16.975,
+  "s5": 26.275,
+  "s6": 35.0,
+  "s7": 40.8,
+  "s8": 46.55,
+  "s9": 53.175,
+  "s10": 58.5,
+  "s11": 64.1
+ },
+ "ends": {
+  "s1": 5.975,
+  "s2": 12.125,
+  "s3": 16.975,
+  "s4": 26.275,
+  "s5": 35.0,
+  "s6": 40.8,
+  "s7": 46.55,
+  "s8": 53.175,
+  "s9": 58.5,
+  "s10": 64.1,
+  "s11": 70.925
+ },
+ "phrases": {
+  "s1": [
+   {
+    "s": 0.0,
+    "e": 2.6,
+    "text": "You can buy a business making ₹1 Cr a year",
+    "key": "₹1 Cr",
+    "hold": 2.725
+   },
+   {
+    "s": 2.725,
+    "e": 4.075,
+    "text": "for just ₹27 L",
+    "key": "₹27 L",
+    "hold": 4.575
+   },
+   {
+    "s": 4.575,
+    "e": 5.525,
+    "text": "Let me explain",
+    "key": null,
+    "hold": 5.975
+   }
+  ],
+  "s2": [
+   {
+    "s": 5.975,
+    "e": 7.3,
+    "text": "Let's say there's a bakery",
+    "key": "bakery",
+    "hold": 7.775
+   },
+   {
+    "s": 7.775,
+    "e": 9.5,
+    "text": "It makes ₹1 Cr a year in sales",
+    "key": "₹1 Cr",
+    "hold": 10.0
+   },
+   {
+    "s": 10.0,
+    "e": 11.675,
+    "text": "One day, the owner says he's selling",
+    "key": "selling",
+    "hold": 12.125
+   }
+  ],
+  "s3": [
+   {
+    "s": 12.125,
+    "e": 13.025,
+    "text": "You think, okay,",
+    "key": null,
+    "hold": 13.15
+   },
+   {
+    "s": 13.15,
+    "e": 13.95,
+    "text": "₹1 Cr business,",
+    "key": "₹1 Cr",
+    "hold": 14.0
+   },
+   {
+    "s": 14.0,
+    "e": 15.525,
+    "text": "so I need ₹1 Cr to buy it",
+    "key": "₹1 Cr",
+    "hold": 16.05
+   },
+   {
+    "s": 16.05,
+    "e": 16.525,
+    "text": "Wrong.",
+    "key": "Wrong",
+    "hold": 16.975
+   }
+  ],
+  "s4": [
+   {
+    "s": 16.975,
+    "e": 19.125,
+    "text": "That ₹1 Cr isn't what he takes home",
+    "key": "₹1 Cr",
+    "hold": 19.625
+   },
+   {
+    "s": 19.625,
+    "e": 21.75,
+    "text": "Staff, ingredients, rent, electricity",
+    "key": "electricity",
+    "hold": 22.3
+   },
+   {
+    "s": 22.3,
+    "e": 23.725,
+    "text": "After all of it, the bakery keeps",
+    "key": null,
+    "hold": 23.775
+   },
+   {
+    "s": 23.775,
+    "e": 25.825,
+    "text": "₹15 L a year in operating profit",
+    "key": "₹15 L",
+    "hold": 26.275
+   }
+  ],
+  "s5": [
+   {
+    "s": 26.275,
+    "e": 27.15,
+    "text": "Here's the thing",
+    "key": "thing",
+    "hold": 27.65
+   },
+   {
+    "s": 27.65,
+    "e": 28.875,
+    "text": "You're not buying sales",
+    "key": "sales",
+    "hold": 29.375
+   },
+   {
+    "s": 29.375,
+    "e": 31.25,
+    "text": "You're buying its ability to make money",
+    "key": "money",
+    "hold": 31.725
+   },
+   {
+    "s": 31.725,
+    "e": 33.175,
+    "text": "Pay 3 times that profit,",
+    "key": "3 times",
+    "hold": 33.275
+   },
+   {
+    "s": 33.275,
+    "e": 34.55,
+    "text": "and it's ₹45 L",
+    "key": "₹45 L",
+    "hold": 35.0
+   }
+  ],
+  "s6": [
+   {
+    "s": 35.0,
+    "e": 37.15,
+    "text": "A ₹1 Cr bakery for ₹45 L",
+    "key": "₹45 L",
+    "hold": 37.65
+   },
+   {
+    "s": 37.65,
+    "e": 38.725,
+    "text": "Sounds like a steal",
+    "key": "steal",
+    "hold": 39.225
+   },
+   {
+    "s": 39.225,
+    "e": 40.35,
+    "text": "Well, not so fast",
+    "key": "fast",
+    "hold": 40.8
+   }
+  ],
+  "s7": [
+   {
+    "s": 40.8,
+    "e": 42.6,
+    "text": "What if the owner is the head baker",
+    "key": "head baker",
+    "hold": 43.1
+   },
+   {
+    "s": 43.1,
+    "e": 44.15,
+    "text": "The moment he leaves,",
+    "key": "leaves",
+    "hold": 44.275
+   },
+   {
+    "s": 44.275,
+    "e": 46.1,
+    "text": "you hire someone for ₹6 L a year",
+    "key": "₹6 L",
+    "hold": 46.55
+   }
+  ],
+  "s8": [
+   {
+    "s": 46.55,
+    "e": 48.675,
+    "text": "Now ₹15 L of profit becomes ₹9 L",
+    "key": "₹9 L",
+    "hold": 49.175
+   },
+   {
+    "s": 49.175,
+    "e": 50.25,
+    "text": "Same 3 times,",
+    "key": null,
+    "hold": 50.35
+   },
+   {
+    "s": 50.35,
+    "e": 52.725,
+    "text": "and your ₹45 L drops to ₹27 L",
+    "key": "₹27 L",
+    "hold": 53.175
+   }
+  ],
+  "s9": [
+   {
+    "s": 53.175,
+    "e": 54.075,
+    "text": "Same bakery",
+    "key": null,
+    "hold": 54.625
+   },
+   {
+    "s": 54.625,
+    "e": 56.075,
+    "text": "Same ₹1 Cr in sales",
+    "key": "₹1 Cr",
+    "hold": 56.55
+   },
+   {
+    "s": 56.55,
+    "e": 58.05,
+    "text": "A completely different price",
+    "key": "price",
+    "hold": 58.5
+   }
+  ],
+  "s10": [
+   {
+    "s": 58.5,
+    "e": 60.825,
+    "text": "So the real question isn't how much it sells",
+    "key": "sells",
+    "hold": 61.325
+   },
+   {
+    "s": 61.325,
+    "e": 62.475,
+    "text": "It's how much it will make",
+    "key": "make",
+    "hold": 62.6
+   },
+   {
+    "s": 62.6,
+    "e": 63.65,
+    "text": "after you take over",
+    "key": null,
+    "hold": 64.1
+   }
+  ],
+  "s11": [
+   {
+    "s": 64.1,
+    "e": 65.025,
+    "text": "Save this reel",
+    "key": "Save",
+    "hold": 65.5
+   },
+   {
+    "s": 65.5,
+    "e": 67.725,
+    "text": "And if you'd rather buy than build, DM LORE",
+    "key": "LORE",
+    "hold": 70.925
+   }
+  ]
+ },
+ "ev": {
+  "s1.crore": 1.45,
+  "s1.year": 2.2,
+  "s1.lakh": 3.05,
+  "s2.say": 6.15,
+  "s2.crore": 8.3,
+  "s2.selling": 10.95,
+  "s3.one": 13.15,
+  "s3.need": 14.225,
+  "s3.wrong": 16.25,
+  "s4.isnt": 17.875,
+  "s4.staff": 19.625,
+  "s4.ingr": 19.95,
+  "s4.rent": 20.55,
+  "s4.elec": 20.925,
+  "s4.fifteen": 23.775,
+  "s4.profit": 25.2,
+  "s5.sales": 28.55,
+  "s5.money": 30.725,
+  "s5.three": 31.975,
+  "s5.forty": 33.525,
+  "s6.crore": 35.325,
+  "s6.forty": 36.175,
+  "s6.steal": 38.125,
+  "s6.fast": 39.825,
+  "s7.baker": 42.025,
+  "s7.leaves": 43.625,
+  "s7.six": 45.075,
+  "s8.fifteen": 46.75,
+  "s8.nine": 48.1,
+  "s8.three": 49.45,
+  "s8.forty": 50.575,
+  "s8.drops": 51.45,
+  "s8.seven": 52.175,
+  "s9.same1": 53.175,
+  "s9.same2": 54.625,
+  "s9.price": 57.45,
+  "s10.sells": 60.5,
+  "s10.make": 62.125,
+  "s11.dm": 66.825,
+  "s11.lore": 67.225
+ },
+ "sfx": [
+  {
+   "t": 1.45,
+   "kind": "tick",
+   "name": "s1.crore"
+  },
+  {
+   "t": 2.2,
+   "kind": "tape",
+   "name": "s1.year"
+  },
+  {
+   "t": 3.05,
+   "kind": "stamp",
+   "name": "s1.lakh"
+  },
+  {
+   "t": 6.15,
+   "kind": "stamp",
+   "name": "s2.say"
+  },
+  {
+   "t": 8.3,
+   "kind": "tick",
+   "name": "s2.crore"
+  },
+  {
+   "t": 10.95,
+   "kind": "stamp",
+   "name": "s2.selling"
+  },
+  {
+   "t": 13.15,
+   "kind": "tick",
+   "name": "s3.one"
+  },
+  {
+   "t": 14.225,
+   "kind": "tick",
+   "name": "s3.need"
+  },
+  {
+   "t": 16.25,
+   "kind": "stamp",
+   "name": "s3.wrong"
+  },
+  {
+   "t": 17.875,
+   "kind": "pen",
+   "name": "s4.isnt"
+  },
+  {
+   "t": 19.625,
+   "kind": "tick",
+   "name": "s4.staff"
+  },
+  {
+   "t": 19.95,
+   "kind": "tick",
+   "name": "s4.ingr"
+  },
+  {
+   "t": 20.55,
+   "kind": "tick",
+   "name": "s4.rent"
+  },
+  {
+   "t": 20.925,
+   "kind": "tick",
+   "name": "s4.elec"
+  },
+  {
+   "t": 23.775,
+   "kind": "count",
+   "name": "s4.fifteen"
+  },
+  {
+   "t": 25.2,
+   "kind": "stamp",
+   "name": "s4.profit"
+  },
+  {
+   "t": 28.55,
+   "kind": "pen",
+   "name": "s5.sales"
+  },
+  {
+   "t": 30.725,
+   "kind": "tick",
+   "name": "s5.money"
+  },
+  {
+   "t": 31.975,
+   "kind": "tick",
+   "name": "s5.three"
+  },
+  {
+   "t": 33.525,
+   "kind": "count",
+   "name": "s5.forty"
+  },
+  {
+   "t": 35.325,
+   "kind": "tick",
+   "name": "s6.crore"
+  },
+  {
+   "t": 36.175,
+   "kind": "tick",
+   "name": "s6.forty"
+  },
+  {
+   "t": 38.125,
+   "kind": "tick",
+   "name": "s6.steal"
+  },
+  {
+   "t": 39.825,
+   "kind": "stamp",
+   "name": "s6.fast"
+  },
+  {
+   "t": 42.025,
+   "kind": "pen",
+   "name": "s7.baker"
+  },
+  {
+   "t": 43.625,
+   "kind": "stamp",
+   "name": "s7.leaves"
+  },
+  {
+   "t": 45.075,
+   "kind": "count",
+   "name": "s7.six"
+  },
+  {
+   "t": 46.75,
+   "kind": "tick",
+   "name": "s8.fifteen"
+  },
+  {
+   "t": 48.1,
+   "kind": "count",
+   "name": "s8.nine"
+  },
+  {
+   "t": 49.45,
+   "kind": "tick",
+   "name": "s8.three"
+  },
+  {
+   "t": 50.575,
+   "kind": "tick",
+   "name": "s8.forty"
+  },
+  {
+   "t": 51.45,
+   "kind": "pen",
+   "name": "s8.drops"
+  },
+  {
+   "t": 52.175,
+   "kind": "pen",
+   "name": "s8.seven"
+  },
+  {
+   "t": 53.175,
+   "kind": "tick",
+   "name": "s9.same1"
+  },
+  {
+   "t": 54.625,
+   "kind": "tick",
+   "name": "s9.same2"
+  },
+  {
+   "t": 57.45,
+   "kind": "pen",
+   "name": "s9.price"
+  },
+  {
+   "t": 60.5,
+   "kind": "pen",
+   "name": "s10.sells"
+  },
+  {
+   "t": 62.125,
+   "kind": "tick",
+   "name": "s10.make"
+  },
+  {
+   "t": 66.825,
+   "kind": "stamp",
+   "name": "s11.dm"
+  },
+  {
+   "t": 67.225,
+   "kind": "tick",
+   "name": "s11.lore"
+  }
+ ],
+ "slide_sfx": [
+  {
+   "t": 5.735,
+   "kind": "slide",
+   "name": "slide.s2"
+  },
+  {
+   "t": 11.885,
+   "kind": "slide",
+   "name": "slide.s3"
+  },
+  {
+   "t": 16.735,
+   "kind": "slide",
+   "name": "slide.s4"
+  },
+  {
+   "t": 26.035,
+   "kind": "slide",
+   "name": "slide.s5"
+  },
+  {
+   "t": 34.76,
+   "kind": "slide",
+   "name": "slide.s6"
+  },
+  {
+   "t": 40.56,
+   "kind": "slide",
+   "name": "slide.s7"
+  },
+  {
+   "t": 46.31,
+   "kind": "slide",
+   "name": "slide.s8"
+  },
+  {
+   "t": 52.935,
+   "kind": "slide",
+   "name": "slide.s9"
+  },
+  {
+   "t": 58.26,
+   "kind": "slide",
+   "name": "slide.s10"
+  },
+  {
+   "t": 63.86,
+   "kind": "slide",
+   "name": "slide.s11"
+  }
+ ]
+}

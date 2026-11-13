@@ -3,3 +3,18 @@ __pycache__/
 frames/
 memory/inbox.jsonl
 memory/.evals_stamp.json
+
+# generated media and build output (kept local; skills, tools, scripts and sources are what we version)
+projects/*/out/
+projects/*/work/
+projects/*/voice/
+projects/*/node_modules/
+projects/*/frames/
+projects/*/audio/*.wav
+projects/*/*.wav
+projects/*/media/fonts/
+.DS_Store
+**/.DS_Store
+
+projects/acquisition-lore-bakery/assets_dl/
+projects/acquisition-lore-bakery/assets/

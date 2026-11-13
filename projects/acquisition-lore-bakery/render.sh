@@ -1,0 +1,3 @@
+#!/bin/bash
+# usage: render.sh OUT_DIR times...
+cd "$(dirname "$0")"; /Users/kabir/video-animations/.venv/bin/python /Users/kabir/video-editor-brain/tools/three/render_three.py film.html "$1" --full --times "$2"

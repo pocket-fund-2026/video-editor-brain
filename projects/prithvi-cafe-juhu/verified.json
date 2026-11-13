@@ -1,0 +1,20 @@
+{
+ "note": "Strings verified from press 2026-11-11. No prices, hours or distances shown.",
+ "allowed_strings": [
+  "Juhu",
+  "Mumbai",
+  "Prithvi Cafe",
+  "Prithvi Theatre founded",
+  "1978",
+  "Kheema pav",
+  "Amritsari kulcha",
+  "Irish coffee",
+  "The cafe began as a basic eatery for drama students on their breaks",
+  "Map data: OpenStreetMap contributors"
+ ],
+ "sources": [
+  "https://www.mumbailive.com/en/food-drinks/prithvi-cafe-is-a-cultural-oasis-55294",
+  "https://lbb.in/mumbai/prithvi-cafe-juhu-prithvi-theatre",
+  "https://en.wikipedia.org/wiki/Prithvi_Theatre"
+ ]
+}
