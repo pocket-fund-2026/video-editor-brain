@@ -8,5 +8,7 @@
 
 Timestamps come from an LLM, not forced alignment: spot-check before cutting on them. The videos themselves (about 3 GB each) are not in this repo.
 
+**Full documentation: [docs/](docs/README.md)** (the self-learning loop, the four agents, the step-by-step workflow, and every check).
+
 ## Learning loop (added 2026-11-04; this repo was renamed from `reel-studio`)
 The AI reads `CLAUDE.md`, applies the rules in `memory/LEARNINGS.md`, builds, runs `tools/qa/run_evals.py`, and records every piece of feedback with `tools/qa/record_lesson.py`. Agents live in `.claude/agents/` (editor, critic, librarian). The real-geography map engine for reuse is in `projects/bombay-fort-reel/`. Design notes: `HARNESS_NOTES.md`. The older timing-based learner is `studio/learn/learn.py`.
