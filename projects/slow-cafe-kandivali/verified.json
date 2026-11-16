@@ -1,0 +1,31 @@
+{
+ "allowed_strings": [
+  "Slow Cafe",
+  "SLOW",
+  "Kandivali West",
+  "Mahavir Nagar",
+  "Tomato confit and burrata",
+  "Gochujang noodle bowl",
+  "No rush",
+  "no rush",
+  "@slowmumbai",
+  "vegetarian",
+  "Bombay Cafe Map",
+  "@bombaycafemap",
+  "bombaycafemap.com",
+  "Tiramisu French toast",
+  "Sweet potato fries",
+  "house dips",
+  "4.3",
+  "/5 first look",
+  "First look"
+ ],
+ "strings": [
+  "Slow Cafe. Kandivali West.",
+  "A new cafe in Mahavir Nagar.",
+  "Tomato confit and burrata on sourdough.",
+  "Then the gochujang noodle bowl.",
+  "Sweet potato fries, with dips made in house.",
+  "No rush. Follow Bombay Cafe Map for the next one."
+ ]
+}

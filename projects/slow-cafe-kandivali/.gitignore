@@ -1,0 +1,4 @@
+# third-party press photos and scraped pages are reference only, never committed (copyright)
+reference/pages/
+reference/*.jpg
+reference/*.png

@@ -1,0 +1,6 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#2F2E2C}#stage{width:1080px;height:1920px;position:relative;overflow:hidden}</style></head><body><div id="stage"></div>
+<script src="common2d.js"></script>
+<script>
+window.SCENE = { dur: 2, setT(t, stage) { stage.innerHTML = `<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"><defs>${K.defs()}</defs>${K.concrete(t)}<circle cx="540" cy="1000" r="300" fill="#9AB89D"/></svg>`; } };
+window.pending = 0; window.setT = (t) => { window.SCENE.setT(t, document.getElementById('stage')); window.ready = true; }; window.setT(0);
+</script></body></html>

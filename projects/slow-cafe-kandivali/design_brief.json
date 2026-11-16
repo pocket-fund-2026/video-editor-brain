@@ -1,0 +1,68 @@
+{
+  "concept": "Take It Slow: Slow Cafe, Mahavir Nagar, Kandivali West. Four different dishes, four different motions (cocoa puff, burrata split, noodle lift, fry dunk), no pours. Starts at normal reel speed then eases into slow motion with a no-rush ring; ends on the Bombay Cafe Map lockup.",
+  "status": "v4: food is 2D illustration (L060), 3D kept for map only; sonar pulse added; illustrators running",
+  "anti_slop": true,
+  "locked": [
+    "fonts-two-faces"
+  ],
+  "alternatives": [
+    {
+      "name": "Take It Slow",
+      "note": "recommended: speed-ramp from fast hook into slow motion, breathing captions, no-rush ring"
+    },
+    {
+      "name": "Menu in a Bungalow",
+      "note": "safe: one dish per room card, soft top-down plates"
+    },
+    {
+      "name": "Sixty Seconds of Nothing",
+      "note": "wild: a single locked shot of a latte settling while the facts type out beside it"
+    }
+  ],
+  "dimensions": {
+    "palette": "the cafe's own colours, sampled from its logo and press photos: charcoal #2F2E2C (logo disc) ground, concrete #7C8088 (walls), cool white #F4F5F7 (logo ring, SLOW lettering), soft SLOW pink #E8A5B3 (team shirts) as the accent, sage #9AB89D (mugs) as the second accent. No orange, no cream. User asked for the cafe's colour scheme (overrides L040's avoid-pink); this dusty pink is not Mondegar's hot signal pink #FF3E8A.",
+    "fonts": "Jost (geometric sans, matches the SLOW lettering on the cafe's shirts) + DM Mono labels, two faces only",
+    "opening": "cafe name first: 'SLOW CAFE' stamped in two stacked lines with a hard charcoal shadow in frame 1 over the tiramisu French toast (L051); the O is the cafe's tilted logo ring",
+    "transition": "soft dissolve that lengthens through the reel",
+    "camera": "short map dive to Mahavir Nagar, then slow push-ins on flat-lay and table-level illustrations",
+    "layout": "left-weighted headlines, breathing captions, place-card name tag on every food scene",
+    "motion_device": [
+      "letter stamp with tilted-O settle",
+      "speed ramp from fast to slow",
+      "no-rush progress ring",
+      "word-by-word breathing captions",
+      "staggered building rise",
+      "area pulse",
+      "fries dunked in dip",
+      "lockup hold 3 s",
+      "globe pendant lights switching on in sequence (scene 3)",
+      "place-card flip tags whose words light as spoken",
+      "tick-ring progress (48 ticks) instead of a bar",
+      "cocoa dust puff on the illustrated toast",
+      "illustrated burrata knife-cut split",
+      "illustrated noodle lift with steam",
+      "illustrated fry dunk with drip",
+      "sonar location pulse on the map (core, beam, 4 ripples locked to 'Mahavir Nagar')"
+    ],
+    "texture": "refined flat editorial food illustrations with paper grain (2D, HTML/SVG), shared soft-lit concrete counter; 3D extruded OSM buildings with detail pass for the map only",
+    "sound": "stamp, soft bass hit, knife on toast, chopstick clack, crunch and dip, soft pad, voice at most 1.5 words per second; no pouring, no tea or coffee pour anywhere",
+    "ending": "charcoal end card, large real Bombay Cafe Map stacked lockup with @bombaycafemap and bombaycafemap.com, Slow Cafe (white tilted-O ring on charcoal) as a smaller line, held 3 s"
+  },
+  "moves": [
+    "cafe-name-first opening",
+    "city-shape zoom",
+    "speed ramp fast to slow",
+    "no-rush progress ring",
+    "breathing captions"
+  ],
+  "experiment": {
+    "move": "speed ramp from fast to slow",
+    "hypothesis": "A reel that audibly and visibly slows down after a punchy hook stands out in a fast feed and raises watch-through."
+  },
+  "new_vs_last_3": [
+    "pacing itself is the design (speed ramp)",
+    "no-rush progress ring",
+    "breathing word-by-word captions"
+  ],
+  "slop_exempt_gradients_in": []
+}

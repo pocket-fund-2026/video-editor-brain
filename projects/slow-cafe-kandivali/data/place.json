@@ -1,0 +1,10 @@
+{
+ "name": "Slow Cafe",
+ "handle": "@slowmumbai",
+ "area": "Mahavir Nagar, Kandivali West, Mumbai",
+ "map_center": {"lat": 19.2140, "lon": 72.8373, "precision": "area centre from Nominatim, NOT the cafe pin"},
+ "pin_verified": false,
+ "bombaycafemap_page": null,
+ "logo": {"file": "assets/logo/slow_ig_profile_150.jpg", "source": "Instagram og:image profile picture", "description": "white tilted ring 'O' on a charcoal disc; wordmark SLOW in white sans (from t-shirt photos)", "resolution": "150x150, too small to reuse: redraw as vector"},
+ "bcm_logos": "assets/bcm/logo/ (real files from bombaycafemap-logo.zip: lockup-stacked-ondark.png for the end card)"
+}
