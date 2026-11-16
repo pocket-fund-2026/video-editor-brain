@@ -11,6 +11,7 @@ import { CITY, JER, ROADS, SIL, SILEDGE, SILROADS, ISLAND_BBOX, JER_FACTS, JERWI
 import { CLIPS, TOTAL } from "./src/cues";
 
 const FPS = 30;
+const K = 1.35;   // v2: whole film slowed 1.35x (feedback: "too fast"); animation, captions and audio all share this stretch
 const INK = "#121316", MARBLE = "#F1F4F6", RED = "#D0344A", MUTE = "#9AA3B2";
 const clamp = (x: number) => Math.max(0, Math.min(1, x));
 const seg = (t: number, a: number, b: number) => clamp((t - a) / (b - a));
@@ -258,7 +259,7 @@ function EndCard({ t }: { t: number }) {       // hard cut at 16.8 : large Bomba
 }
 
 function Film() {
-  const t = useCurrentFrame() / FPS;
+  const t = useCurrentFrame() / FPS / K;
   return (
     <AbsoluteFill style={{ background: INK }}>
       <style>{CSS}</style>
@@ -273,4 +274,4 @@ function Film() {
     </AbsoluteFill>
   );
 }
-registerRoot(() => <Composition id="kyani" component={Film} width={1080} height={1920} fps={FPS} durationInFrames={Math.round(TOTAL * FPS)} />);
+registerRoot(() => <Composition id="kyani" component={Film} width={1080} height={1920} fps={FPS} durationInFrames={Math.round(TOTAL * K * FPS)} />);

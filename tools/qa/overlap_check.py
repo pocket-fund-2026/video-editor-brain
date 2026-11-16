@@ -13,7 +13,7 @@ from render_frames import open_page
 
 def raea_project(project):
     import glob
-    return bool(glob.glob(os.path.join(project, "*.tsx"))) and not os.path.exists(os.path.join(project, "film.html")) and not os.path.isdir(os.path.join(project, "scenes"))
+    return bool(glob.glob(os.path.join(project, "*.tsx"))) and not os.path.exists(os.path.join(project, "film.html"))
 
 def run_raea(project):
     """A raea composition project: text clipped / cramped / safe areas come from `raea check` (quick, on the composition) and the export check (video)."""

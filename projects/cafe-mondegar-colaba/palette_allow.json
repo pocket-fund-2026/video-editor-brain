@@ -1,0 +1,14 @@
+{
+ "reason": "Food keeps its natural colours (toast crust, egg yolk, kheema reds and browns) inside the 3D plate scene; the mural photo is a real photograph. UI, map, jukebox and type are navy, chrome white and signal pink only (no orange/cream chrome).",
+ "allowed": [
+  "#D8A24A",
+  "#F5C842",
+  "#8B3A2A",
+  "#C9A66B",
+  "#E8D9A8",
+  "#8B5524",
+  "#8F3D1E",
+  "#B57A32",
+  "#FFF6EA"
+ ]
+}

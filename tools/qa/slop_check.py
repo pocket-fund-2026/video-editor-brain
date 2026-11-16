@@ -10,11 +10,13 @@ def main():
     p = sys.argv[1]; bf = os.path.join(p, "design_brief.json")
     if not os.path.exists(bf) or not json.load(open(bf)).get("anti_slop"): print("slop_check: skipped (project not flagged anti_slop)"); return
     files = [os.path.join(p, "base.css"), os.path.join(p, "shared.js")] + [os.path.join(p, "scenes", f) for f in sorted(os.listdir(os.path.join(p, "scenes")))] if os.path.isdir(os.path.join(p, "scenes")) else []
+    files += [os.path.join(p, f) for f in sorted(os.listdir(p)) if f.endswith(".tsx")]            # raea compositions are scanned too
+    exempt = set(json.load(open(bf)).get("slop_exempt_gradients_in", []))                          # 3D texture/env-map canvases (chrome reflections, food textures), never on-screen CSS
     txt = {f: open(f, encoding="utf8").read() for f in files if os.path.exists(f)}
     fails = []; grads = 0; radii = 0
     for f, t in txt.items():
         n = os.path.basename(f)
-        grads += len(re.findall(r"(linear|radial|conic)-gradient|createRadialGradient|createLinearGradient", t))
+        grads += 0 if os.path.relpath(f, p) in exempt else len(re.findall(r"(linear|radial|conic)-gradient|createRadialGradient|createLinearGradient", t))
         radii += len(re.findall(r"border-radius:\s*(9{3}|50%|\d{2,}px)", t))
         for m in re.finditer(r"(box|text)-shadow:[^;\"']*?(\d+)px\s+(\d+)px\s+(\d+)px", t):
             if int(m.group(4)) > 12: fails.append(f"{n}: glow shadow ({m.group(0)[:50]})")

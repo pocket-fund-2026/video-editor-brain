@@ -377,3 +377,59 @@
 - Cause: Polished every scene before rendering anything complete, and gave a vague estimate instead of a time budget
 - Rule: Give a time budget up front and render a complete rough first cut of the whole reel (voice, foley, end card) within about 20 minutes, then polish in a v2; never polish scene by scene before the whole film exists
 - Guarded by: process
+
+### L053 · 2026-11-13 · kyani-co-marine-lines · pacing
+- Feedback (verbatim): the feedback on the last reel is that its to fast fix it asap
+- Symptom: Kyani reel v1 packed 6 scenes into 22.5 s with narration near 2.2 words/s and 2-4 s per scene; viewers said it is too fast
+- Cause: Script was sized to a short runtime and narration speed, with no check of reading time per scene, caption dwell or room for each visual to land
+- Rule: Pace for a first-time viewer: at most 1.8 spoken words/s, each scene holds at least 4.5 s, each caption word stays on screen at least 0.4 s, and a hero visual needs about 1 s of stillness after it lands; target 28-35 s for a 6-scene cafe reel. Time-stretching a finished cut is a fallback only; fix pacing at script and timing stage
+- Guarded by: timing.py/data_timing.json: words per second <= 1.8, every scene >= 4.5 s, total >= 28 s; flag a film as too fast otherwise
+
+### L054 · 2026-11-13 · cafe-mondegar-colaba · brand-fit
+- Feedback (verbatim): make a reel such that it pops off come up with better stuff for me
+- Symptom: The proposed plan was a competent jukebox playlist but the user wants a reel that pops, with more inventive ideas, and did not want to answer approval questions
+- Cause: Proposed one incremental concept and stopped to ask two questions instead of raising the creative ceiling and starting
+- Rule: When the user asks for a reel that pops, bring bolder ideas (a physical hero object, a signature interaction, a punchy first 1.5 s with big type and a sound hit) and start the rough cut; do not wait on approvals for minor choices
+- Guarded by: process
+
+### L055 · 2026-11-13 · cafe-mondegar-colaba · process-skipped-verification
+- Feedback (verbatim): render anything engine is at work right and can you improve on the animations and tell me about the script
+- Symptom: User could not tell whether raea (the Render Anything Engine) was driving the build and wanted stronger animations plus the script explained
+- Cause: Planned and researched for several steps without saying which engine renders what, and the script lived only in a file
+- Rule: State the render engine and what runs in it at the start of a build, and walk the user through the script scene by scene (voice, on-screen text, animation, sound) in the reply, not only in a file
+- Guarded by: process
+
+### L056 · 2026-11-13 · cafe-mondegar-colaba · brand-fit
+- Feedback (verbatim): dont use blender then find something eelse and use three.js
+- Symptom: Plan depended on the Blender MCP for model search, which was not running
+- Cause: Reached for Blender asset search without checking it was connected
+- Rule: Do not depend on Blender for 3D assets; source models from the user's cloned repos, CC0 libraries fetched directly, or procedural geometry, and render 3D scenes in three.js (projects/*/vendor)
+- Guarded by: process
+
+### L057 · 2026-11-13 · cafe-mondegar-colaba · process-skipped-verification
+- Feedback (verbatim): idk just keep building the reel and make it fast properly with proper animations and texts and food items and stuff which just makes the reel more catchy
+- Symptom: User waited through status updates and wanted the reel finished quickly with strong animations, text and food
+- Cause: Stopped to report status while a worker finished instead of continuing the build
+- Rule: Keep building without status stops: finish the full rough cut first, then report once; make food and on-screen text visibly catchy (name every food item on screen as it lands)
+- Guarded by: process
+
+### L058 · 2026-11-16 · slow-cafe-kandivali · brand-fit
+- Feedback (verbatim): search up the cafe SLOW CAFE and lets make a reel in that and also one more thing i want is this and it should look good find whatever you can on that cafe
+- Symptom: User named a cafe not on bombaycafemap.com and asked for research plus a good-looking reel; the message cut off at 'one more thing i want is this' with no attachment
+- Cause: Earlier I picked cafes myself (Sea Lounge, a hotel lounge) instead of waiting for the user's choice; this time the user chose the cafe but the extra request was missing
+- Rule: When the user names a cafe, research it from press and reviews first (site page may not exist), build only from sourced facts, and when a request is cut off ('is this' with no content) ask one question for the missing item instead of guessing
+- Guarded by: process: design_brief.json facts all traceable to a source; no hours or prices
+
+### L059 · 2026-11-16 · slow-cafe-kandivali · brand-fit
+- Feedback (verbatim): i dint need espresso pur again and again and use different food dishes
+- Symptom: Slow Cafe script made an espresso coconut float pour a hero scene, again, and leaned on drinks instead of varied food
+- Cause: Copied the pour centrepiece pattern from earlier cafe reels (and L021/L035) instead of choosing hero dishes for this cafe
+- Rule: No pour shots (espresso, tea, coffee) as a hero in cafe reels; each reel uses at least three different named food dishes, each with a different motion; check the script for the word pour before showing it
+- Guarded by: process: grep SCRIPT.md for pour/espresso before presenting
+
+### L060 · 2026-11-16 · slow-cafe-kandivali · brand-fit
+- Feedback (verbatim): i dont want toy like images you can have 2d images too which look god
+- Symptom: Procedural three.js food (toast, burrata, noodles, fries) read as toy-like even after polish passes
+- Cause: Procedural primitives and canvas textures cannot reach appetising food realism; I kept polishing 3D instead of switching to 2D imagery
+- Rule: Do not use procedural 3D for hero food. Use good-looking 2D images (generated photoreal or illustrated, one consistent look) with 2D motion (push-ins, steam, dust, light sweeps, crossfades). 3D stays for the map only.
+- Guarded by: process: no food scene is a procedural three.js clip; frames of each food scene checked for appetising realism

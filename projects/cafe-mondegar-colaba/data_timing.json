@@ -1,0 +1,293 @@
+{
+ "total": 33.19,
+ "clips": {
+  "v1": {
+   "start": 0.9,
+   "end": 5.21,
+   "trim": 0.29,
+   "words": [
+    {
+     "w": "Cafe",
+     "t0": 0.94,
+     "t1": 1.25,
+     "exact": false
+    },
+    {
+     "w": "Mondegar",
+     "t0": 1.25,
+     "t1": 2.84,
+     "exact": false
+    },
+    {
+     "w": "Colaba",
+     "t0": 2.84,
+     "t1": 3.93,
+     "exact": false
+    },
+    {
+     "w": "Since",
+     "t0": 3.93,
+     "t1": 4.23,
+     "exact": true
+    },
+    {
+     "w": "nineteen",
+     "t0": 4.23,
+     "t1": 5.21,
+     "exact": false
+    },
+    {
+     "w": "thirty",
+     "t0": 4.23,
+     "t1": 5.21,
+     "exact": false
+    },
+    {
+     "w": "two",
+     "t0": 4.23,
+     "t1": 5.21,
+     "exact": false
+    }
+   ]
+  },
+  "v2": {
+   "start": 6.3,
+   "end": 9.02,
+   "trim": 0.28,
+   "words": [
+    {
+     "w": "Right",
+     "t0": 6.34,
+     "t1": 6.39,
+     "exact": true
+    },
+    {
+     "w": "on",
+     "t0": 6.39,
+     "t1": 6.55,
+     "exact": true
+    },
+    {
+     "w": "Colaba",
+     "t0": 6.55,
+     "t1": 6.97,
+     "exact": false
+    },
+    {
+     "w": "Causeway",
+     "t0": 6.97,
+     "t1": 7.56,
+     "exact": true
+    },
+    {
+     "w": "near",
+     "t0": 7.56,
+     "t1": 7.85,
+     "exact": true
+    },
+    {
+     "w": "Regal",
+     "t0": 7.85,
+     "t1": 8.2,
+     "exact": true
+    },
+    {
+     "w": "Cinema",
+     "t0": 8.2,
+     "t1": 9.02,
+     "exact": true
+    }
+   ]
+  },
+  "v3": {
+   "start": 11.7,
+   "end": 14.74,
+   "trim": 0.28,
+   "words": [
+    {
+     "w": "Mario",
+     "t0": 11.74,
+     "t1": 11.87,
+     "exact": true
+    },
+    {
+     "w": "Miranda's",
+     "t0": 11.87,
+     "t1": 12.87,
+     "exact": true
+    },
+    {
+     "w": "murals",
+     "t0": 12.87,
+     "t1": 13.24,
+     "exact": true
+    },
+    {
+     "w": "cover",
+     "t0": 13.24,
+     "t1": 13.67,
+     "exact": true
+    },
+    {
+     "w": "the",
+     "t0": 13.67,
+     "t1": 13.94,
+     "exact": true
+    },
+    {
+     "w": "walls",
+     "t0": 13.94,
+     "t1": 14.74,
+     "exact": true
+    }
+   ]
+  },
+  "v4": {
+   "start": 17.1,
+   "end": 19.87,
+   "trim": 0.23,
+   "words": [
+    {
+     "w": "The",
+     "t0": 17.14,
+     "t1": 17.17,
+     "exact": true
+    },
+    {
+     "w": "jukebox",
+     "t0": 17.17,
+     "t1": 17.85,
+     "exact": true
+    },
+    {
+     "w": "still",
+     "t0": 17.85,
+     "t1": 18.34,
+     "exact": true
+    },
+    {
+     "w": "plays",
+     "t0": 18.34,
+     "t1": 18.87,
+     "exact": true
+    },
+    {
+     "w": "Pick",
+     "t0": 18.87,
+     "t1": 19.2,
+     "exact": true
+    },
+    {
+     "w": "a",
+     "t0": 19.2,
+     "t1": 19.28,
+     "exact": true
+    },
+    {
+     "w": "song",
+     "t0": 19.28,
+     "t1": 19.87,
+     "exact": true
+    }
+   ]
+  },
+  "v5": {
+   "start": 24.3,
+   "end": 27.22,
+   "trim": 0.08,
+   "words": [
+    {
+     "w": "For",
+     "t0": 24.34,
+     "t1": 24.53,
+     "exact": true
+    },
+    {
+     "w": "breakfast",
+     "t0": 24.53,
+     "t1": 24.76,
+     "exact": true
+    },
+    {
+     "w": "order",
+     "t0": 24.76,
+     "t1": 24.95,
+     "exact": true
+    },
+    {
+     "w": "the",
+     "t0": 24.95,
+     "t1": 25.06,
+     "exact": true
+    },
+    {
+     "w": "kheema",
+     "t0": 25.06,
+     "t1": 25.38,
+     "exact": false
+    },
+    {
+     "w": "ghotala",
+     "t0": 25.38,
+     "t1": 27.22,
+     "exact": false
+    }
+   ]
+  },
+  "v6": {
+   "start": 27.9,
+   "end": 30.19,
+   "trim": 0.29,
+   "words": [
+    {
+     "w": "Follow",
+     "t0": 27.94,
+     "t1": 28.05,
+     "exact": true
+    },
+    {
+     "w": "Bombay",
+     "t0": 28.05,
+     "t1": 28.49,
+     "exact": true
+    },
+    {
+     "w": "Cafe",
+     "t0": 28.49,
+     "t1": 28.78,
+     "exact": true
+    },
+    {
+     "w": "Map",
+     "t0": 28.78,
+     "t1": 29.0,
+     "exact": true
+    },
+    {
+     "w": "for",
+     "t0": 29.0,
+     "t1": 29.44,
+     "exact": true
+    },
+    {
+     "w": "the",
+     "t0": 29.44,
+     "t1": 29.45,
+     "exact": true
+    },
+    {
+     "w": "next",
+     "t0": 29.45,
+     "t1": 29.73,
+     "exact": true
+    },
+    {
+     "w": "one",
+     "t0": 29.73,
+     "t1": 30.19,
+     "exact": true
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,89 @@
+{
+  "concept": "Now Playing: Cafe Mondegar, Colaba as a jukebox playlist. Every scene is a record the jukebox picks: a coin drops, the needle lands on the cafe name, a 3D map dive follows a neon route to Colaba Causeway, a record flip carries us into the mural wall, the jukebox selector is pressed on camera, and the end card is the last record spinning to a stop. Equalizer bars driven by the voice and music tie sound to picture.",
+  "status": "v2 after \"make it pop\" feedback (L054): bolder hook, 14 animations, raea render; user did not object to cafe or concept",
+  "anti_slop": true,
+  "locked": [
+    "fonts-two-faces"
+  ],
+  "alternatives": [
+    {
+      "name": "Now Playing",
+      "note": "recommended: jukebox playlist, coin drop, record-flip wipe, equalizer bars"
+    },
+    {
+      "name": "Wall to Wall",
+      "note": "safe: one continuous slow pan along the mural wall, scenes are wall sections, map as a mural inset"
+    },
+    {
+      "name": "Colaba Causeway Night Walk",
+      "note": "wild: neon street at night, camera glides from the Regal Cinema corner through the door, no cuts"
+    }
+  ],
+  "dimensions": {
+    "palette": "midnight navy #0B1233, chrome white #EEF2F7, signal pink #FF3E8A (no orange, no cream, not aubergine/lime, not ink/marble/red)",
+    "fonts": "one display serif with italic accents + DM Mono labels, two faces only",
+    "opening": "cafe name first: 'Cafe Mondegar' on a jukebox title strip in frame 1, coin drop and needle drop (L051)",
+    "transition": "vinyl record flip: a spinning record wipes to the next scene",
+    "camera": "map dive with neon route line, then slow parallax pan across the mural wall, then macro push-in on the jukebox",
+    "layout": "title-strip captions in a slot, centre hero, left-weighted headlines",
+    "motion_device": [
+      "coin drop",
+      "neon flicker-on",
+      "letter stamp",
+      "neon route draw",
+      "staggered building rise",
+      "pin-drop ripple",
+      "vinyl record-flip wipe",
+      "parallax push with light sweep",
+      "jukebox button press",
+      "record arm lift and land",
+      "equalizer bars from voice and music",
+      "bulb chase",
+      "egg drop with wobble and steam",
+      "record spin-down into lockup"
+    ],
+    "texture": "chrome and enamel jukebox, 3D extruded OSM buildings with detail pass, real interior photo with credit",
+    "sound": "coin, needle crackle, button click, plate clink, jazzy bed, voice at most 1.8 words per second",
+    "ending": "record spins to a stop, large Bombay Cafe Map lockup with @bombaycafemap and bombaycafemap.com, Cafe Mondegar as a smaller line, held 3 s"
+  },
+  "moves": [
+    "cafe-name-first opening",
+    "city-shape zoom",
+    "vinyl record flip",
+    "coin drop",
+    "jukebox selector press",
+    "equalizer bars from voice",
+    "record spin-down end card"
+  ],
+  "experiment": {
+    "move": "equalizer bars from voice",
+    "hypothesis": "Bars that move with the real voice and music make a silent-scrolling viewer feel the audio and raise watch time."
+  },
+  "new_vs_last_3": {
+    "last_3": [
+      "prithvi-cafe-juhu (stage curtain, spotlight)",
+      "acquisition-lore-bakery (host, receipts)",
+      "kyani-co-marine-lines (marble top, chequered wipe)"
+    ],
+    "new": [
+      "coin drop + needle drop opener",
+      "vinyl record flip transition",
+      "jukebox selector press",
+      "equalizer bars from voice",
+      "record spin-down end card",
+      "neon route line on the map"
+    ]
+  },
+  "render_engine": "raea (Render Anything Engine), React/TS + Bevy 3D",
+  "rules": [
+    "no prices anywhere (L049)",
+    "no hours, no page score",
+    "food items only from FACTS.md",
+    "pace per L053"
+  ],
+  "slop_exempt_gradients_in": [
+    "scenes/jukebox.js",
+    "scenes/plate.js"
+  ],
+  "slop_exempt_reason": "canvas gradients inside the three.js scenes build chrome environment reflections and the toast texture; no gradient is drawn on screen"
+}
