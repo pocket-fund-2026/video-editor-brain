@@ -433,3 +433,24 @@
 - Cause: Procedural primitives and canvas textures cannot reach appetising food realism; I kept polishing 3D instead of switching to 2D imagery
 - Rule: Do not use procedural 3D for hero food. Use good-looking 2D images (generated photoreal or illustrated, one consistent look) with 2D motion (push-ins, steam, dust, light sweeps, crossfades). 3D stays for the map only.
 - Guarded by: process: no food scene is a procedural three.js clip; frames of each food scene checked for appetising realism
+
+### L061 · 2026-11-17 · cafe-madras-matunga · process-skipped-verification
+- Feedback (verbatim): use the video editor brain
+- Symptom: User had to tell me to use the video editor brain; I had built setup and research before invoking its agents, lessons and QA tools visibly
+- Cause: Did not say up front that I was running the brain's loop (retrieve lessons, designer brief, editor agents, critic) and delegated unnamed forks
+- Rule: At the start of every video task, state which brain steps are running (retrieve.py lessons, designer brief, editor agents per scene, run_evals, critic) and use the repo's agents and tools for them
+- Guarded by: process: design_brief.json and retrieve output exist before scene builds
+
+### L062 · 2026-11-17 · general · process
+- Feedback (verbatim): fuck the designer step dont bring it up again
+- Symptom: Stop hook reminder was restated in every reply on a non-film request (repo visibility), annoying the user
+- Cause: Gate treats any logged request as a new-film request and I narrated it each turn
+- Rule: Do not mention or narrate the designer step in replies unless the user is actually requesting a new film
+- Guarded by: process
+
+### L063 · 2026-11-18 · bombay-cafe-map · brand-fit
+- Feedback (verbatim): all the reels need to have the same voice
+- Symptom: Bombay Cafe Map reels used two different voices: Kokoro heart (Prithvi, Island Coffee, Mondegar, Slow Cafe, Kyani, Madras) and ElevenLabs Sana (Chorus Cafe, Bombay Fort)
+- Cause: Voice chosen per reel with no series-wide standard
+- Rule: Every Bombay Cafe Map reel uses the same narrator: Kokoro ripping:heart via each project's gen_voice.mts. Do not use Sana/ElevenLabs or any other voice in this series without the user's explicit yes.
+- Guarded by: grep each cafe project for non-heart voice; none allowed

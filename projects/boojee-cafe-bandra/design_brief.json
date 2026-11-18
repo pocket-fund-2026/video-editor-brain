@@ -1,0 +1,24 @@
+{
+ "concept": "Wall Quote: Boojee Cafe, Bandra West. The reel is painted on a white graffiti wall, mirroring the cafe's black-and-white look with quote walls. The name is spray-stencilled in frame 1, a marker line carries the 'luxury, humble beginnings' meaning, three dishes each get a different motion (croissant pull-apart, avocado mash, crepe fold), a seat count-up to 15 anchors the humble start, and the end card is the large Bombay Cafe Map lockup held 3 s.",
+ "anti_slop": true,
+ "locked": ["fonts-two-faces", "bcm-end-lockup"],
+ "alternatives": [
+  {"name": "Wall Quote", "note": "recommended: spray stencil + marker on a white wall"},
+  {"name": "Luxe Receipt", "note": "safe: dishes as a till roll"},
+  {"name": "Gold Leaf", "note": "wild: gilded frames around humble plates"}
+ ],
+ "dimensions": {
+  "palette": "chalk #F2F3F0 ground, spray black #0B0B0C, mint spray #19C9A0 accent. No orange, no cream. Not the palettes of Madras, Slow Cafe, Mondegar or Kyani.",
+  "fonts": "Big Shoulders Stencil (display) + DM Mono labels, two faces only",
+  "opening": "cafe name first: BOOJEE spray-stencilled onto a white wall with mist and drips, marker definition line (L051)",
+  "transition": "paint-roller wipe: a mint roller band sweeps across and reveals the next scene",
+  "camera": "flat-on wall camera with slow push-ins; map dive to Perry Cross Road",
+  "layout": "huge stencil headline top, marker-written tags beside dishes, dish centred on a plate",
+  "motion_device": ["spray stencil reveal with drips", "marker underline write-on", "paint-roller wipe", "seat count-up to 15", "year stamp", "croissant pull-apart", "avocado mash and spread", "crepe fold with sugar dust", "word-by-word captions", "end lockup hold 3 s"],
+  "texture": "painted plaster wall with spray grain; flat editorial 2D food; 3D map only for the city",
+  "sound": "spray hiss, marker squeak, roller swish, flaky crunch, fork scrape, sugar sift; voice at most 1.5 words per second; no pouring",
+  "ending": "chalk end card, large real Bombay Cafe Map stacked lockup with @bombaycafemap and bombaycafemap.com, 'Boojee Cafe, Bandra West' second large line, held 3 s"
+ },
+ "moves": ["spray stencil reveal", "paint-roller wipe", "marker write-on"],
+ "experiment": {"move": "spray-stencil title reveal with drips (never used)", "hypothesis": "A name painted live on a wall reads as street-art confidence and holds attention through the first 2 s."}
+}
