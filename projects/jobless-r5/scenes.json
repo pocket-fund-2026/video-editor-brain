@@ -1,0 +1,30 @@
+{
+ "v": 1,
+ "stage": "final",
+ "look": "Jobless ground #0D0D0D, lime #B9FF66, pink #FF005A for the alarming number only",
+ "palettes": [
+  [
+   "#0D0D0D",
+   "#B9FF66",
+   "#F9FAFB",
+   "#FF005A"
+  ]
+ ],
+ "theirs": 1,
+ "width": 1080,
+ "height": 1920,
+ "fps": 30,
+ "background": "#0D0D0D",
+ "fonts": {
+  "display": "Inter 800",
+  "mono": "Fragment Mono"
+ },
+ "scenes": [
+  {
+   "id": "main",
+   "name": "AI blamed for layoffs, May vs October",
+   "dur": 5.0,
+   "desc": "AI blamed for layoffs, May vs October"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "concept": "Jobless 3-second text reel 6: 177 software jobs in one week.",
+ "locked": [
+  "palette",
+  "fonts"
+ ],
+ "dimensions": {
+  "palette": "Jobless ground, lime, pink for alarming only",
+  "fonts": "Inter 800 + Fragment Mono",
+  "opening": "dots fill",
+  "transition": "dots pop in",
+  "camera": "locked, no camera",
+  "layout": "giant counter over a dot field",
+  "motion_device": "177 dots pop in while the counter climbs, sticker slap",
+  "texture": "flat ground, no texture",
+  "sound": "silent",
+  "ending": "lime Read it at Jobless / Link in bio end card wipes up at 3.4 s (1.6 s hold, short of the 3 s rule: reels capped at 5 s)"
+ },
+ "moves": [
+  "dots fill"
+ ],
+ "experiment": {
+  "move": "dot-grid fill that drives a live counter",
+  "hypothesis": "One clear number or visual in 3 seconds gets read and replayed"
+ }
+}

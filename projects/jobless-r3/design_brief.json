@@ -1,0 +1,26 @@
+{
+ "concept": "Jobless 3-second text reel 3: Summer 2027 internships open.",
+ "locked": [
+  "palette",
+  "fonts"
+ ],
+ "dimensions": {
+  "palette": "Jobless ground, lime, pink for alarming only",
+  "fonts": "Inter 800 + Fragment Mono",
+  "opening": "bars grow on a month axis",
+  "transition": "month axis build",
+  "camera": "locked, no camera",
+  "layout": "headline over a calendar axis",
+  "motion_device": "timeline bars + today marker",
+  "texture": "flat ground, no texture",
+  "sound": "silent",
+  "ending": "lime Read it at Jobless / Link in bio end card wipes up at 3.4 s (1.6 s hold, short of the 3 s rule: reels capped at 5 s)"
+ },
+ "moves": [
+  "bars grow on a month axis"
+ ],
+ "experiment": {
+  "move": "month-axis timeline bars with a today marker",
+  "hypothesis": "One clear number or visual in 3 seconds gets read and replayed"
+ }
+}

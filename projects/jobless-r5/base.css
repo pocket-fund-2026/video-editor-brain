@@ -1,0 +1,12 @@
+@font-face{font-family:"Inter";font-weight:500;src:url(file:///root/jobless-reels/fonts/Inter500.ttf)}
+@font-face{font-family:"Inter";font-weight:800;src:url(file:///root/jobless-reels/fonts/Inter800.ttf)}
+@font-face{font-family:"FM";src:url(file:///root/jobless-reels/fonts/FragmentMono.ttf)}
+#stage{font-family:Inter,sans-serif;color:#F9FAFB;background:#0D0D0D}
+#stage>div,.cam>div{position:absolute;white-space:nowrap}
+.big{font-weight:800;font-size:100px;line-height:1.03;letter-spacing:-3px}
+.mono{font-family:FM,monospace;font-size:32px;color:#A1A1AA}
+.src{font-family:FM,monospace;font-size:28px;color:#A1A1AA}
+.lime{color:#B9FF66}.pink{color:#FF005A}
+.gl{text-shadow:0 0 60px rgba(185,255,102,.35)}.pink.gl{text-shadow:0 0 60px rgba(255,0,90,.4)}
+.w{display:inline-block;margin-right:.26em;will-change:transform}
+.mid{font-weight:800;font-size:64px;letter-spacing:-1.5px}
