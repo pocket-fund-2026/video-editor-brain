@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Bombay Cafe Map">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2216"/>
+      <stop offset="1" stop-color="#22120b"/>
+    </linearGradient>
+    <linearGradient id="porcelain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#efe0c8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="114" fill="url(#ground)"/>
+
+  <!-- handle, behind the cup so the join is hidden -->
+  <path d="M340 232c34 4 56 26 56 60s-27 60-64 60"
+        fill="none" stroke="url(#porcelain)" stroke-width="26" stroke-linecap="round"/>
+
+  <!-- cup -->
+  <path d="M136 210h208l-24 168a40 40 0 0 1-40 34h-80a40 40 0 0 1-40-34z" fill="url(#porcelain)"/>
+  <!-- coffee band at the rim -->
+  <path d="M136 210h208l-9 62H145z" fill="#b5651d"/>
+
+  <!-- steam: full S-curves rather than short hooks, which collapse into
+       blobs once the icon is scaled down to a home screen -->
+  <g fill="none" stroke="url(#porcelain)" stroke-width="21" stroke-linecap="round" opacity="0.9">
+    <path d="M205 186c-18-20 18-32 0-52s18-32 0-52"/>
+    <path d="M275 186c-18-20 18-32 0-52s18-32 0-52"/>
+  </g>
+</svg>

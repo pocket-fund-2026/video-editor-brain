@@ -18,3 +18,11 @@ projects/*/media/fonts/
 
 projects/acquisition-lore-bakery/assets_dl/
 projects/acquisition-lore-bakery/assets/
+
+# video files stay local
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.m4v
+*.avi

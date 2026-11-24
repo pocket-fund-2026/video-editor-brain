@@ -1,0 +1,10 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#2F2E2C}#stage{width:1080px;height:1920px;position:relative;overflow:hidden}</style></head><body>
+<div id="stage"></div>
+<script src="common2d.js"></script><script src="idli.js"></script>
+<script>
+// Template host: scene pages copy this and add their own <script> that sets window.SCENE = { dur, setT(t, stage) }. setT must be pure and draw into #stage (e.g. stage.innerHTML = svgString).
+const stage = document.getElementById('stage');
+window.pending = 0;
+function boot() { window.setT = (t) => { window.SCENE.setT(t, stage); window.ready = true; }; window.setT(0); }
+if (window.SCENE) boot(); else window.addEventListener('load', boot);
+</script></body></html>

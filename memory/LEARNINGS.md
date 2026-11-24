@@ -454,3 +454,10 @@
 - Cause: Voice chosen per reel with no series-wide standard
 - Rule: Every Bombay Cafe Map reel uses the same narrator: Kokoro ripping:heart via each project's gen_voice.mts. Do not use Sana/ElevenLabs or any other voice in this series without the user's explicit yes.
 - Guarded by: grep each cafe project for non-heart voice; none allowed
+
+### L064 · 2026-11-23 · records-coffee-pali-hill · brand-fit
+- Feedback (verbatim): where are the fucking foood items you retard
+- Symptom: records.coffee v1 shipped with no food or drink on screen, although the user chose option 3A (coffee plus room, verified only); the site lists no menu so I skipped food entirely and dropped coffee too
+- Cause: Treated 'verified only' as 'nothing the bombaycafemap page lists' and did not search the cafe's other sources (editorial write-ups, Instagram) for named items; also never showed the user a scene plan before rendering
+- Rule: Every cafe reel must show at least 2-3 real named food or drink items, each with its own animation, even when the bombaycafemap page lists none: search editorial sources (Knocksense, Homegrown, Outlook Traveller, the cafe's Instagram), cite the source in verified.json, and flag in the hand-off that the menu was not confirmed on the cafe's own site. Never ship a food-free cafe reel; if the length cap is tight, cut a fact scene before cutting food.
+- Guarded by: process

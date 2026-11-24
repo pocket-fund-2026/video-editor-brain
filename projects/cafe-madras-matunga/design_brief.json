@@ -1,0 +1,23 @@
+{
+ "concept": "Steel & Steam: Cafe Madras, Matunga East (1940). A kinetic word-stack opens on the cafe name; four different dishes, four different motions (dosa crack, idli dunk and tear, vada press with ripples, sheera scoop), rack focus between plate and steam, no pours; the steel tumbler language (steel plates, katori bowls) ties the scenes together; ends on the large Bombay Cafe Map lockup held 3 s.",
+ "anti_slop": true,
+ "locked": ["fonts-two-faces", "bcm-end-lockup"],
+ "alternatives": [
+  {"name": "Steel & Steam", "note": "recommended: kinetic stack + rack focus on steel thali props"},
+  {"name": "Queue Ticket", "note": "safe: each dish is a numbered token slip"},
+  {"name": "Dabarah Loop", "note": "wild: a continuous camera orbit around one steel table"}
+ ],
+ "dimensions": {
+  "palette": "banana-leaf green #14312A (ground), steel #B5BDC2, jasmine white #F4F6F1, kolam cobalt #4F7DF0 (accent). No orange, no cream, no pink, no red. Not the palettes of Slow Cafe, Mondegar, Kyani or Acquisition Lore.",
+  "fonts": "Bricolage Grotesque variable (width and weight swing) + DM Mono labels, two faces only",
+  "opening": "cafe name first: kinetic stack, 'CAFE' and 'MADRAS' slam in and resize to fill the frame width over the illustrated dosa (L051)",
+  "transition": "steel-plate wipe: a brushed-steel disc scales from the hero dish to cover the frame, then reveals the next scene",
+  "camera": "rack focus between plate and steam, slow push-ins on flat 2D plates; map dive with a real-node pin",
+  "layout": "centred stacked title, place-card tags bottom-left, dish names set in white on green",
+  "motion_device": ["kinetic word-stack", "rack focus", "real-node pin drop with sonar pulse", "1940 count-up", "steel-plate wipe", "dosa crack with steam", "sambar dunk and idli tear", "vada press with ripple rings", "sheera scoop with ghee sweep", "place-card flip tags", "word-by-word captions", "end-card lockup hold 3 s"],
+  "texture": "flat editorial illustration with fine paper grain on a brushed-steel table; 3D map only for the city",
+  "sound": "stack thuds, crisp dosa crack, steam, spoon on steel, soft pad; voice at most 1.5 words per second; no pouring",
+  "ending": "green end card, large real Bombay Cafe Map stacked lockup with @bombaycafemap and bombaycafemap.com, 'Cafe Madras, Matunga East, since 1940' as the second large line, held 3 s"
+ },
+ "experiment": {"move": "kinetic word-stack opening (never used)", "hypothesis": "A name that fills the frame in the first second holds attention better than a small stamped title"}
+}

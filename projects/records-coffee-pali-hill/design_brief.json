@@ -1,0 +1,24 @@
+{
+ "concept": "Window Light: records.coffee by Veranda, Pali Hill. The cafe is an all-white, vinyl-lined room with giant windows, so the reel is lit by a window: a soft shaft of daylight with mullion shadows sweeps across a forest-green wall and reveals the name, a shelf of record spines rises (one is pulled out for 'by Veranda'), a hotel key tag swings in over a map dive to Pali Pathar Road, five score meters fill like record slots, a '#1 of 26 in Bandra' stamp lands, and venetian blinds close and open between scenes.",
+ "anti_slop": true,
+ "locked": ["fonts-two-faces", "bcm-end-lockup", "user-palette-forest-pink"],
+ "alternatives": [
+  {"name": "Window Light", "note": "recommended: daylight sweep reveal, spine shelf, key tag, venetian-blind wipe"},
+  {"name": "Sleeve Notes", "note": "safe: each fact is a record sleeve slid out of a crate (overlaps the Mondegar vinyl idea)"},
+  {"name": "Check-In Desk", "note": "wild: the reel is a hotel check-in: room key, ledger, bell, lobby clock"}
+ ],
+ "dimensions": {
+  "palette": "forest #0E4A33 ground, pale pink #F7C9D4, room white #F4FAF6 (user choice C). No orange, no cream. Not the palettes of Madras, Boojee, Mondegar.",
+  "fonts": "Bricolage Grotesque (display, lowercase name) + DM Mono labels, two faces only",
+  "opening": "cafe name first: records.coffee revealed by a window-light sweep in frame 1 (L051)",
+  "transition": "venetian-blind wipe: twelve slats close and open across each cut",
+  "camera": "flat poster frames with slow settles; map dive to a neighbourhood pulse",
+  "layout": "huge lowercase name left-aligned over a spine shelf; stacked meters and a rank stamp in the score scene",
+  "motion_device": ["window-light sweep with mullion shadows", "record-spine shelf rise with one pulled spine", "hotel key tag swing", "neighbourhood sonar pulse", "street name word-by-word light-up", "segmented score meters", "rank stamp with shake", "venetian-blind wipe", "voice-timed end-card words"],
+  "texture": "soft radial forest gradients, flat pink and white shapes, 3D map for the city only",
+  "sound": "window whoosh, spine ticks, blind slat ticks, key-tag clinks, stamp thud, calm pad; voice at most 1.8 words per second; no pouring",
+  "ending": "pale pink end card, large real Bombay Cafe Map stacked lockup with @bombaycafemap and bombaycafemap.com, records.coffee big, held 3 s"
+ },
+ "moves": ["window-light sweep reveal", "venetian-blind wipe", "swinging key tag"],
+ "experiment": {"move": "daylight-sweep name reveal with mullion shadows (never used)", "hypothesis": "A name revealed by moving window light reads as the calm, bright room the cafe is known for and holds attention through the first 2 s."}
+}
